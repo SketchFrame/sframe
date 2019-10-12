@@ -1,0 +1,66 @@
+{% extends 'home/base.html' %}
+{% block title %}
+| Register
+{% endblock %}
+
+{% block content %}
+<style>
+.form-control{
+    width: 35%;
+}
+@media(max-width: 1199px){
+    .form-control{
+        width: 40%;
+    }   
+}
+@media(max-width: 991px){
+    .form-control{
+        width: 50%;
+    }   
+}
+@media(max-width: 767px){
+    .form-control{
+        width: 75%;
+    }   
+}
+@media(max-width: 500px){
+    .form-control{
+        width: 100%;
+    }   
+}
+</style>
+<form method="POST" class="container">
+    <p class="mt-2 mb-3 h2 text-center" style="color: #9e9e9e; font-weight: 300;">- Register as seller -</p>
+    {% csrf_token %}
+    <div class="w-75 mw-100 mx-auto">
+        <p style='color: #696969;'>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam animi temporibus molestiae placeat quod non commodi quidem molestias obcaecati consequuntur dolorem, hic autem? Voluptas quod adipisci illo, optio debitis ab!
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur aliquid, est ut unde alias laborum incidunt velit placeat minima mollitia distinctio natus, tempore asperiores soluta expedita excepturi illum et sunt.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea officiis eligendi corporis aperiam? Quis incidunt laborum, quas inventore dolorum sed aperiam quod sunt, nesciunt cum, maxime perspiciatis velit ipsam totam.
+        </p><center>
+    <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="customCheck" name="example1" onclick="myFunction()" required>
+        <label class="custom-control-label" for="customCheck">Become Seller</label>
+        <br>
+        <p class="text-muted small">By clicking on the <b>REGISTER</b> button, you agree to our <a href="#">terms & conditions</a></p>
+    </div>
+    <p class="h5 text-muted mb-3 mt-3">
+        <input name="code" type="text" class="form-control" id="text" placeholder="Have A Referral Code? (Optional)" style="display:none">
+    </p>
+    <input type="submit" value="REGISTER" class="btn btn-success pl-5 pr-5">
+    </center>
+    </div>
+</form>
+<br>
+<script>
+    function myFunction() {
+        var checkBox = document.getElementById("customCheck");
+        var text = document.getElementById("text");
+        if (checkBox.checked == true) {
+            text.style.display = "block";
+        } else {
+            text.style.display = "none";
+        }
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,139 @@
+{% extends 'home/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}
+| Edit {{ form.title.value }}
+{% endblock %}
+
+{% block content %}
+<p class="mt-2 mb-3 h3 text-center" style="color: #9e9e9e; font-weight: 300;">
+    - Edit {{ form.title.value }} -
+</p>
+<div class="container-fluid">
+    <form method="POST" class="container">
+        {% csrf_token %}
+        {{ form.media }}
+        {{ form.title | as_crispy_field }}
+        <div class="form-row">
+            <div class="col-md-6">
+                {{ form.category | as_crispy_field }}
+            </div>
+            <div class="col-md-6">
+                {{ form.subCategory | as_crispy_field }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6">
+                {{ form.originalPrice | as_crispy_field }}
+                <div id="displayPrice" style="display: none">Display Price: <i class="fas fa-inr"></i><span id="new_price" class="font-weight-bold"></span> (15% Service charge + 12% GST)</div>
+            </div>
+            <div class="col-md-6">
+                {{ form.originalDiscount_price | as_crispy_field }}
+                <div id="displayDiscountPrice" style="display: none">Display Price: <i class="fas fa-inr"></i><span id="new_discount_price" class="font-weight-bold"> </span> (15% Service charge + 12% GST)</div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-4">
+                {{ form.height | as_crispy_field }}
+            </div>
+            <div class="col-md-4">
+                {{ form.width | as_crispy_field }}
+            </div>
+            <div class="col-md-4">
+                {{ form.weight | as_crispy_field }}
+            </div>
+        </div>
+        {{ form.description | as_crispy_field }}
+        {{ form.shortDescription | as_crispy_field }}
+        
+        <div class="form-row">
+            <div class="col-md-6">
+                {{ form.makingTime | as_crispy_field }}
+            </div>
+            <div class="col-md-6">
+                {{ form.stock | as_crispy_field }}
+            </div>
+        </div>
+        {{ form.published | as_crispy_field }}
+        <div class="row p-3">
+            {% for image in images %}
+            <div class="col-12 col-md-4" style="background: url('{{image.image.url}}') no-repeat; background-position: center; background-size: cover; height: 200px;border:3px solid #fff">
+            </div>
+            {% endfor %}
+        </div><br>
+        <div class="clearfix mt-3 mb-3">
+            <input type="submit" value="Save" class="btn btn-outline-success shadow-sm btn-md float-right">
+            <a href="{% url 'view-all-product' %}" class="btn btn-secondary btn-md">Back</a>
+            <a href="{% url 'edit-product-images' product_slug %}" class="btn btn-outline-secondary btn-md">Edit
+                Images</a>
+        </div>
+    </form>
+</div>
+<br>
+<hr>
+<script src="{% static 'js/Jquery_V3.4.1.js' %}"></script>
+<script>
+$(document).ready(function(){
+    if($("#id_category").val() != ''){
+        $.ajaxSetup({ 
+            beforeSend: function(xhr, settings) {
+                function getCookie(name) {
+                    var cookieValue = null;
+                    if (document.cookie && document.cookie != '') {
+                        var cookies = document.cookie.split(';');
+                        for (var i = 0; i < cookies.length; i++) {
+                            var cookie = jQuery.trim(cookies[i]);
+                            // Does this cookie string begin with the name we want?
+                            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                }
+                if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                    // Only send the token to relative URLs i.e. locally.
+                    xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                }
+            } 
+        });
+        $.ajax({
+            type: "POST",
+            url: "{% url 'get-charges' %}",
+            data: {
+                'category': $("#id_category").val(),
+            },
+            dataType: 'json',
+            success: function(data){
+                console.log(`${data['tax']} ${data['charge']}`)                
+                $("#id_originalPrice").on('keyup', function(){
+                    if ($(this).val() == ''){
+                        $("#displayPrice").hide()
+                    }else{
+                        $("#displayPrice").show()
+                        var initialValue = parseFloat($(this).val());
+                        commision = initialValue*(parseFloat(data['charge'])/100);
+                        tax = (commision + initialValue) * (parseFloat(data['tax'])/100)
+                        totalPrice = parseFloat(initialValue+commision+ tax).toFixed(2);
+                        $("#new_price").html(totalPrice);
+                    }
+                })
+                $("#id_originalDiscount_price").on('keyup', function () {
+                    if ($(this).val() == '') {
+                        $("#displayDiscountPrice").hide()
+                    } else {
+                        $("#displayDiscountPrice").show()
+                        var initialValue = parseFloat($(this).val());
+                        commision = initialValue * (parseFloat(data['charge'])/100);
+                        tax = (commision + initialValue) * (parseFloat(data['tax'])/100)
+                        totalPrice = parseFloat(initialValue + commision + tax).toFixed(2);
+                        $("#new_discount_price").html(totalPrice);
+                    }
+                })
+            }
+        })
+    }
+})
+</script>
+{% endblock %}

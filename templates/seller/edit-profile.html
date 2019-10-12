@@ -1,0 +1,16 @@
+{% extends 'home/back.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+| Edit Profile
+{% endblock %}
+{% block back-url %}{% url 'seller-profile' %}{% endblock %}
+{% block content %}
+<p class="mt-2 mb-3 h2 text-center" style="color: #9e9e9e; font-weight: 300;">- {{ edit }} -
+</p>
+<form method="POST" class="container">
+    {% csrf_token %}
+    {{ form | crispy }}
+    <input type="submit" class="btn btn-primary pl-5 pr-5" value="Update">
+</form>
+<hr>
+{% endblock %}

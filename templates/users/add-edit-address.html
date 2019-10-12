@@ -1,0 +1,74 @@
+{% extends 'home/back.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+| {{ text }}
+{% endblock %}
+{% block back-url %}{% url 'account_profile' %}{% endblock %}
+{% block content %}
+{% if messages %}
+{% else %}
+{% endif %}
+<main>
+<h2 class="mb-1 h2 text-center" style="font-weight: 300; color: #606060">- {{ text }} -</h2>
+  <div class="container border" style="border-radius: 8px">
+    <div class="row">
+      <div class="col-md-12 mb-4">
+        <form method="POST" class="card-body">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="col-md-12">
+                <label for="zip">Zip/Pin code</label>
+                {{form.zipCode | as_crispy_field}}            
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6">
+                <label for="phone1" class="">Mobile Number</label>          
+                {{form.phone1 | as_crispy_field}}
+            </div>
+            <div class="col-md-6">
+                <label for="phone2" class="">Alternate Number</label>
+                {{form.phone2 | as_crispy_field}}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-12">
+                <label for="address1" class="">Street Address 1</label>
+                {{form.address1 | as_crispy_field}}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-12">
+                <label for="address2" class="">Street Address 2</label>          
+                {{form.address2 | as_crispy_field}}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-12">
+                <label for="landmark" class="">Landmark</label>          
+                {{form.landmark | as_crispy_field}}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-4">
+                <label for="state">Country</label>
+                {{ form.country | as_crispy_field}}
+            </div>
+            <div class="col-md-4">
+                <label for="city">State</label>
+                {{ form.state | as_crispy_field}}
+            </div>
+            <div class="col-md-4">
+                <label for="zip">City</label>
+                {{form.city | as_crispy_field}}
+            </div>
+        </div>
+        <input type="submit" class="btn col-12"
+        style="background-color: #4285f4; color: #fff" value="Save">
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+<hr>
+{% endblock %}

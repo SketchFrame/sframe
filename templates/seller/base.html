@@ -1,0 +1,303 @@
+{% load static %}
+{% load is_seller %}
+{% load cart_template_tags %}
+{% load active_notifications %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+
+    <title>SketchFrame {% block title %}{% endblock %}</title>
+
+    <meta name="description" content="{% block description %}{% endblock %}"/>
+
+    <meta name="keywords" content="SketchFrame, sketchframe, sketchframe.com, sketches, paintings, buy paintings, buy sketches, buy paintings online, buy sketches online, {% block keywords %}{% endblock %}">
+
+    <meta charset="UTF-8">
+    <link rel='shortcut icon' href='https://grocerjar.s3.ap-south-1.amazonaws.com/item_images/logo/SketchFrame.com-xs-round.png'
+        type='image/x-icon' />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'css/Bootstrap_v4.3.1.css' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Righteous" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/custom-style.css' %}">
+
+</head>
+<style>
+    .sidenav>a>i {
+        color: #fff;
+    }
+    .sidenav > a{
+        padding-left: 30px; 
+        padding-right: 50px;
+    }
+    .closebtn{
+        margin-right: -50px;
+    }
+</style>
+
+<body>
+    <!-- Navigation Starts -->
+    <div id="mySidenav" class="sidenav" style="z-index: 1111111">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
+        <a href="{% url 'shop' %}"><i class="fas fa-store"></i> Shop</a>
+        <!-- <a href="{% url 'post-bid' %}"><i class="fas fa-folder-plus"></i> Post a project</a> -->
+        {% if request.user|is_seller %}
+        <!-- <a href="{% url 'view-projects' %}"><i class="fas fa-gavel"></i> Bid a project</a> -->
+        {% endif %}
+        <a href="{% url 'about' %}"><i class="fas fa-address-card"></i> About</a>
+        <a href="{% url 'contact' %}"><i class="far fa-envelope"></i> Contact</a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'account_logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        {% else %}
+        <a href="{% url 'account_login' %}"><i class="fas fa-sign-in-alt"></i> Login</a>
+        <a href="{% url 'account_signup' %}"><i class="fas fa-user-plus"></i> Sign up</a>
+        {% endif %}
+    </div>
+
+    <nav class="shadow" id="firstNavbar">
+        <div style="height:100%; margin-top: -5px; ">
+            <div class="BHoPKo">
+                <div class="_2os76x" style="background:#fff">
+                    <div class="_2na3Cx">
+                        <div class="_3zajI2" style="background-color:#ffffff;">
+                            <a class="_2TbFnS" style="color:#595959;cursor:pointer" onclick="openNav()">
+                                <i class="fas fa-bars" style="font-size: 18px;"></i>
+                            </a>
+                            <p class="logo-font" style="margin-top: 7px;">
+                                <a href="/" class="_1ff24g">
+                                    <img src="https://grocerjar.s3.ap-south-1.amazonaws.com/item_images/logo/SketchFrame.com-sm.jpg" alt="sketchframe-icon">
+                                </a>
+                            </p>
+                            <div class="_2GEDF4" id="guidSearch">
+                                <div class="">
+                                    <div class="_3i3Y0k"></div>
+                                </div>
+                            </div>
+                            {% if request.user|cart_item_count > 0 %}
+                            <a href="{% url 'order-summary' %}" class="_2TbFnS" style="color:#007eff;">
+                                <p class="mb-0">
+                                    <i class="fas fa-shopping-cart" style="font-size: 18px;"></i>
+                                </p>
+                            </a>
+                            {% else %}
+                            <a href="{% url 'order-summary' %}" class="_2TbFnS" style="color:#595959;">
+                                <p class="mb-0">
+                                    <i class="fas fa-shopping-cart" style="font-size: 18px;"></i>
+                                </p>
+                            </a>
+                            {% endif %}
+
+                            {% if request.user|active_notifications %}
+                            <a href="{% url 'notification' %}" class="_2TbFnS" style="color: #007eff;">
+                                <i class="fas fa-bell" style="font-size: 18px; "></i>
+                            </a>
+                            {% else %}
+                            <a href="{% url 'notification' %}" class="_2TbFnS" style="color:#595959;">
+                                <i class="far fa-bell" style="font-size: 18px;"></i>
+                            </a>
+                            {% endif %}
+
+                            <a href="{% url 'seller-profile' %}" class="_2TbFnS" style="color:#595959;">
+                                <i class="fas fa-user" style="font-size: 18px;"></i>
+                            </a>
+                        </div>
+                        <div class="_3w_sI1" style="margin-top: -13px;">
+                            <div class="_3dMRK9">
+                                <div class="_3xe7Jz">
+                                    <form class="_2anozr" action="{% url 'search' %}" name="searchForm">
+                                        <input type="search" name="q" class="lzMbl5" id="searchInput"
+                                            placeholder="Enter the product or category">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <nav class="fixed-top shadow" style="z-index: 1111; top: -100px" id="secondNavbar">
+        <div style="height:100%; margin-top: -5px; ">
+            <div class="BHoPKo">
+                <div class="_2os76x" style="background:#fff">
+                    <div class="_2na3Cx">
+                        <div class="_3zajI2" style="background-color:#ffffff;">
+                            <a class="_2TbFnS pt-1" style="color:#595959;cursor:pointer" onclick="openNav()">
+                                <i class="fas fa-bars" style="font-size: 18px;"></i>
+                            </a>
+                            <div class="_2GEDF4" id="guidSearch">
+                                <div class="_3w_sI1">
+                                    <div class="_3dMRK9 pt-3">
+                                        <div class="_3xe7Jz">
+                                            <form class="_2anozr p-0" action="{% url 'search' %}" name="search-form">
+                                                <input type="search" name="q" class="lzMbl5" id="search-input"
+                                                    placeholder="Enter the product or category">
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if request.user|cart_item_count > 0 %}
+                            <a href="{% url 'order-summary' %}" class="_2TbFnS pt-1" style="color:#007eff;">
+                                <p class="mb-0">
+                                    <i class="fas fa-shopping-cart" style="font-size: 16px;"></i>
+                                </p>
+                            </a>
+                            {% else %}
+                            <a href="{% url 'order-summary' %}" class="_2TbFnS pt-1" style="color:#595959;">
+                                <p class="mb-0">
+                                    <i class="fas fa-shopping-cart" style="font-size: 16px;"></i>
+                                </p>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    {% if messages %}
+    <!-- <br><br><br><br><br> -->
+    {% for message in messages %}
+    <div class="mt-2"></div>
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% else %}
+    <br>
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
+    <footer style="background-color: #fff; color: #2e2e2e;">
+        <div id="footer">
+            <div class="footer-top">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-5 col-md-12 footer-info">
+                            <p class="logo-font mb-4 ml-0" style="margin-top: 10px;">
+                                <a href="/" class="_1ff24g ml-0">
+                                    <img class="ml-0"
+                                        src="https://grocerjar.s3.ap-south-1.amazonaws.com/item_images/logo/SketchFrame.com-sm.jpg" alt="sketchframe-icon">
+                                </a>
+                            </p>
+                            <p style="color: #6d6d6d;">When you want to chill with your friends, you'll prefer
+                                SketchFrame.com
+                                because, we let you know the best places near you, providing the best discounts, that
+                                you
+                                can't find anywhere else.
+                                Introducing HangoutPlaces.com, a website where you know how much discount you can get in
+                                nearby places.</p>
+                        </div>
+                        <div class="col-lg-3 col-md-4 footer-link">
+                            <h5 style="color: #007eff; letter-spacing: 0px; font-weight: 500;">Useful links</h5>
+                            <ul style="line-height: 25px; list-style-type: none; margin-left: -2.5em;">
+
+                                {% if request.user|is_seller %}
+                                <li><a href="{% url 'my-shop' %}">Dashboard</a></li>
+                                {% else %}
+                                <li><a href="{% url 'register-seller' %}">Sell your products</a></li>
+                                {% endif %}
+                                <li><a href="{% url 'shop' %}">Shop</a></li>
+                                <li><a href="{% url 'tnc' %}">TnC</a></li>
+                                <li><a href="{% url 'privacy' %}">Privacy</a></li>
+                                <li><a href="/about">About us</a></li>
+
+                                <li><a href="{% url 'affiliate' %}">Affiliation</a></li>
+
+                                <li><a href="/contact">Contact us</a></li>
+
+                            </ul>
+                        </div>
+                        <div class="col-lg-4 col-md-8 col-sm-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 footer-contact" style="padding: 0px;">
+                                <h5 style="color: #007eff; letter-spacing: 0px; font-weight: 500;">Follow us</h5>
+                                <a href="#" class="footer-icon"><i class="fab fa-twitter"></i></a>
+                                <a href="#" class="footer-icon"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#" class="footer-icon"><i class="fab fa-instagram"></i></a>
+                                <a href="#" class="footer-icon"><i class="fab fa-google-plus"></i></a>
+                                <a href="#" class="footer-icon"><i class="fab fa-linkedin"></i></a>
+                            </div>
+                            <br>
+                            <div class="col-lg-12 col-md-12 col-sm-12 footer-newsletter" style="padding: 0px;">
+                                <h5 style="color: #007eff; letter-spacing: 0px; font-weight: 500;">Newsletter</h5>
+                                <p style="color: #6d6d6d; font-size: 14px;">Subscribe to our newsletters to get the
+                                    notification about best discounts.</p>
+                                <form class="subscribe-form" action="" method="post">
+                                    <input type="email" class="form-control email-input" placeholder="Email"
+                                        aria-describedby="basic-addon1" style="width: 60%">
+                                    <button type="button" class="btn btn-sm subscribe">Subscribe</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <center><b>
+                <p class="copyright text-muted">Copyright &copy;<a style="color: #8c8c8c;" href="{% url 'home' %}">
+                        SketchFrame.com</a>
+                    2019</p>
+            </b></center>
+    </footer>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+
+    <script src="{% static 'js/Jquery_V3.4.1.js' %}"></script>
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> -->
+    <script src="{% static 'js/Popper_V1.14.7.js' %}"></script>
+
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> -->
+
+    <script src="{% static 'js/Bootstrap_V4.3.1.js' %}"></script>
+
+    <script src="{% static 'js/custom.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+    <script>
+        $('#searchInput').keypress(function (e) {
+            var key = e.which;
+            if(key == 13)  // the enter key code
+            {
+            document.searchForm.submit()
+
+            }
+        });
+        window.onscroll = function () { scrollFunction() };
+        function scrollFunction() {
+            if (document.body.scrollTop >= 85 || document.documentElement.scrollTop >= 85) {
+                $("#firstNavbar").css({
+                    'top': '-100px',
+                    'transition': 'top 0.3s ease-out'
+                });
+                $("#secondNavbar").css({
+                    'top': '0px',
+                    'transition': 'top 0.5s ease-in'
+                });
+                // $("#firstNavbar").addClass("fixed-top");
+            } else {
+                $("#firstNavbar").css({
+                    'top': '0',
+                    'transition': 'top 0.5s ease-in'
+                });
+                $("#secondNavbar").css({
+                    'top': '-100px',
+                    'transition': 'top 0.3s ease-out'
+                });
+                // $("#firstNavbar").removeClass("fixed-top");
+            }
+        }
+    </script>
+</body>
+
+</html>

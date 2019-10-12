@@ -1,0 +1,94 @@
+{% extends 'home/back.html' %}
+{% block title %}| Cart{% endblock %}
+{% block back-url %}{% url 'shop' %}{% endblock %}
+{% block content %}
+<style>
+    .table .thead-dark th {
+        background-color: #007eff;
+        border: #007eff;
+    }
+</style>
+<main>
+    <div class="container">
+        <div class="table-responsive text-nowrap">
+            <p class="mt-2 mb-4 h1 text-center" style="color: #9e9e9e; font-weight: 300;">- Order Summary -</p>
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Item title</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Total Item Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order_item in object.item.all %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td><a href="{% url 'product' order_item.item.slug %}">{{ order_item.item.title }}</a></td>
+                        <td>{{ order_item.item.price }}</td>
+                        <td>
+                            <a href="{% url 'remove-from-cart' order_item.item.slug %}"><i
+                                    class="fas fa-minus mr-2"></i></a>
+                            {{ order_item.quantity }}
+                            {% if order_item.quantity > order_item.item.stock %}
+                            <script type="text/javascript">
+                                window.location = "http://{{request.META.HTTP_HOST }}{% url 'remove-from-cart' order_item.item.slug %}"
+                            </script>
+                            {% elif order_item.quantity == order_item.item.stock %}
+                            
+                            {% else %}
+                            <a href="{% url 'add-to-cart' order_item.item.slug %}"><i class="fas fa-plus ml-2"></i></a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if order_item.item.discount_price %}
+                            Rs.{{ order_item.get_total_discount_item_price }}
+                            <span class="badge badge-primary">Saving Rs.{{ order_item.get_amount_saved }}</span>
+                            {% else %}
+                            Rs.{{ order_item.get_total_item_price }}
+                            {% endif %}
+                            <a style="color: red;" href="{% url 'delete-from-cart' order_item.item.slug %}">
+                                <i class="fas fa-trash float-right"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">Your cart is empty</td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <a class="btn btn-primary float-right" href="/">Continue shopping</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% if object.coupon %}
+                    <tr style="background-color: rgba(30, 255, 0, 0.3)">
+                        <td colspan="4"><b><strong>Coupon</strong></b></td>
+                        <td><b><strong>- Rs.{{ object.coupon.amount }}</strong></b></td>
+                    </tr>
+                    {% endif %}
+                    {% if object.get_total %}
+                    <tr>
+                        <td colspan="4"><b>Order Total</b></td>
+                        <td><b>{{ object.get_total }}</b></td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+        {% if object.item.count > 0 %}
+
+        <div class="clearfix">
+            <a class="btn btn-primary float-right" href="{% url 'checkout' %}" style="padding: 10px">Checkout</a>
+            <a class="btn btn-secondary float-left" href="{% url 'shop' %}" style="padding: 10px">Continue
+                shopping</a>
+        </div>
+        {% endif %}
+    </div>
+</main>
+<br>
+<hr>
+{% endblock %}

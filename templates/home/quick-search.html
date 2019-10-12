@@ -1,0 +1,29 @@
+<style>
+.result{
+    border-bottom: none;
+    border-top: none;
+    background-color: #fdfdfd;
+}
+.result > a{
+    font-size: 13px;
+}
+</style>
+{% if results.count > 0 %}
+{% for result in results %}
+    <li class="list-group-item result mb-0 pb-0 pt-0" style="padding-left: 2.25rem;">
+        <a href="{% url 'product' result.slug %}"  class="text-body m-0 pb-0 pt-0">{{result.title}}</a>
+    </li>
+{% endfor %}
+<li class="list-group-item mb-0 pb-0 pt-1 result-li">
+    <center>
+    <a class="text-primary m-0 pb-0 pt-0 result">View all</a>
+    </center>
+</li>
+{% else %}
+<li class="list-group-item mb-0 pb-2 pt-0" style="border-top: none">
+    <center>
+        <span>No results found.</span>
+    </center>
+</li>
+   
+{% endif %}

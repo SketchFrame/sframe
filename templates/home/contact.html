@@ -1,0 +1,116 @@
+{% extends 'home/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}| Contact{% endblock %}
+
+{% block content %}
+<style>
+    body{
+    background: -webkit-linear-gradient(left, #d9d9d9, #c5c5c5);
+}
+.contact-form{
+    background: #fff;
+    margin-top: 10%;
+    margin-bottom: 5%;
+    width: 70%;
+}
+.contact-form .form-control{
+    border-radius:1rem;
+}
+.contact-image{
+    text-align: center;
+}
+.contact-image img{
+    border-radius: 6rem;
+    width: 11%;
+    margin-top: -3%;
+    transform: rotate(29deg);
+}
+.contact-form form{
+    padding: 14%;
+}
+.contact-form form .row{
+    margin-bottom: -7%;
+}
+.contact-form .drop-msg{
+    margin-bottom: 8%;
+    margin-top: -10%;
+    text-align: center;
+    color: #727272;
+    font-size: 30px;
+    font-weight: 100;
+}
+.contact-form .btnContact {
+    width: 50%;
+    border: none;
+    border-radius: 1rem;
+    padding: 1.5%;
+    background: #c5c5c5;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+}
+.btnContactSubmit
+{
+    width: 50%;
+    border-radius: 1rem;
+    padding: 1.5%;
+    color: #fff;
+    background-color: #c5c5c5;
+    border: none;
+    cursor: pointer;
+}
+.send-btn{
+    margin-top: 50px;
+    padding: 8px 50px;
+}
+@media (max-width: 991px) {
+    .contact-form{
+        width: 80%;
+    }
+}
+@media (max-width: 767px) {
+    .contact-form{
+        width: 90%;
+    }
+}
+@media (max-width: 450px) {
+    .contact-form .drop-msg{
+        font-size: 25px;
+    }
+    .send-btn{
+        margin-top: 30px;
+        padding: 8px 20px;
+    }
+}
+</style>
+<div class="container-fluid contact-form p-0">
+    <div class="contact-image">
+        <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/useful_images/rocket.jpg" style="opacity: 0.7" alt="rocket_contact" />
+    </div>
+    <form method="POST">
+        {% csrf_token %}
+        <p class="drop-msg">Drop Us a Message</p>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.name }}
+                </div>
+                <div class="form-group">
+                    {{ form.email }}
+                </div>
+                <div class="form-group">
+                    {{ form.contact_no }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.message }}
+                </div>
+            </div>
+        </div>
+        <div class="clearfix">
+        <button class="btn btn-secondary send-btn float-right" type="submit" style="border-radius: 20px">Send Message</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,167 @@
+{% extends 'home/back.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+| Checkout
+{% endblock %}
+{% block back-url %}{% url 'order-summary' %}{% endblock %}
+{% block content %}
+{% if messages %}
+{% else %}
+{% endif %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.8/css/mdb.min.css">
+<style>
+.navbar.navbar-light .breadcrumb .nav-item.active > .nav-link, .navbar.navbar-light .navbar-nav .nav-item.active > .nav-link {
+  background-color: rgba(0, 0, 0, 0);
+}
+</style>
+<main>
+  <div class="container wow fadeIn">
+
+    <!-- Heading -->
+    <h2 class="mt-3 mb-3 h2 text-center" style="font-weight: 300; color: #606060">- Checkout form -</h2>
+
+    <!--Grid row-->
+    <div class="row">
+
+      <!--Grid column-->
+      <div class="col-md-8 mb-4">
+
+        <!--Card-->
+        <div class="card">
+          <form method="POST" class="card-body">
+            {% csrf_token %}
+            <div style="display: none;">
+            <!-- {{form|crispy}} -->
+            </div>
+            <div class="md-form">
+              {{form.fullname}}
+              <label for="fullname" class="">Full name</label>
+            </div>
+            Choose your address-
+            <div class="form-check">
+            {% for address in addresses %}
+              <input type="radio" class="form-check-input" name="address-value" value="{{address.id}}">{{ address.address1 }}<br>
+            {% endfor %}
+            </div>
+            <a href="{% url 'add-address' %}" class="text-primary"><i class="fas fa-plus-circle"></i> Add New</a>
+            <br><br>
+            <div class="form-check" style="color: #646464;">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="payment-type" value="online" id="payNow" checked>Pay
+                Now
+              </label>
+            </div>
+            <div class="form-check" style="color: #646464;">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="payment-type" value="offline" id="cod">COD (+ Rs. 50)
+              </label>
+            </div>
+            <!--Grid row-->
+
+
+            <hr class="mb-4">
+            {% if False %}
+            <button class="btn btn-danger btn-lg btn-block" disabled type="submit">Your Cart is empty</button>
+            {% else %}
+            {% if addresses.count == 0 %}
+            <a  class="btn btn-primary btn-lg btn-block disabled">Add atleast one address</a>
+            {% else %}
+            <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+            {% endif %}
+            {% endif %}
+          </form>
+
+        </div>
+        <!--/.Card-->
+
+      </div>
+      <!--Grid column-->
+
+      <div class="col-md-4 mb-4">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-muted">Your cart</span>
+          <span class="badge badge-secondary badge-pill">{{ order.items.count }}</span>
+        </h4>
+        <ul class="list-group mb-3 z-depth-1">
+          {% for order_item in order.item.all %}
+          <li class="list-group-item d-flex justify-content-between lh-condensed">
+            <div>
+              <h6 class="my-0">{{ order_item.quantity }} x {{ order_item.item.title}}</h6>
+            </div>
+            <span class="text-muted">Rs.{{ order_item.get_final_price }}</span>
+          </li>
+          {% endfor %}
+          <div id="coupon-info"></div>
+          {% if order.coupon %}
+          <li class="list-group-item d-flex justify-content-between bg-light">
+              <div class="text-success">
+                  <h6 class="my-0">Promo code</h6>
+                  <small>{{ order.coupon.code }}</small>
+              </div>
+              <span class="text-success">-Rs.{{ order.coupon.amount }}</span>
+          </li>
+          {% endif %}
+          <div id="total-price">
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Total (INR)</span>
+              <strong>Rs. <span id="totalAmount">{{ order.get_total }}</span></strong>
+            </li>
+          </div>
+        </ul>
+        {% if DISPLAY_COUPON_FORM %}
+        <form class="card p-2" action="{% url 'add-coupon' %}" method="POST" id="couponForm">
+          {% csrf_token %}
+          <div class="input-group">
+            {{ couponform.code }}
+            <div class="input-group-append">
+              <button class="btn btn-primary btn-md waves-effect m-0" type="submit" id="redeem">Redeem</button>
+            </div>
+          </div>
+        </form>
+        {% endif %}
+
+      </div>
+
+    </div>
+    <!--Grid row-->
+  </div>
+</main>
+<hr>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.8/js/mdb.min.js"></script>
+<script>
+  var a = "{{ order.get_total }}";
+  $("#cod").on('click', function () {
+    if (parseFloat($("#totalAmount").html()) <= parseFloat(a)) {
+      var totalAmount = parseFloat($("#totalAmount").html())
+      newAmount = totalAmount + 50.0;
+      $("#totalAmount").html(newAmount)
+    }
+  })
+  $("#payNow").on('click', function () {
+    if (parseFloat($("#totalAmount").html()) > parseFloat(a)) {
+      var totalAmount = parseFloat($("#totalAmount").html())
+      newAmount = totalAmount - 50.0;
+      $("#totalAmount").html(newAmount)
+    }
+  })
+</script>
+<script>
+$("#redeem").click(function(e){
+  e.preventDefault();
+  $('#total-price').css('display', 'none');
+  var form = $("#couponForm");
+  $.ajax({
+    type: form.attr('method'),
+    url: form.attr('action'),
+    data: form.serialize(),
+    dataType: 'html',
+    success: reddemData,
+  });
+  function reddemData(data, textStatus, jqXHR){
+    $('#coupon-info').html(data);
+  }
+})
+</script>
+<!--Main layout-->
+{% endblock %}

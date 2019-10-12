@@ -1,0 +1,816 @@
+{% extends 'home/base.html' %}
+{% block title %}| Home {% endblock %}
+{% block description %}{{ meta_description|safe }}{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+<style>
+    .carousel-item {
+        height: 280px;
+    }
+
+    .carousel-indicators {
+        margin: 0px;
+    }
+
+    @media(max-width: 991px) {
+        .carousel-item {
+            height: 200px;
+        }
+
+        .carousel-indicators {
+            display: none;
+        }
+    }
+
+    @media(max-width: 767px) {
+        .carousel-item {
+            height: 125px;
+        }
+    }
+
+    @media(max-width: 450px) {
+        .carousel-item {
+            height: 125px;
+        }
+    }
+</style>
+<style>
+    .trending {
+        padding: 10px;
+        padding-top: 17px;
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    .trending-font {
+        font-size: 1.75rem;
+    }
+
+    .view-all-btn {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    @media(max-width: 767px) {
+        .trending {
+            padding: 10px;
+            padding-top: 12px;
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+
+        .trending-font {
+            font-size: 1.3rem;
+        }
+
+        .view-all-btn {
+            font-size: 0.9rem;
+            padding: 6px 14px 6px 14px;
+        }
+    }
+
+    @media(max-width: 450px) {
+        .trending {
+            padding: 10px;
+            padding-top: 8px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .trending-font {
+            font-size: 1.1rem;
+        }
+
+        .view-all-btn {
+            font-size: 0.9rem;
+            padding: 4px 10px 4px 10px;
+        }
+    }
+</style>
+<style>
+    .previous-btn {
+        width: 15px;
+        height: 100px;
+        font-size: 50px;
+        position: absolute;
+        top: 30%;
+        left: 45px;
+        opacity: 0.4;
+        display: block !important;
+    }
+
+    .next-btn {
+        width: 15px;
+        height: 100px;
+        position: absolute;
+        top: 30%;
+        font-size: 50px;
+        opacity: 0.4;
+        right: 75px;
+        display: block !important;
+    }
+
+    .next-btn:hover,
+    .previous-btn:hover {
+        opacity: 1;
+        color: #d8d4d4;
+    }
+
+    @media (max-width: 991px) {
+        .previous-btn {
+            font-size: 40px;
+            left: 20px;
+        }
+
+        .next-btn {
+            font-size: 40px;
+            right: 50px;
+        }
+    }
+</style>
+<style>
+    .item-card,
+    .nav-item {
+        cursor: pointer;
+    }
+
+    .card-img-top {
+        opacity: 1;
+        display: block;
+        width: 100%;
+        height: auto;
+        transition: .5s ease;
+        backface-visibility: hidden;
+    }
+
+    .middle {
+        transition: .5s ease;
+        opacity: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        text-align: center;
+    }
+
+    .item-card:hover {
+        opacity: 0.8;
+        transition: 0.3s ease;
+    }
+
+    .item-card:hover .middle {
+        opacity: 1;
+    }
+
+    .small-devices,
+    .add-to-card-small {
+        display: none;
+    }
+
+    @media (max-width: 991px) {
+        .middle {
+            display: none;
+        }
+
+        .small-devices,
+        .add-to-card-small {
+            display: block;
+        }
+    }
+</style>
+<style>
+    .search-card {
+        cursor: pointer;
+        border: 10px solid transparent;
+        margin: 5px;
+    }
+
+    .search-card-img {
+        transition: .3s ease;
+        opacity: 1;
+        height: 250px;
+        border-radius: 5px 5px 0px 0px;
+    }
+
+    .search-card-img:hover {
+        transition: .3s ease;
+        opacity: 0.8;
+    }
+
+    .search-card-content {
+        background-color: rgb(245, 245, 245);
+
+    }
+
+    .search-card-content>p {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .title-tag {
+        font-weight: 600;
+        color: rgb(66, 66, 66)
+    }
+
+    .price-tag,
+    .description-tag {
+        font-size: 15px;
+    }
+
+    .fa-cart-plus {
+        color: rgba(255, 255, 255, 0.781);
+        font-size: 30px;
+    }
+
+    .fa-cart-plus:hover {
+        color: rgba(255, 255, 255, 1);
+    }
+
+    @media(max-width: 991px) {
+        .search-card {
+            border: 3px solid transparent;
+        }
+
+        .search-card-img {
+            height: 200px;
+        }
+
+        .price-tag,
+        .description-tag {
+            font-size: 13px;
+        }
+    }
+
+    @media(max-width: 450px) {
+        .container-fluid {
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+        .search-card-img {
+            height: 180px;
+        }
+
+        .price-tag,
+        .description-tag {
+            font-size: 13px;
+        }
+    }
+</style>
+<style>
+    .category-icon {
+        font-size: 28px;
+        margin-bottom: 0px;
+        padding-bottom: 0px;
+        color: #007eff;
+    }
+
+    .category-icon .fas {
+        background-color: rgb(255, 255, 255);
+        border-radius: 100%;
+        padding: 15px;
+        margin: 0;
+        border: 1px solid #e2e2e2;
+    }
+
+    .category-icon .fas:hover {
+        color: #026fdb;
+        cursor: pointer;
+        background-color: rgb(245, 245, 245);
+        transform: scale(1.1);
+        transition: 0.3s ease-in-out;
+    }
+
+    .category-icon-text {
+        font-size: 15px;
+        color: rgba(66, 66, 66, 0.781);
+        font-weight: 600;
+    }
+
+    @media(max-width: 450px) {
+        .category-icon-text {
+            font-size: 11px;
+        }
+
+        .category-icon .fas {
+            font-size: 25px;
+            border-radius: 100%;
+            padding: 12px;
+            margin: 0;
+            border: 1px solid #e2e2e2;
+        }
+
+        .small-device-display-none {
+            display: none;
+        }
+    }
+</style>
+<style>
+    /* Hot deals */
+    #hot-deal.section {
+        padding: 30px 0px;
+        margin: 30px 0px;
+        background-color: rgb(243, 244, 246);
+        background-image: url('https://sketchframe.s3.ap-south-1.amazonaws.com/useful_images/fantasy_banner_vector.jpg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        margin-top: 0;
+        margin-bottom: 10px;
+    }
+
+    .hot-deal {
+        text-align: center;
+    }
+
+    .hot-deal .hot-deal-countdown {
+        margin-bottom: 30px;
+    }
+
+    .hot-deal .hot-deal-countdown>li {
+        position: relative;
+        display: inline-block;
+        width: 70px;
+        height: 70px;
+        background: #fff;
+        text-align: center;
+        border-radius: 100%;
+        margin: 0px 5px;
+    }
+
+    .hot-deal .hot-deal-countdown>li>div {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+    }
+
+    .countdown-time {
+        color: #0080ff;
+        margin-bottom: 0px;
+        font-size: 1.75rem;
+    }
+
+    .hot-deal .hot-deal-countdown>li>div span {
+        display: block;
+        font-size: 10px;
+        text-transform: uppercase;
+        color: #FFF;
+    }
+
+    .hot-deal p {
+        text-transform: uppercase;
+        /* font-size: 18px; */
+    }
+
+    .hot-deal .cta-btn {
+        margin-top: 15px;
+    }
+
+    .deal-text {
+        font-size: 1.8rem;
+        margin-bottom: 0px;
+        color: rgb(224, 224, 224);
+    }
+
+    .deal-text-p {
+        color: rgb(226, 226, 226);
+    }
+
+    @media(max-width: 450px) {
+        .hot-deal .hot-deal-countdown>li {
+            width: 50px;
+            height: 50px;
+        }
+
+        .countdown-time {
+            font-size: 1rem;
+        }
+
+        .deal-text {
+            font-size: 1.25rem;
+        }
+
+        .deal-text-p {
+            font-size: 0.8rem;
+        }
+    }
+</style>
+{% endblock %}
+{% block content %}
+<style>
+.this-category {
+  position: relative;
+  color: white;
+}
+/* Bottom left text */
+.bottom-left {
+  position: absolute;
+  bottom: 0px;
+  left: 5px;
+  background-color: #0000007c;
+  height: 30px;
+  padding-top: 13px;
+  padding-left: 7px;
+  padding-right: 7px;
+  margin-left: 0px;
+  margin-bottom: 5px;
+  width: auto;
+  
+}
+.categories-container{
+    height: auto;
+    background-color: #1d1e1f !important;
+    margin-top: -30px;
+}
+.category-images{
+    padding: 5px;
+}
+#photos {
+    /* Prevent vertical gaps */
+   line-height: 0;
+   
+   -webkit-column-count: 4;
+   -webkit-column-gap:   0px;
+   -moz-column-count:    4;
+   -moz-column-gap:      0px;
+   column-count:         4;
+   column-gap:           0px;
+}
+
+#photos img {
+  /* Just in case there are inline attributes */
+  width: 100% !important;
+  height: auto !important;
+}
+
+@media (max-width: 1200px) {
+  #photos {
+  -moz-column-count:    4;
+  -webkit-column-count: 4;
+  column-count:         4;
+  }
+}
+@media (max-width: 1000px) {
+  #photos {
+  -moz-column-count:    3;
+  -webkit-column-count: 3;
+  column-count:         3;
+  }
+}
+@media (max-width: 800px) {
+  #photos {
+  -moz-column-count:    2;
+  -webkit-column-count: 2;
+  column-count:         2;
+  }
+  .category-images{
+      padding: 3px;
+  }
+  .bottom-left {
+      margin-bottom: 3px;
+      margin-left: -3px;
+      font-size: 12px;
+      padding: 10px 5px 0px 5px;
+      /* bottom: -10px; */
+      height: 20px;
+  }
+}
+@media (max-width: 400px) {
+  #photos {
+  -moz-column-count:    2;
+  -webkit-column-count: 2;
+  column-count:         2;
+  }
+}
+</style>
+<div class="container-fluid categories-container pb-3">
+<section id="photos">
+    {% for img in imgs %}
+    <div class="this-category">
+        <a href="#" class="text-light">
+            <img class="category-images" src="{{ img }}" style="opacity: 0.97">
+            <div class="bottom-left">Category {{ forloop.counter }}</div>
+        </a>
+    </div>
+    {% endfor %}
+</section>
+</div>
+<!-- <div class="container-fluid categories-box p-0">
+    <div class="clearfix trending">
+        <div class="float-left">
+            <span class='trending-font pt-0 mt-0' style="font-weight: 200; color: rgb(65, 65, 65)">Categories</span>
+        </div>
+    </div>
+    <div class="row m-0">
+        <div class="col-sm-12 col-md-6 text-center">
+            <div class="container-fluid p-0">
+                <div class="row p-0" style="background-color: transparent">
+                    <div class="category-icon col-3 col-sm-3 col-lg-3">
+                        <p>
+                            <i href="{% url 'shop' %}" class="fas fa-pencil-alt"></i>
+                            <p class="category-icon-text" style="margin-top: -1em;">Pencil<span style="color: transparent">_</span>Work</p>
+                        </p>
+
+                    </div>
+                    <div class="category-icon col-3 col-sm-3 col-lg-3">
+                        <p>
+                            <i class="fas fa-palette"></i>
+                            <p class="category-icon-text" style="margin-top: -1em;">Pastel<span style="color: transparent">_</span>Colour</p>
+                        </p>
+                    </div>
+                    <div class="category-icon col-3 col-sm-3 col-lg-3">
+                        <p>
+                            <i class="fas fa-fill-drip"></i>
+                            <p class="category-icon-text" style="margin-top: -1em;">Water<span style="color: transparent">_</span>Colour</p>
+                        </p>
+                    </div>
+                    <div class="category-icon col-3 col-sm-3 col-lg-3">
+                        <p>
+                            <i class="fas fa-eye-dropper"></i>
+                            <p class="category-icon-text" style="margin-top: -1em;">Acrylic<span style="color: transparent">_</span><span class="small-device-display-none">Colour</span></p>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 text-center">
+            <div class="container-fluid m-0 p-0">
+                <div class="row p-0" style="background-color: transparent">
+                    <div class="category-icon col-3 col-sm-3 col-lg-3">
+                        <p>
+                            <i class="fas fa-brush"></i>
+                            <p class="category-icon-text" style="margin-top: -1em;">Fabric<span style="color: transparent">_</span>Colour</p>
+                        </p>
+                    </div>
+                    <div class="category-icon col-3 col-sm-3 col-lg-3">
+                        <p>
+                            <i class="fas fa-tint"></i>
+                            <p class="category-icon-text" style="margin-top: -1em;">Oil<span style="color: transparent">_</span>Colour</p>
+                        </p>
+                    </div>
+                    <div class="category-icon col-3 col-sm-3 col-lg-3">
+                        <p>
+                            <i class="fas fa-paint-brush"></i>
+                            <p class="category-icon-text" style="margin-top: -1em;">Mix<span style="color: transparent">_</span>Media</p>
+                        </p>
+                    </div>
+                    <div class="category-icon col-3 col-sm-3 col-lg-3">
+                        <p>
+                            <i class="fas fa-external-link-alt"></i>
+                            <p class="category-icon-text" style="margin-top: -1em;">View<span style="color: transparent">_</span>All</p>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix trending">
+        <div class="float-left">
+            <span class='trending-font' style="font-weight: 200; color: rgb(65, 65, 65)">Latest Artwork</span>
+        </div>
+        <div class="float-right">
+            <a href="{% url 'shop' %}" class="btn btn-primary view-all-btn" style="border-radius: 20px;">View All</a>
+        </div>
+    </div>
+</div> -->
+<!-- <div class="container-fluid d-flex justify-content-center" style="margin-bottom: 0px;">
+    <div class="row wow fadeIn owl-carousel owl-loaded owl-drag" id="latest-artworks-slider">
+        <div class="owl-stage-outer">
+            <div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s;" id="latest-artwork">
+            </div>
+        </div>
+    </div>
+</div> -->
+<!-- <div id="hot-deal" class="section mt-2">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="hot-deal">
+                    <ul class="hot-deal-countdown m-0 p-0 mb-3">
+                        <li>
+                            <div>
+                                <p class="countdown-time">02</p>
+                                <span class="pt-0 mt-0" style="color: #797979">Days</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <p class="countdown-time">10</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <p class="countdown-time">34</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <p class="countdown-time">60</p>
+                            </div>
+                        </li>
+                    </ul>
+                    <p class="text-uppercase deal-text">hot deal this week</p>
+                    <p class="deal-text-p">New Collection Up to 50% OFF</p>
+                    <a class="btn btn-light cta-btn pl-5 pr-5" style='border-radius: 20px;color: #0080ff;' href="#">Shop now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+<!-- <div class="container-fluid">
+    <div class="clearfix trending">
+        <div class="float-left">
+            <span class='trending-font' style="font-weight: 200; color: rgb(65, 65, 65)">From Best Sellers</span>
+        </div>
+        <div class="float-right">
+            <a href="{% url 'shop' %}" class="btn btn-primary view-all-btn" style="border-radius: 20px;">View All</a>
+        </div>
+    </div>
+</div> -->
+<!-- <div class="container-fluid d-flex justify-content-center" style="margin-bottom: 0px;">
+    <div class="row wow fadeIn owl-carousel owl-loaded owl-drag" id="best-sellers-slider">
+        <div class="owl-stage-outer">
+            <div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s;" id="best-sellers">
+            </div>
+        </div>
+    </div>
+</div> -->
+<div class="post-project"
+    style="background-color: #2e2e2e;; height: 50vh; position: relative;">
+    <span style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);">
+        <p style="color: #fff; font-size: 35px;font-weight: 100;">
+            Can't find what you need?
+        </p>
+        <center><a class="post-project-btn btn-lg pt-1 pb-1" data-toggle="tooltip" data-placement="top" title="Coming soon" style="border-radius: 20px; font-size: 15px;">Post a project</a>
+        </center>
+    </span>
+</div>
+<script>
+// Category image grid
+function getRandomSize(min, max) {
+  return Math.round(Math.random() * (max - min) + min);
+}
+
+var allImages = "";
+
+for (var i = 0; i < 25; i++) {
+  var width = getRandomSize(200, 400);
+  var height =  getRandomSize(200, 400);
+  allImages += '<img src="https://placekitten.com/'+width+'/'+height+'" alt="pretty kitty">';
+}
+
+$('#photos').append(allImages);
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("div[href]").click(function () {
+            window.location = $(this).attr("href");
+        });
+    });
+    $(document).ready(function () {
+            $("i[href]").click(function () {
+                window.location = $(this).attr("href");
+            });
+        });
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script>
+(function($){
+    $(document).ready(function(){
+    
+    $("#trending-tab").load("{% url 'trending-products' %}",
+    function(responseTxt, statusTxt, xhr){
+        if(statusTxt == "success"){
+            $("#trending-products-slider").owlCarousel({
+                nav: true,
+                responsiveClass: true,
+                lazyLoad: true,
+                dots: false,
+                navText: [
+                    '<i class="fas fa-chevron-circle-left owl-nav-btn previous-btn" aria-hidden="true" style="color: #e1e1e1"></i>',
+                    '<i class="fas fa-chevron-circle-right owl-nav-btn next-btn" aria-hidden="true" style="color: #e1e1e1;"></i>'
+                ],
+                responsive: {
+                    0: {
+                        items: 2,
+                        dots: false,
+                        nav: true
+                    },
+                    450: {
+                        dots: false,
+                        items: 3,
+                        nav: true
+                    },
+                    900: {
+                        dots: false,
+                        items: 5,
+                        nav: true,
+                    }
+                }
+            });
+            $("div[href]").click(function () {
+                window.location = $(this).attr("href");
+            });
+            $("i[href]").click(function () {
+                window.location = $(this).attr("href");
+            });
+        }
+        if(statusTxt == "error"){
+            alert("Error while rendering trending artworks: " + xhr.status + ": " + xhr.statusText);
+            }
+        })
+    $("#latest-artwork").load("{% url 'latest-artwork' %}",
+    function(responseTxt, statusTxt, xhr){
+        if(statusTxt == "success"){
+            $("#latest-artworks-slider").owlCarousel({
+                nav: true,
+                responsiveClass: true,
+                lazyLoad: true,
+                dots: false,
+                navText: [
+                    '<i class="fas fa-chevron-circle-left owl-nav-btn previous-btn" aria-hidden="true" style="color: #e1e1e1"></i>',
+                    '<i class="fas fa-chevron-circle-right owl-nav-btn next-btn" aria-hidden="true" style="color: #e1e1e1;"></i>'
+                ],
+                responsive: {
+                    0: {
+                        items: 2,
+                        dots: false,
+                        nav: true
+                    },
+                    450: {
+                        dots: false,
+                        items: 3,
+                        nav: true
+                    },
+                    900: {
+                        dots: false,
+                        items: 5,
+                        nav: true,
+                    }
+                }
+            });
+            $("div[href]").click(function () {
+                window.location = $(this).attr("href");
+            });
+            $("i[href]").click(function () {
+                window.location = $(this).attr("href");
+            });
+        }
+        if(statusTxt == "error"){
+            alert("Error while rendering latest artworks: " + xhr.status + ": " + xhr.statusText);
+            }
+        })
+    $("#best-sellers").load("{% url 'best-sellers' %}",
+    function(responseTxt, statusTxt, xhr){
+        if(statusTxt == "success"){
+            $("#best-sellers-slider").owlCarousel({
+                nav: true,
+                responsiveClass: true,
+                lazyLoad: true,
+                dots: false,
+                navText: [
+                    '<i class="fas fa-chevron-circle-left owl-nav-btn previous-btn" aria-hidden="true" style="color: #e1e1e1"></i>',
+                    '<i class="fas fa-chevron-circle-right owl-nav-btn next-btn" aria-hidden="true" style="color: #e1e1e1;"></i>'
+                ],
+                responsive: {
+                    0: {
+                        items: 2,
+                        dots: false,
+                        nav: true
+                    },
+                    450: {
+                        dots: false,
+                        items: 3,
+                        nav: true
+                    },
+                    900: {
+                        dots: false,
+                        items: 5,
+                        nav: true,
+                    }
+                }
+            });
+            $("div[href]").click(function () {
+                window.location = $(this).attr("href");
+            });
+            $("i[href]").click(function () {
+                window.location = $(this).attr("href");
+            });
+        }
+        if(statusTxt == "error"){
+            alert("Error while rendering best sellers: " + xhr.status + ": " + xhr.statusText);
+            }
+        })
+    })
+})(jQuery);
+</script>
+{% endblock %}

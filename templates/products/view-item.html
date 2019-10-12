@@ -1,0 +1,119 @@
+{% extends 'home/base.html' %}
+{% load humanize %}
+{% load static %}
+{% block title %}
+| View Product
+{% endblock %}
+{% block content %}
+<div class="container-fluid" style="width: 100%">
+    <p class="mt-2 mb-3 h3 text-center" style="color: #9e9e9e; font-weight: 300;">- {{ item.title }} -</p>
+    <ul class="breadcrumb">
+        <li><a href="{% url 'view-all-product' %}">Products</a></li>
+        <li><a>{{ item.title }}</a></li>
+    </ul>
+    <div class="row">
+        <div class="col-md-6"><br>
+            <div class="slideshow-container">
+                {% for itemImage in itemImages %}
+                <div class="mySlides">
+                    <div class="numbertext">{{forloop.counter}}</div>
+                    <div
+                        style="background: url('{{itemImage.image.url}}') no-repeat; width: 100%; height: 400px; background-size: cover; background-position: center;">
+            
+                    </div>
+                </div>
+                {% endfor %}
+                <hr>
+                <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                <a class="next" onclick="plusSlides(1)">&#10095;</a>
+                <!-- <div class="caption-container">
+                                <p id="caption"></p>
+                            </div> -->
+                <div class="slideshow-row">
+                    {% for itemImage in itemImages %}
+                    <div class="column demo cursor"
+                        style="background: url('{{itemImage.image.url}}') no-repeat; width: 33.33%; height: 100px; background-size: cover; background-position: center;"
+                        onclick="currentSlide('{{forloop.counter}}')">
+            
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 p-5">
+            <div class="row p-1">
+                <span class="h6 w-100 p-2" style="background-color: rgb(250, 250, 250); color: rgb(71, 71, 71); font-weight: 350"><span style="font-weight: 500">Title:</span> {{item.title}}</span>
+            </div>
+            <div class="row p-1">
+                <span class="h6 w-100 p-2"
+                style="background-color: rgb(250, 250, 250); color: rgb(71, 71, 71); font-weight: 350"><span style="font-weight: 500">Your Price:</span>
+                {% if item.originalDiscount_price %}
+                <strike>Rs.{{item.originalPrice|intcomma}}</strike>
+                Rs.{{item.originalDiscount_price|intcomma}}
+                {% else %}
+                Rs.{{item.originalPrice|intcomma}}
+                {% endif %}
+                    </span>
+            </div>
+            <div class="row p-1">
+                <span class="h6 w-100 p-2"
+                    style="background-color: rgb(250, 250, 250); color: rgb(71, 71, 71); font-weight: 350"><span
+                        style="font-weight: 500">Display Price:</span>
+                    {% if item.discount_price %}
+                    <strike>Rs.{{item.price|intcomma}}</strike>
+                    Rs.{{item.discount_price|intcomma}}
+                    {% else %}
+                    Rs.{{item.price|intcomma}}
+                    {% endif %}
+                </span>
+            </div>
+            <div class="row p-1">
+                <span class="h6 w-100 p-2"
+                    style="background-color: rgb(250, 250, 250); color: rgb(71, 71, 71); font-weight: 350"><span style="font-weight: 500">Slug:</span> {{item.slug}}</span>
+            </div>
+            <div class="row p-1">
+                <span class="h6 w-100 p-2"
+                    style="background-color: rgb(250, 250, 250); color: rgb(71, 71, 71); font-weight: 350"><span style="font-weight: 500">Ratings:</span> {{item.ratings|floatformat:"2" }}</span>
+            </div>
+            <div class="row p-1">
+                <span class="h6 w-100 p-2"
+                    style="background-color: rgb(250, 250, 250); color: rgb(71, 71, 71); font-weight: 350"><span
+                        style="font-weight: 500">Stock:</span> {{item.stock}}</span>
+            </div>
+            <div class="row p-1">
+                <span class="h6 w-100 p-2"
+                    style="background-color: rgb(250, 250, 250); color: rgb(71, 71, 71); font-weight: 350"><span style="font-weight: 500">Created On:</span> {{item.created_on}}</span>
+            </div>
+            <div class="row p-1">
+                <span class="h6 w-100 p-2"
+                    style="background-color: rgb(250, 250, 250); color: rgb(71, 71, 71); font-weight: 350"><span style="font-weight: 500">Last Modified:</span> {{item.last_modified}}</span>
+            </div>
+        <center>
+            <div class="btn-group float-left">
+                <a href="{% url 'edit-product' item.slug %}" class="btn btn-primary pl-3 pr-3">Edit</a>
+            </div>
+            <div class="btn-group float-right">
+                <a class="btn btn-danger pl-3 pr-3 text-light" data-toggle='tooltip' data-placement="left" title='You can unpublish, instead of deleting.'>Delete</a>
+            </div>
+        </center>
+        </div>
+    </div>
+    <div class="container">
+    <div class="row mt-3">
+        <div class="col-sm-12">
+            <p class="mt-2 mb-3 h3 text-center" style="color: #9e9e9e; font-weight: 300;">- Short Description -
+            </p>
+            <p style="color: rgb(77, 77, 77);">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iure, dolorem. Ipsum delectus nulla distinctio provident?</p>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-sm-12">
+            <p class="mt-2 mb-3 h3 text-center" style="color: #9e9e9e; font-weight: 300;">- Full Description -
+            </p>
+            <p style="color: rgb(77, 77, 77);">{{ item.description|safe }}</p>
+        </div>
+    </div>
+    </div>
+</div>
+<hr>
+{% endblock %}

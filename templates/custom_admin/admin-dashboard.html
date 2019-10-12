@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Admin Dashboard</title>
+    <style>
+    ul li{
+        display: block;
+    }
+    </style>
+</head>
+<body>
+    <center>
+    <h2>Admin Dashboard</h2>
+    </center>
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} fade show alert-dismissible mb-1">
+        {{ message }}
+    </div>
+    {% endfor %}
+    <br>
+    {% else %}
+    <br>
+    {% endif %}
+    <ul style="line-height: 25px;">
+        <li><a href="/dj-admin">Django admin panel</a></li>
+        <li><a href="{% url 'refresh-charges' %}">Refresh Charges</a></li>
+        <li><a href="#">This month sale</a></li>
+        <li><a href="#">Total Sale</a></li>
+        <li><a href="#">whom to pay for sale</a></li>
+        <li><a href="#">whom to pay for affiliate</a></li>
+        <li><a href="#">New Registerations</a></li>
+    </ul>
+</body>
+</html>

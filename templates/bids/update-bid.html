@@ -1,0 +1,15 @@
+{% extends 'home/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+| Update Bid
+{% endblock %}
+
+{% block content %}
+<form method="POST" class="container">
+    {% csrf_token %}
+    {{ form.media }}
+    {{ form | crispy }}
+    <input type="submit" value="Update Bid" class="btn btn-success">
+</form>
+<hr>
+{% endblock %}

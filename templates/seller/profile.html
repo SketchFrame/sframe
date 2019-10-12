@@ -1,0 +1,588 @@
+{% extends 'home/base.html' %} {% load static %} {% load humanize %} {% block title %} | @{{user.username}}
+{% load thumbnail %}
+{% endblock %} {% block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/profile-style.css' %}">
+<style>
+    a:hover {
+        text-decoration: none;
+    }
+
+    ._1ff24g>img {
+        margin-bottom: 8px;
+    }
+
+    .large-device {
+        display: block;
+    }
+
+    .small-devices {
+        display: none
+    }
+
+    @media (max-width: 500px) {
+        .large-device {
+            display: none;
+        }
+
+        .small-devices {
+            display: block;
+        }
+    }
+</style>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container-fluid p-0" style="margin-top: -1.4em;">
+    <div class="user-profile">
+        <div style="background: url('{% if seller.cover_img %}{% thumbnail seller.cover_img '1050' as im %}{{ im.url }}{% endthumbnail %}{% else %} https://sketchframe.s3.ap-south-1.amazonaws.com/useful_images/img_lights.jpg{% endif %}') no-repeat;background-position: center;background-size: cover; height: 45vh">
+        </div>
+        <div class="container-fluid">
+            <style>
+                .gallery-img {
+                    width: auto;
+                    height: 240px;
+                    max-width: 100%;
+                    max-height: 250px;
+                    border: none;
+                    position: relative;
+                }
+                .img-options{
+                    position: absolute;
+                    right:5px;
+                    top:5px;
+                    background-color: #fff;
+                    color: #000;
+                    padding: 5px 15px 5px 15px;
+                    font-size: 19px;
+                    border-radius: 100%;
+                    border: none;
+                }
+                .img-options:hover{
+                    background-color: #eeebeb
+                }
+                @media(max-width: 991px) {
+                    .gallery-img {
+                        height: 180px;
+                    }
+                }
+                @media(max-width: 766px) {
+                    .img-options{
+                        right: 80%;
+                    }
+                }
+                @media(max-width: 500px) {
+                    .img-options{
+                        right: 88%;
+                    }
+                }
+            </style>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="profile-info-left">
+                        <div class="text-center">
+                            <center>
+                                <div class="rounded-circle"
+                                    style="background: url('{% if seller.profile_img %}{% thumbnail seller.profile_img '215' as im %}{{ im.url }}{% endthumbnail %}{% else %} https://sketchframe.s3.ap-south-1.amazonaws.com/useful_images/avatar1.png {% endif %}') no-repeat; background-size: cover; background-position: center;width:215px;height:215px;border: 2px double #e2e2e2">
+                                </div>
+                            </center>
+                            <h2>{{user.username}}</h2>
+                            <h6 style="margin-top:-2.5em; color: #1b2369">@{{seller.user.user.username}}</h6>
+                        </div>
+                        <div class="action-buttons" style="margin-bottom: -1.5em">
+                            <div class="row">
+                                <div class="col-sm-12" style="font-size: 20px;color: #ffb800">
+                                    <center>
+                                        {% if sellerExtended.rating >= 5 %}
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i> {% elif sellerExtended.rating >= 4.5 %}
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i> {% elif sellerExtended.rating >= 4 %}
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i> {% elif sellerExtended.rating >= 3.5 %}
+                                        <i class="fa fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                        <i class="far fa-star"></i> {% elif sellerExtended.rating >= 3 %}
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i> {% elif sellerExtended.rating >= 2.5 %}
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i> {% elif sellerExtended.rating >= 2 %}
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i> {% elif sellerExtended.rating >= 1.5 %}
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i> {% elif sellerExtended.rating >= 1 %}
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i> {% elif sellerExtended.rating >= 0.5 %}
+                                        <i class="fas fa-star-half-alt"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i> {% elif sellerExtended.rating >= 0 %}
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i> {% endif %}
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="section" style="margin-bottom: -2em">
+                            <h3>About Me</h3>
+                            <p>{{ sellerExtended.bio|safe|linebreaks }}</p>
+                            <a href="{% url 'edit-bio' %}" style="color: #007eff"><i class="fa fa-edit" style="font-size: 18px"></i> edit</a>
+                        </div>
+                        <div class="section" style="margin-bottom: -2em">
+                            <h3>Skills</h3> {% if sellerExtended.Pencil_work %}
+                            <p><span class="badge">Pencil Work</span></p>
+                            {% endif %} {% if sellerExtended.Pastel_colours %}
+                            <p><span class="badge">Pastel Colours</span></p>
+                            {% endif %} {% if sellerExtended.Water_colours %}
+                            <p><span class="badge">Water Colours</span></p>
+                            {% endif %} {% if sellerExtended.Acrylic_colours %}
+                            <p><span class="badge">Acrylic Colours</span></p>
+                            {% endif %} {% if sellerExtended.Fabric_colours %}
+                            <p><span class="badge">Fabric Colours</span></p>
+                            {% endif %} {% if sellerExtended.Oil_colours %}
+                            <p><span class="badge">Oil Colours</span></p>
+                            {% endif %} {% if sellerExtended.Mix_media %}
+                            <p><span class="badge">Mix Media</span></p>
+                            {% endif %}
+                            <a href="{% url 'edit-skills' %}" style="color: #007eff"><i class="fa fa-edit" style="font-size: 18px"></i> edit</a>
+                        </div>
+                        <div class="section">
+                            <h3>Social</h3>
+                            <ul class="list-unstyled list-social">
+                                {% if sellerExtended.instagram %}
+                                <li>
+                                    <a href="https://www.instagram.com/{{sellerExtended.instagram}}/" target="_blank"><i
+                                            class="fa fa-instagram"></i>
+                                        {{sellerExtended.instagram}}</a>
+                                </li>
+                                {% endif %} {% if sellerExtended.facebook %}
+                                <li><a href="https://www.facebook.com/{{sellerExtended.facebook}}/" target="_blank"><i
+                                            class="fa fa-facebook"></i>
+                                        {{sellerExtended.facebook}}</a></li>
+                                {% endif %} {% if sellerExtended.twitter %}
+                                <li><a href="https://www.twitter.com/{{sellerExtended.twitter}}/" target="_blank"><i
+                                            class="fa fa-twitter"></i> {{sellerExtended.twitter}}</a></li>
+                                {% endif %} {% if sellerExtended.linkedin %}
+                                <li><a href="https://www.linkedin.com/{{sellerExtended.linkedin}}/" target="_blank"><i
+                                            class="fa fa-linkedin"></i>
+                                        {{sellerExtended.linkedin}}</a></li>
+                                {% endif %} {% if sellerExtended.youtube %}
+                                <li><a href="https://www.youtube.com/{{sellerExtended.youtube}}/" target="_blank"><i
+                                            class="fa fa-youtube"></i> {{sellerExtended.youtube}}</a></li>
+                                {% endif %}
+                            </ul>
+                            <a href="{% url 'edit-social' %}" style="color: #007eff"><i class="fa fa-edit" style="font-size: 18px"></i> edit</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="profile-info-right">
+                        <ul class="nav nav-pills nav-pills-custom-minimal custom-minimal-bottom">
+                            <li class="active">
+                                <a href="#gallery" data-toggle="tab"> <span class="small-devices"><i
+                                            class="fas fa-image" width="21" height="21" style="color: #000"></i></span>
+                                    <span class="large-device">GALLERY</span></a>
+                            </li>
+                            <li><a href="#products" data-toggle="tab"><span class="small-devices"><i
+                                            class="fas fa-shopping-cart" width="21" height="21"
+                                            style="color:#000"></i></span><span class="large-device">PRODUCTS</span></a>
+                            </li>
+                            <li><a href="#reviews" data-toggle="tab"><span class="small-devices"><svg
+                                            xmlns="http://www.w3.org/2000/svg" width="21" height="21"
+                                            viewBox="0 0 24 24">
+                                            <path
+                                                d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 14v-2.47l6.88-6.88c.2-.2.51-.2.71 0l1.77 1.77c.2.2.2.51 0 .71L8.47 14H6zm12 0h-7.5l2-2H18v2z" />
+                                        </svg></span><span class="large-device">REVIEWS
+                                        ({{ sellerComment.count }})</span></a></li>
+                        </ul>
+                        <div class="tab-content" style="position: relative">
+                            <div class="tab-pane fade in active" id="gallery" style="position: relative">
+                                <div class="card-columns p-0">
+                                    {% for portfolioImage in portfolioImages %}
+                                    <div class="card gallery-img" style="background: url('{{ portfolioImage.image.url }}') no-repeat;background-position: center; background-size: cover; cursor: pointer;">
+                                        <div class="dropdown">
+                                            <button class="img-options" data-toggle="dropdown"><i class="fas fa-ellipsis-v" ></i></button>
+                                            <ul class="dropdown-menu"   role="menu" aria-labelledby="dropdownMenu">
+                                                <li><a onclick="openModal();currentSlide('{{forloop.counter}}')"><i class="fas fa-eye"></i> View</a></li>
+                                                <li>
+                                                    <a href="{% url 'portfolio-delete' portfolioImage.id %}">
+                                                        <i class="fas fa-trash"></i> Delete
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    {% empty %}
+                                        <div class="card p-5 mt-5 text-center" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
+                                            No portfolio images found. <a href="{% url 'portfolio-upload' %}" class="text-info" style="border-radius: 15px">Upload New</a>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <style>
+                                    /* Create four equal columns that floats next to eachother */
+
+                                    .column {
+                                        float: left;
+                                        width: 25%;
+                                    }
+
+                                    /* The Modal (background) */
+
+                                    .modal {
+                                        display: none;
+                                        position: fixed;
+                                        z-index: 11111111111;
+                                        padding-top: 100px;
+                                        left: 0;
+                                        top: 0;
+                                        width: 100%;
+                                        height: 100%;
+                                        overflow: auto;
+                                        background-color: rgba(0, 0, 0, 0.493);
+                                    }
+
+                                    /* Modal Content */
+
+                                    .modal-content {
+                                        position: relative;
+                                        background-color: #fefefe;
+                                        margin: auto;
+                                        padding: 0;
+                                        width: 90%;
+                                        max-width: 1200px;
+                                    }
+
+                                    /* The Close Button */
+
+                                    .close {
+                                        color: rgb(0, 0, 0);
+                                        position: absolute;
+                                        opacity: 1;
+                                        top: 10px;
+                                        background-color: #fff;
+                                        border-radius: 100%;
+                                        padding: 10px;
+                                        padding-top: 5px;
+                                        padding-bottom: 5px;
+                                        right: 25px;
+                                        font-size: 35px;
+                                        font-weight: bold;
+                                    }
+
+                                    .close:hover,
+                                    .close:focus {
+                                        color: rgb(0, 0, 0);
+                                        text-decoration: none;
+                                        cursor: pointer;
+                                    }
+
+                                    /* Hide the slides by default */
+
+                                    .mySlides {
+                                        display: none;
+                                    }
+
+                                    /* Next & previous buttons */
+
+                                    .prev,
+                                    .next {
+                                        cursor: pointer;
+                                        position: absolute;
+                                        top: 50%;
+                                        width: auto;
+                                        padding: 16px;
+                                        margin-top: -50px;
+                                        color: white;
+                                        font-weight: bold;
+                                        font-size: 20px;
+                                        transition: 0.6s ease;
+                                        border-radius: 0 3px 3px 0;
+                                        user-select: none;
+                                        -webkit-user-select: none;
+                                    }
+
+                                    /* Position the "next button" to the right */
+
+                                    .next {
+                                        right: 0;
+                                        border-radius: 3px 0 0 3px;
+                                    }
+
+                                    /* On hover, add a black background color with a little bit see-through */
+
+                                    .prev:hover,
+                                    .next:hover {
+                                        background-color: rgba(0, 0, 0, 0.8);
+                                    }
+
+                                    /* Number text (1/3 etc) */
+
+                                    .numbertext {
+                                        color: #f2f2f2;
+                                        font-size: 12px;
+                                        padding: 8px 12px;
+                                        position: absolute;
+                                        top: 0;
+                                    }
+
+                                    /* Caption text */
+
+                                    .caption-container {
+                                        text-align: center;
+                                        background-color: black;
+                                        padding: 2px 16px;
+                                        color: white;
+                                    }
+
+                                    img.demo {
+                                        opacity: 0.6;
+                                    }
+
+                                    .active,
+                                    .demo:hover {
+                                        opacity: 1;
+                                    }
+
+                                    img.hover-shadow {
+                                        transition: 0.3s;
+                                    }
+
+                                    .hover-shadow:hover {
+                                        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                                    }
+
+                                    @media(max-width: 600px) {
+                                        .mySlides {
+                                            margin-top: 50px;
+                                        }
+
+                                        .prev,
+                                        .next {
+                                            margin-top: 10px;
+                                            opacity: 0.3;
+                                        }
+
+                                        .prev:hover,
+                                        .next:hover {
+                                            opacity: 0.5
+                                        }
+                                    }
+
+                                    @media(max-width: 400px) {
+                                        .mySlides {
+                                            margin-top: 90px;
+                                        }
+
+                                        .prev,
+                                        .next {
+                                            margin-top: 32px;
+                                            opacity: 0.3;
+                                        }
+
+                                        .prev:hover,
+                                        .next:hover {
+                                            opacity: 0.5
+                                        }
+                                    }
+                                </style>
+                                <!-- The Modal/Lightbox -->
+                                <div id="myModal" class="modal">
+                                    <span class="close cursor" onclick="closeModal()">&times;</span>
+                                    <div class="modal-content"
+                                        style="background-color: transparent;box-shadow:none;border:none">
+                                        {% for portfolioImage in portfolioImages %}
+                                        <div class="mySlides">
+                                            <center>
+                                                <img class="responsive" src="{{ portfolioImage.image.url }}"
+                                                    style="width: auto; max-width: 100%; max-height: 82vh;">
+                                            </center>
+                                        </div>
+                                        {% endfor %}
+                                        <!-- Next/previous controls -->
+                                        <a class="prev" onclick="plusSlides(-1)"
+                                            style="background-color: #f2f2f2;color:#101010;border-radius:100%;padding: 5px 10px">&#10094;</a>
+                                        <a class="next" onclick="plusSlides(1)"
+                                            style="background-color: #f2f2f2;color:#101010;border-radius:100%; padding: 5px 10px">&#10095;</a>
+                                    </div>
+                                </div>
+                                {% if portfolioImages.count > 0 %}
+                                <div style="position: absolute;top: 105%;left: 50%;transform: translate(-50%, -50%)">
+                                    <a href="{% url 'portfolio-upload' %}" class="btn btn-warning btn-lg" style="border-radius: 15px">Upload New</a>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="tab-pane fade" id="products">
+                                {% for product in products %}
+                                <div class="media user-follower">
+                                    <img src="{{product.image.image.url}}" alt="User Avatar"
+                                        class="media-object pull-left">
+                                    <div class="media-body">
+                                        <a href="{% url 'product' product.item.slug %}">{{ product.item.title }}<br>
+                                            <span class="text-muted username">{{ product.item.price }}
+                                            </span>
+                                        </a>
+                                        <a href="{% url 'view-product' product.item.slug %}"
+                                            class="btn btn-sm btn-custom pull-right">
+                                            <i class="fa fa-checkmark-round"></i>
+                                            <span>View</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                {% empty %}
+                                <div class="card p-5">
+                                    <p class="text-center">No Products added. <a href="#" class="text-info">Add Products</a></p>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class=" tab-pane fade" id="reviews">
+                                {% for comment in sellerComment %}
+                                <div class="media activity-item">
+                                    <a href="#" class="pull-left">
+                                        <img src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="Avatar"
+                                            class="media-object avatar">
+                                    </a>
+                                    <div class="media-body">
+                                        <p class="activity-title">
+                                            {% if comment.user.user.username == user.username and comment.user.is_seller %}
+                                            <a
+                                                href="{% url 'seller-profile' %}">{{ comment.user.user.username }}</a>
+                                            {% elif comment.user.is_seller %}
+                                                <a
+                                                href="{% url 'view-seller-profile' comment.user.user.username %}">{{ comment.user.user.username }}</a>
+                                            {% else %}
+                                            <a>{{comment.user.user.username}}</a>
+                                            {% endif %} &nbsp;
+                                            <span style="font-size: 12px;color: #ffb800">
+                                                {% if comment.rating >= 5 %}
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                {% elif comment.rating >= 4.5 %}
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star-half-alt"></i>
+                                                {% elif comment.rating >= 4 %}
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                {% elif comment.rating >= 3.5 %}
+                                                <i class="fa fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star-half-alt"></i>
+                                                <i class="far fa-star"></i>
+                                                {% elif comment.rating >= 3 %}
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                {% elif comment.rating >= 2.5 %}
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star-half-alt"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                {% elif comment.rating >= 2 %}
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                {% elif comment.rating >= 1.5 %}
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star-half-alt"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                {% elif comment.rating >= 1 %}
+                                                <i class="fas fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                {% elif comment.rating >= 0.5 %}
+                                                <i class="fas fa-star-half-alt"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                {% elif comment.rating >= 0 %}
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i> {% endif %}
+                                            </span>
+                                        </p>
+                                        <small class="text-muted">{{comment.created_date}}</small>
+                                        <div class="activity-attachment">
+                                            <div class="well well-sm">
+                                                {{ comment.text | safe }}
+                                                <br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% empty %}
+                                <div class="card p-5">
+                                    <p class="text-center">No one has reviewed you yet.</p>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    // Open the Modal
+    function openModal() {
+        document.getElementById("myModal").style.display = "block";
+    }
+
+    // Close the Modal
+    function closeModal() {
+        document.getElementById("myModal").style.display = "none";
+    }
+</script>
+{% endblock %}

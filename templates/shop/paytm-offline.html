@@ -1,0 +1,113 @@
+{% extends 'home/base.html' %}
+{% block head_title %}
+| Order Status
+{% endblock %}
+{% block content %}
+<style>
+  .nav-flex-icons {
+    display: none;
+  }
+
+  .navbar-brand {
+    margin-left: -220px;
+  }
+</style>
+<!--Main layout-->
+<main class="mt-2">
+  <div class="container wow fadeIn">
+
+
+    <!--Grid row-->
+    <div class="row">
+
+      <!-- {{ response }} -->
+      <!-- {{ response.ORDERID }} -->
+      <div class="container" style="color: #f2f2f2;">
+        <!-- <center><h3 class="border-bottom mb-1 pt-3 pb-2" style="color: gray;">Order Status</h3></center> -->
+        <center>
+          {% if order %}
+          <br>
+
+          <h3 style="color: #686868 ;"> - Order Summary - </h3>
+          <br>
+          <h4 style="color: rgb(29, 180, 29); font-weight: bold"><u>ORDER SUCCESS</u></h4>
+          <br>
+        </center>
+        <div class="container">
+          <small style="color: #3a3838 ;"><strong>Note:</strong> An email with all these details, has also been sent to
+            you.</small>
+          <br><br>
+          <table class="table">
+            <tbody>
+              <tr>
+                <td>Order ID</td>
+                <td style="font-weight: bold;">SFRAME{{ order.pk }}</td>
+              </tr>
+              <tr>
+                <td>Amount</td>
+                <td style="font-weight: bold;">Rs.{{ order.amount }}</td>
+              </tr>
+              <tr>
+                <td>Userame</td>
+                <td style="font-weight: bold;">{{ order.user.username }}</td>
+              </tr>
+              <tr>
+                <td>Name</td>
+                <td style="font-weight: bold;">{{ order.billing_address.fullname }}</td>
+              </tr>
+              <tr>
+                <td>Phone</td>
+                <td style="font-weight: bold;">{{ order.billing_address.phone }}</td>
+              </tr>
+              <tr>
+                <td>Email</td>
+                <td style="font-weight: bold;">{{ order.billing_address.email }}</td>
+              </tr>
+              <tr>
+                <td>Pincode</td>
+                <td style="font-weight: bold;">{{ order.billing_address.pincode }}</td>
+              </tr>
+              <tr>
+                <td>Street address 1</td>
+                <td style="font-weight: bold;">{{ order.billing_address.street_address }}</td>
+              </tr>
+              <tr>
+                <td>Street address 2</td>
+                <td style="font-weight: bold;">{{ order.billing_address.street_address2 }}</td>
+              </tr>
+              <tr>
+                <td>Landmark</td>
+                <td style="font-weight: bold;">{{ order.billing_address.landmark }}</td>
+              </tr>
+              <tr>
+                <td>City</td>
+                <td style="font-weight: bold;">{{ order.billing_address.city }}</td>
+              </tr>
+              <tr>
+                <td>State</td>
+                <td style="font-weight: bold;">{{ order.billing_address.state }}</td>
+              </tr>
+
+            </tbody>
+          </table>
+          <a href="/" class="btn btn-primary btn-md pl-5 pr-5" style="border-radius: 20px;">Back</a>
+          {% else %}
+          <br>
+          <h3 style="color: rgb(255, 123, 0)">ORDER FAILURE</h3>
+          </center>
+          <p style="color: #3a3838;">Your order was not successfull.</p>
+          <a href="/" class="btn btn-danger btn-lg">Back to home</a>
+          {% endif %}
+
+        </div>
+
+      </div>
+      <!--Grid row-->
+      <script>
+        sleep(5);
+        window.location.replace("/");
+      </script>
+    </div>
+</main>
+<!--Main layout-->
+{% endblock %}

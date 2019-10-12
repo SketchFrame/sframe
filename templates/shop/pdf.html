@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>GrocerJar.in | Invoice</title>
+    <style type="text/css">
+        body {
+            background-color: #fff;
+        }
+
+        @page {
+            size: A4;
+            margin: 1cm 3cm;
+        }
+
+        .table {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 5px;
+            background-color: transparent;
+        }
+
+        .table th,
+        .table td {
+            padding: 5px;
+            vertical-align: top;
+            border-top: 1px solid rgb(53, 53, 53);
+            text-align: center;
+        }
+
+        .table thead th {
+            vertical-align: bottom;
+            border-bottom: 2px solid rgb(47, 47, 47);
+        }
+
+        .table tbody+tbody {
+            border-top: 2px solid rgb(49, 49, 49);
+        }
+
+        .table .table {
+            background-color: transparent;
+        }
+
+        .list-group {
+            display: block;
+            width: 100%;
+            list-style: none;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .list-group p {
+            width: 100%;
+            height: 20px;
+            line-height: 20px;
+            list-style: none;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h3><img src="https://grocerjar.s3.ap-south-1.amazonaws.com/item_images/SF-icon-sm.png" alt="" height="70px"
+                        width="auto">
+                    <center>SketchFrame.com invoice | {{ billing_date }}</center>
+                </h3>
+            </div>
+
+            <table class="table" style="background-color: rgb(243, 243, 243)">
+                <tbody>
+                    <tr>
+                        <td>Order Id</td>
+                        <td><b>SFRAME{{ orderId }}</b></td>
+                    </tr>
+                    <tr>
+                        <td>Username </td>
+                        <td><b>{{ user }}</b></td>
+                    </tr>
+                    <tr>
+                        <td>Total Amount </td>
+                        <td><b>Rs.{{ amount }}</b></td>
+                    </tr>
+                    {% for item in items.all %}
+                    <tr>
+                        <td>{{ forloop.counter }}. {{ item.item.title }} x {{ item.quantity }}
+                        </td>
+                        <td><b>Rs.
+                                {% if item.item.discount_price %}
+                                {{ item.item.discount_price }} per item
+                                {% else %}
+                                {{ item.item.price }} per item
+                                {% endif %}
+                            </b></td>
+                    </tr>
+                    {% endfor %}
+                    {% if coupon %}
+                    <tr>
+                        <td>Coupon </td>
+                        <td><b>"{{ coupon }}" ( -Rs.{{ coupon_amount }} )</b></td>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                        <td>Phone </td>
+                        <td><b>{{ phone }}</b></td>
+                    </tr>
+                    <tr>
+                        <td>E-mail </td>
+                        <td><b>{{ email }}</b></td>
+                    </tr>
+                    <tr>
+                        <td>Full name</td>
+                        <td><b>{{ fullname }}</b></td>
+                    </tr>
+                    <tr>
+                        <td>Pin / Zip code </td>
+                        <td><b>{{ pincode }}</b></td>
+                    </tr>
+
+                    <tr>
+                        <td>Address 1 </td>
+                        <td><b>{{ street_address }}</b></td>
+                    </tr>
+                    <tr>
+                        <td>Address 2 </td>
+                        <td><b>{{ street_address2 }}</b></td>
+                    </tr>
+                    <tr>
+                        <td>Landmark </td>
+                        <td><b>{{ landmark }}</b></td>
+                    </tr>
+                    <tr>
+                        <td>State </td>
+                        <td><b>{{ state }}</b></td>
+                    </tr>
+                    <tr>
+                        <td>City </td>
+                        <td><b>{{ city }}</b></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+
+</html>

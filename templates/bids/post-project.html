@@ -1,0 +1,179 @@
+{% extends 'home/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}| Post Project{% endblock %}
+
+{% block description %}What you need? Just tell us, or upload a picture. we'll done it for you. | SketchFrame{% endblock %}
+
+{% block keywords %}post project, i need a sketch, make a sketch, make a painting, on demand{% endblock %}
+
+
+{% block content %}
+<div class="w-75 mw-100 mx-auto">
+    <p class="mt-2 mb-3 h2" style="color: #9e9e9e; font-weight: 300;">
+        Tell Us about your requirement
+    </p>
+    <p class="h5" style="color: #9e9e9e; font-weight: 300;">Contact to a wide variety of artists all over the world within few minutes, view their profiles, ratings, portfolios. Once satisfied by the artists quality pay them and get your requirement.</p>
+    <form method="POST">
+        {% csrf_token %}
+        
+        {{ form.title|as_crispy_field }}
+        <div class="text-danger small" style="display: none;margin-top:-1em" id="errorLength"><b></b>Please enter at least 15 characters.</b></div>
+        <div class="text-danger small" style="display: none;margin-top:-0.7em" id="errorEmpty"><b></b>Please enter the project title.</b></div>
+        
+        {{ form.description|as_crispy_field }}
+        <div class="text-danger small" style="display: none;margin-top:-1em" id="errorLength-desc"><b></b>Please enter at least 30 characters.</b></div>
+        <div class="text-danger small" style="display: none;margin-top:-0.4em" id="errorEmpty-desc"><b></b>Please enter the project desription.</b></div>
+
+        <button type="button" class="btn btn-secondary pl-4 pr-4" id="next" disabled>Next</button>
+        <div id="next-step">
+            {{ form.category|as_crispy_field }}
+            {{ form.budget|as_crispy_field }}
+            <div class="clearfix">
+                <div class="float-left">
+                    <label for="id_sampleImage" class="custom-file-upload" id="label-0">Upload Sample Image</label>
+                    {{ form.sampleImage }}
+                </div>
+                <div class="float-right">
+                    <input type="submit" value="Post Project" class="btn btn-secondary float-right" id="submit" disabled>
+                </div>
+            </div>
+        </div>
+    </form>    
+</div>
+<hr>
+<style>
+#next-step{
+    display: none;
+}
+#next{
+    cursor: not-allowed;
+}
+.errorTitle, .errorDescription, .errorDescription:focus, .errorTitle:focus{
+    border: 1px double #dc3545;
+    color: #dc3545
+}
+
+.errorTitle::placeholder, .errorDescription::placeholder{
+    color: #dc3545;
+    font-weight: 400;
+}
+.errorTitle:-ms-input-placeholder, .errorDescription:-ms-input-placeholder{
+    color: #dc3545;
+    font-weight: 400;
+}
+.errorTitle::-ms-input-placeholder, .errorDescription::-ms-input-placeholder{
+    color: #dc3545;
+    font-weight: 400;
+}
+.upload-file {
+    display: none;
+}
+
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+</style>
+<script src="{% static 'js/Jquery_V3.4.1.js' %}"></script>
+<script>
+$("#project-title").focusout(function(){
+    if($(this).val() == ''){
+        $("#errorEmpty").show()
+        $(this).addClass('errorTitle')
+        return false;
+    }else{
+        $("#errorEmpty").hide()
+        $(this).removeClass('errorTitle')
+    }
+})
+$("#project-description").focusout(function(){
+    if($(this).val() == ''){
+        $("#errorEmpty-desc").show()
+        $(this).addClass('errorTitle')
+        return false;
+    }else{
+        $("#errorEmpty-desc").hide()
+        $(this).removeClass('errorTitle')
+    }
+})
+let check1 = false, check2 = false
+$("#project-title").on('keyup', function(){
+    var titleLength = $(this).val().length
+    if(titleLength < 15){
+        $("#errorLength").show()
+        $(this).addClass('errorTitle')
+        check1 = false
+    }else{
+        $("#errorLength").hide()
+        $(this).removeClass('errorTitle')
+        check1 = true        
+    }
+})
+$("#project-description").on('keyup', function(){
+    var descLength = $(this).val().length
+    if(descLength < 30){
+        $("#errorLength-desc").show()
+        $(this).addClass('errorDescription')
+        check2 = false
+    }else{
+        $("#errorLength-desc").hide()
+        $(this).removeClass('errorDescription')
+        check2 = true
+    }
+})
+$("#project-description, #project-title").on('keyup', function(){
+    if((check1 === true) && (check2 === true)){
+        nextStep()
+    }else{
+        stop()
+    }
+})
+function nextStep(){
+    var nextBtn = $("#next")
+    nextBtn.css('cursor', 'pointer');
+    nextBtn.attr('disabled', false);
+    nextBtn.removeClass('btn-secondary')
+    nextBtn.addClass('btn-success')
+}
+function stop(){
+    var nextBtn = $("#next")
+    nextBtn.css('cursor', 'not-allowed');
+    nextBtn.attr('disabled', true);
+    nextBtn.removeClass('btn-success')
+    nextBtn.addClass('btn-secondary')
+    $("#next-step").hide()
+    nextBtn.show()
+}
+$('#next').on('click', function(){
+    $("#next-step").show()
+    $(this).hide()
+})
+$('#id_budget, #id_category').on('change', function(){
+    if($(this).val() == ''){
+        $(this).addClass('errorTitle')
+        var submit = $("#submit")
+        submit.removeClass('btn-success')
+        submit.addClass('btn-secondary')
+        submit.attr('disabled', true)
+    }else{
+        $(this).removeClass('errorTitle')
+        var submit = $("#submit")
+        submit.removeClass('btn-secondary')
+        submit.addClass('btn-success')
+        submit.attr('disabled', false)
+    }
+})
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input[name="sampleImage"]').change(function (e) {
+            var fileName0 = e.target.files[0].name;
+            $('#label-0').html(fileName0)
+        });
+    });
+</script>
+{% endblock %}

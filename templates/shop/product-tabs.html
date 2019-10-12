@@ -1,0 +1,104 @@
+{% load thumbnail %}
+{% for product in products %}
+{% if product.item.published and product.item.approved %}
+<div href="{% url 'product' product.item.slug %}"
+    class="search-card col-6 col-sm-4 col-md-3 p-0 m-0 mb-2 {% if product.item.category %}{{ product.item.category }}{% endif %} owl-item" style="min-width: 250px">
+    <div class="search-card-img"
+        style="background: url('{% thumbnail product.image.image '180' as im %}{{ im.url }}{% endthumbnail %}') no-repeat; background-position: center; background-size: cover">
+        <a href="{{ product.item.get_add_to_cart_url }}"><i class="fas fa-cart-plus float-right m-2"></i></a>
+
+    </div>
+    <div class="search-card-content pl-2 pr-2">
+        <p class="mb-0 pb-1 pt-2">
+            <span class="title-tag">{{ product.item.title }}</span><br>
+            <span class="badge badge-primary" style="font-size: 12px">{{ product.item.category }}</span><br>
+            <span class="small" style="font-size: 12px ; color: #ffb800;">
+                {% if product.item.ratings >= 5 %}
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                {% elif product.item.ratings >= 4.5 %}
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+                {% elif product.item.ratings >= 4 %}
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="far fa-star"></i>
+                {% elif product.item.ratings >= 3.5 %}
+                <i class="fa fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+                <i class="far fa-star"></i>
+                {% elif product.item.ratings >= 3 %}
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                {% elif product.item.ratings >= 2.5 %}
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                {% elif product.item.ratings >= 2 %}
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                {% elif product.item.ratings >= 1.5 %}
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                {% elif product.item.ratings >= 1 %}
+                <i class="fas fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                {% elif product.item.ratings >= 0.5 %}
+                <i class="fas fa-star-half-alt"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                {% elif product.item.ratings >= 0 %}
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                {% else %}
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                {% endif %}
+            </span><br>
+            {% if product.item.discount_price %}
+            <span class="text-muted price-tag"><span><b>Rs.{{ product.item.discount_price }}</b></span>
+                <strike>Rs.{{ product.item.price }}</strike></span><br>
+            {% else %}
+            <span class="text-muted price-tag"><span><b>Rs.{{ product.item.price }}</b></span><br />
+            {% endif %}
+        </p>
+    </div>
+</div>
+{% endif %}
+{% empty %}
+<p class="mt-2 mb-5 mt-5 text-center ml-5 mr-5" style="color: #9e9e9e; font-weight: 300;">- We don't have any products right
+    now. -
+</p>
+{% endfor %}

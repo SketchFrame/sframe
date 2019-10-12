@@ -1,0 +1,32 @@
+{% extends 'home/base.html' %}
+{% load humanize %}
+{% block title %}
+| view bids on your project
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% for bid in bids|dictsortreversed:"bided_on" %}
+    <div class="card">
+        <div class="card-header">
+            <kbd>{{ forloop.counter }}</kbd> {{ bid.project.title }} <mark
+                class="small">{{ bid.bided_on | naturaltime }}</mark>
+        </div>
+        <div class="card-body">
+            {{ bid.proposal | safe }}
+            <strong>Amount: {{ bid.amount|intcomma }}</strong><br>
+            <strong>Delivery In: {{ bid.delivery_in }} days</strong>
+        </div>
+        <div class="card-footer">
+            {% if bid.project.is_assigned == True %}
+            <a class="btn btn-secondary active"> This project is assigned to {{ bid.project.assignedTo }} </a>
+            {% else %}
+            <a href="{% url 'assign-project' bid.project.slug bid.user.user.user.username %}"
+                class="btn btn-secondary">Assign to
+                {{ bid.user.user.user.username }}</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

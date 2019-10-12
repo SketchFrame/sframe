@@ -1,0 +1,20 @@
+{% extends "home/base.html" %}
+{% block content %}
+<div class="container">
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mt-4 h3 pt-4 pb-4">Delete The Project?</legend>
+            <h5>Are you sure to delete your project with name <strong>{{ object.title }}</strong> ?</h5>
+            <p class="text-warning">
+                <strong>Note:</strong> This action can't be reversed once you delete the Project all the
+                information regarding the project and the bids associated with it will be deleted!
+            </p>
+            <div class="form-group h6">
+                <input type="submit" class="btn btn-outline-danger btn-sm" value="Yes, Delete">
+                <a href="{% url 'home' %}" class="btn btn-info btn-sm">Cancel</a>
+            </div>
+        </fieldset>
+    </form>
+</div>
+{% endblock %}

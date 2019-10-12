@@ -1,0 +1,220 @@
+{% load static %}
+{% load thumbnail %}
+<div class="modal-header p-1">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="slideshow-container">
+            {% for itemImage in images %}
+            <div class="mySlides">
+                <div class="numbertext">{{forloop.counter}}</div>
+                <div style="background: url('{% thumbnail itemImage.image '400' as im %}{{ im.url }}{% endthumbnail %}') no-repeat; width: 100%; height: 400px; background-size: cover; background-position: center; border-radius: 3px">
+                </div>
+            </div>
+            {% endfor %}
+            <hr>
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+            <!-- <div class="caption-container">
+                <p id="caption"></p>
+            </div> -->
+            <div class="slideshow-row">
+                {% for itemImage in images %}
+                <div class="column demo cursor"
+                    style="background: url('{% thumbnail itemImage.image '180' as im %}{{ im.url }}{% endthumbnail %}') no-repeat; width: 33.33%; height: 100px; background-size: cover; background-position: center;"
+                    onclick="currentSlide('{{forloop.counter}}')">
+
+                </div>
+                {% endfor %}
+            </div>
+        </div>                  
+    </div>
+    <div class="col-md-6 mt-4">
+        <p class="mt-2 mb-4 h2" style="line-height: 0; color: hsl(0, 0%, 62%); font-weight: 300;"> {{item.title}} - {{ item.width }}in X {{ item.height }}in </p>
+        By <a href="{% url 'view-seller-profile' item.seller.user.user.username %}" class="text-muted mt-2 mb-2">{{ item.seller.user.user.username }}</a>
+        <p class="h5 text-primary mb-2"><i class="fas fa-rupee-sign"></i> {{ item.price }}</p>
+        <span class="small" style="font-size: 12px ; color: #ffb800;">
+            {% if item.ratings >= 5 %}
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            {% elif item.ratings >= 4.5 %}
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+            {% elif item.ratings >= 4 %}
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="far fa-star"></i>
+            {% elif item.ratings >= 3.5 %}
+            <i class="fa fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+            <i class="far fa-star"></i>
+            {% elif item.ratings >= 3 %}
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+            {% elif item.ratings >= 2.5 %}
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+            {% elif item.ratings >= 2 %}
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+            {% elif item.ratings >= 1.5 %}
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+            {% elif item.ratings >= 1 %}
+            <i class="fas fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+            {% elif item.ratings >= 0.5 %}
+            <i class="fas fa-star-half-alt"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+            {% elif item.ratings >= 0 %}
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+            {% else %}
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+            {% endif %}
+        </span>
+        <p>{{ item.description | safe }}</p>
+        <div class="btn-group-vertical" style="width: 100%">
+            <a href="{{ item.get_add_to_cart_url }}" class="btn btn-primary"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+        </div>
+        <style>
+        .quick-view-icon{
+            text-align: center;
+            padding: 10px 15px;
+            margin: 3px;
+            border: 1px solid #007bff;
+            border-radius: 100%;
+            background-color: #007bff;
+            color: #fff;
+        }
+        .quick-view-icon:hover{
+            transition: 0.2s ease-in;
+            background-color: #fff;
+            color: #007bff;
+        }
+        .quick-view-icon > i{
+            font-size: 19px;
+        }
+        </style>
+        <div class="d-flex justify-content-center mt-3 mb-3">
+                <a href="#" class="quick-view-icon"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="quick-view-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="quick-view-icon"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="quick-view-icon"><i class="fab fa-google-plus"></i></a>
+                <a href="#" class="quick-view-icon"><i class="fab fa-linkedin"></i></a>
+        </div>
+    </div>
+    <div class="w-100 mw-100 border-top mt-2">
+        <p class="text-center pt-3 pb-0" style="line-height: 0; color: hsl(0, 0%, 62%); font-weight: 300;;font-size:2.25rem">- Reviews -</p>
+        <div class="container">
+            {% for comment in comments %}
+            <!-- Comments -->
+            <div class="row pt-1 pl-3 pr-3 pb-1">
+                <div class="media comment-box" style="width: 100%">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <p style="font-size: 17px;" class="media-heading"> 
+                            {% if comment.user.is_seller %}
+                            <a href="{% url 'view-seller-profile' comment.user.user.username  %}" class="text-primary">{{ comment.user.user.username }}</a>
+                            {% else %}
+                            <a class="text-body">{{ comment.user.user.username }}</a>
+                            {% endif %}
+                            | <span
+                                style="font-size: 12px;">{{comment.created_date.day}}-{{comment.created_date.month}}-{{comment.created_date.year}}</span><span
+                                class="ml-2 pr-1 pl-1 float-right"
+                                style="background-color: #e22b37; border-radius: 3px; color: #fff;"><i
+                                    style="color: #ffff00"
+                                    class="fas fa-star mr-1 pt-1 pb-1"></i><b>{{ comment.rating }}.0</b></span>
+                        </p>
+                        <p>{{ comment.text }}
+                            <br> 
+                        {% if comment.user.user == user %}
+                        <a href="{% url 'edit-comment-product' comment.id %}" class="small text-primary">Edit</a>
+                        {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<script>
+// Slide show
+
+var slideIndex = 1;
+showSlides(slideIndex);
+
+// Next/previous controls
+function plusSlides(n) {
+    showSlides(slideIndex += n);
+}
+
+// Thumbnail image controls
+function currentSlide(n) {
+    n = parseInt(n)
+    showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+    var i;
+    var slides = document.getElementsByClassName("mySlides");
+    var dots = document.getElementsByClassName("demo");
+    var captionText = document.getElementById("caption");
+    if (n > slides.length) {
+        slideIndex = 1
+    }
+    if (n < 1) {
+        slideIndex = slides.length
+    }
+    for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+    }
+    for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[slideIndex - 1].style.display = "block";
+    dots[slideIndex - 1].className += " active";
+    captionText.innerHTML = dots[slideIndex - 1].alt;
+}
+</script>

@@ -1,0 +1,183 @@
+{% extends 'home/base.html' %}
+{% block title %}
+| Search Products
+{% endblock %}
+
+{% block content %}
+<style>
+.search-card{
+    cursor: pointer;
+    border: 10px solid transparent;
+    margin: 5px;
+}
+.search-card-img{
+    transition: .3s ease;
+    opacity: 1;
+    height: 250px;
+    border-radius: 5px 5px 0px 0px;
+}
+.search-card-img:hover{
+    transition: .3s ease;
+    opacity: 0.8;
+}
+.search-card-content{
+    background-color: rgb(245, 245, 245);
+
+}
+.search-card-content > p{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.title-tag{
+    font-weight: 600;
+    color: rgb(66, 66, 66)
+}
+.price-tag, .description-tag{
+    font-size: 15px;
+}
+.fa-cart-plus{
+    color: rgba(255, 255, 255, 0.781);
+    font-size: 30px;
+}
+.fa-cart-plus:hover{
+    color: rgba(255, 255, 255, 1);
+}
+@media(max-width: 991px){
+    .search-card{
+        border: 3px solid transparent;
+    }
+    .search-card-img{
+        height: 200px; 
+    }
+    .price-tag, .description-tag{
+        font-size: 13px;
+    }
+}
+@media(max-width: 450px){
+    .container-fluid{
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    .search-card-img{
+        height: 180px; 
+    }
+    .price-tag, .description-tag{
+        font-size: 13px;
+    }
+}
+
+</style>
+
+<div class="container-fluid"> 
+    <div class="row p-0 m-0">
+        {% for product in products %}
+        <div href="{% url 'product' product.item.slug %}" class="search-card col-6 col-sm-4 col-md-3 p-0 m-0 mb-2">
+            <div class="search-card-img"
+                style="background: url('{{ product.image.image.url }}') no-repeat; background-position: center; background-size: cover">
+                <a href="{{ product.item.get_add_to_cart_url }}"><i class="fas fa-cart-plus float-right m-2"></i></a>
+            </div>
+            <div class="search-card-content pl-2 pr-2">
+                <p class="mb-0 pb-1 pt-2">
+                    <span class="title-tag">{{ product.item.title }}</span><br>
+                    <span class="badge badge-primary" style="font-size: 12px">{{ product.item.category }}</span><br>
+                    <span class="small" style="font-size: 12px ; color: #ffb800;">
+                        {% if product.item.ratings >= 5 %}
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        {% elif product.item.ratings >= 4.5 %}
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        {% elif product.item.ratings >= 4 %}
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        {% elif product.item.ratings >= 3.5 %}
+                        <i class="fa fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <i class="far fa-star"></i>
+                        {% elif product.item.ratings >= 3 %}
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        {% elif product.item.ratings >= 2.5 %}
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        {% elif product.item.ratings >= 2 %}
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        {% elif product.item.ratings >= 1.5 %}
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        {% elif product.item.ratings >= 1 %}
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        {% elif product.item.ratings >= 0.5 %}
+                        <i class="fas fa-star-half-alt"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        {% elif product.item.ratings >= 0 %}
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        {% else %}
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        {% endif %}
+                    </span><br>
+                    {% if product.item.discount_price %}
+                    <span class="text-muted price-tag"><span><b>Rs.{{ product.item.discount_price }}</b></span>
+                        <strike>Rs.{{ product.item.price }}</strike></span><br>
+                    {% else %}
+                    <span class="text-muted price-tag"><span><b>Rs.{{ product.item.price }}</b></span><br /> {% endif %}
+                        <span class="text-muted description-tag">{{ product.item.shortDescription }}</span>
+                </p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<hr>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("div[href]").click(function () {
+            window.location = $(this).attr("href");
+        });
+    });
+
+</script>
+{% endblock %}

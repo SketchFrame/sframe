@@ -1,0 +1,165 @@
+{% extends 'home/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}
+| Complete Profile
+{% endblock %}
+
+{% block content %}
+<style>
+    .profile-img {
+        display: none;
+    }
+
+    .cover-img {
+        display: none;
+    }
+
+    .custom-file-upload {
+        border: 1px solid #ccc;
+        display: inline-block;
+        padding: 6px 12px;
+        cursor: pointer;
+    }
+
+    #second {
+        display: none;
+    }
+
+    .checkboxinput {
+        background-color: red;
+    }
+</style>
+<p class="mt-2 mb-3 h1 text-center" style="color: #9e9e9e; font-weight: 300;">- Register as seller -</p>
+<form class="container" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <fieldset class="form-group">
+        <legend class="border-bottom mt-4 h3 pt-4">Seller Profile</legend>
+        <div class="progress" style="height: 30px; margin-top: 8px;color:#fff">
+            <div class="progress-bar progress-bar-striped" role="progressbar" id="progressbar" style="width:50%">
+                <h5 style="margin-top:6px;color:#fff;font-weight: 450;" id="progressbarText">Basic Info</h5>
+            </div>
+        </div>
+        <div id="first">
+            <div class="form-row">
+                <div class="col-md-6">
+                    {{ info_form.fname | as_crispy_field }}
+                </div>
+                <div class="col-md-6">
+                    {{ info_form.lname | as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    {{ info_form.gstNumber | as_crispy_field }}
+                </div>
+                <div class="col-md-6">
+                    {{ info_form.experience | as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    {{ info_form.specialty | as_crispy_field }}
+                </div>
+                <div class="col-md-6">
+                    {{ info_form.gender | as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-12">
+                    {{ address_form.zipCode | as_crispy_field }}
+                </div>
+                <div class="col-md-12">
+                    {{ address_form.city | as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    {{ address_form.state | as_crispy_field }}
+                </div>
+                <div class="col-md-6">
+                    {{ address_form.country | as_crispy_field }}
+                </div>
+            </div>
+            <div class="clearfix">
+                <div class="float-left">
+                    <label for="id_profile_img" class="custom-file-upload" id="label-profile">Choose a profile
+                        photo</label>
+                    {{ images_form.profile_img }}
+                    <label for="id_cover_img" class="custom-file-upload" id="label-cover">Choose a cover
+                        photo</label>
+                    {{ images_form.cover_img }}
+                </div>
+            </div>
+            <div class="form-group clearfix">
+                <a href="#" class="btn btn-primary pl-5 pr-5 float-right" style="border-radius: 20px" id="next">Next</a>
+            </div>
+        </div>
+        <div class="container" id="second">
+            <div class="form-row">
+                <div class="col-md-12">
+                    {{ extended_form.bio | as_crispy_field }}
+                </div>
+            </div>
+            {{ extended_form.facebook | as_crispy_field }}
+            {{ extended_form.instagram | as_crispy_field }}
+            {{ extended_form.youtube | as_crispy_field }}
+            {{ extended_form.twitter | as_crispy_field }}
+            {{ extended_form.linkedin | as_crispy_field }}
+            Skills
+            <div class="form-row d-flex justify-content-center">
+                <div class="col-6 col-md-4">
+                    {{extended_form.Pencil_work | as_crispy_field}}
+                    {{extended_form.Mix_media | as_crispy_field}}
+                    {{extended_form.Oil_colours | as_crispy_field}}
+                    {{extended_form.Water_colours | as_crispy_field}}
+                </div>
+                <div class="col-6 col-md-4">
+                    {{extended_form.Acrylic_colours | as_crispy_field}}
+                    {{extended_form.Fabric_colours | as_crispy_field}}
+                    {{extended_form.Pastel_colours | as_crispy_field}}
+                </div>
+            </div>
+            <div class="form-group clearfix">
+                <a href="#" class="btn btn-secondary pl-4 pr-4 float-left" style="border-radius: 20px"
+                    id="previous">Previous</a>
+                <button type="submit" class="btn btn-primary pl-4 pr-4 float-right"
+                    style="border-radius: 20px">Submit</button>
+            </div>
+        </div>
+    </fieldset>
+</form>
+
+<script src="{% static 'js/Jquery_V3.4.1.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $('input[name="profile_img"]').change(function (e) {
+            var fileName0 = e.target.files[0].name;
+            $('#label-profile').html(fileName0)
+        });
+        $('input[name="cover_img"]').change(function (e) {
+            var fileName1 = e.target.files[0].name;
+            $('#label-cover').html(fileName1)
+        });
+    })
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#next").click(function (x) {
+            x.preventDefault();
+            $("#first").hide();
+            $("#second").show();
+            $("#progressbar").css("width", "100%");
+            $("#progressbarText").html("Bio & Social Details");
+        });
+        $("#previous").click(function (x) {
+            x.preventDefault();
+            $("#second").hide();
+            $("#first").show();
+            $("#progressbar").css("width", "50%");
+            $("#progressbarText").html("Basic Info");
+        });
+    })
+</script>
+<br>
+{% endblock %}

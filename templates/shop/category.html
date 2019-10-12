@@ -1,0 +1,22 @@
+{% extends 'home/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}| {{ item.title }}{% endblock %}
+
+{% block keywords %}{{item.title}}{% endblock %}
+{% block description %}{{ item.shortDescription }}{% endblock %}
+{% block content %}
+
+<br>
+<hr>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("div[href]").click(function () {
+            window.location = $(this).attr("href");
+        });
+    });
+
+</script>
+{% endblock %}

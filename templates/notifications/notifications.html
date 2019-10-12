@@ -1,0 +1,234 @@
+{% extends 'home/back.html' %}
+{% load humanize %}
+{% block title %}
+| Notifications
+{% endblock %}
+{% block back-url %}{% url 'home' %}{% endblock %}
+{% block content %}
+<style>
+    .nav-item,
+    .nav-link,
+    .nav-link:hover {
+        color: rgb(29, 29, 29);
+    }
+
+    .nav-item,
+    .nav-link,
+    .nav-link:hover {
+        color: rgb(109, 109, 109);
+    }
+
+    .list-group-item-custom {
+        background-color: rgb(248, 248, 248);
+    }
+
+    @media(max-width: 500px) {
+        .menuBtn {
+            display: none;
+        }
+    }
+</style>
+<div class="container">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#unread"><i class="fas fa-bell"></i> <span
+                    class="menuBtn"> Unread</span> <span
+                    class="badge badge-danger p-1 pr-2 pl-2 rounded-circle">{{ unread }}
+                </span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#read"><i class="fas fa-book-open"></i><span class="menuBtn">
+                    Read</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#archived">
+                <i class="fas fa-archive"></i><span class="menuBtn">
+                    Archived</span> <span class="badge badge-secondary p-1 pr-2 pl-2 rounded-circle">{{ archive }}
+                </span></a>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content" style="min-height: 150px;">
+        <div class="tab-pane container active p-0" id="unread">
+            <div class="clearfix mt-1">
+                <div class="float-right">
+                    <span><a href="{% url 'mark-all-as-read' %}">Mark all as read</a></span>
+                </div>
+            </div>
+            <ul class="list-group mt-2">
+                {% if unread == 0 %}
+                <p class="text-center" style="margin-top: 15vh; margin-bottom: 15vh"><i class="fas fa-bell h1"
+                        style="color: rgb(141, 141, 141);"></i>
+                    <br>
+                    <span class="h3 font-weight-bold" style="color: rgb(78, 78, 78)">No new notifications.</span>
+                    <br><br>
+                    <span>Depending on <a href="#">your notification settings</a>, you’ll see updates here for your <br>
+                        conversations in watched repositories.</span>
+                </p>
+                {% else %}
+                {% for notification in notifications %}
+                {% if notification.archieve == False and notification.viewed == False %}
+                <li class="list-group-item list-group-item-custom" style="color: rgb(71, 71, 71)">
+                    {% if notification.category == 'OrderIncomplete' %}
+                    <i class="fas fa-times-circle text-danger"></i>
+                    {% elif notification.category == 'Alert' or notification.category == 'OrderIncomplete' or notification.category == 'PaymentDue' %}
+                    <i class="fas fa-exclamation-triangle text-warning"></i>
+                    {% elif notification.category == 'ProjectAssigned' %}
+                    <i class="fas fa-handshake text-success"></i>
+                    {% elif notification.category == 'OrderSuccess' or notification.category == 'PaymentSuccess' or notification.category == 'registerdAsSeller' or notification.category == 'AddressUpdated' %}
+                    <i class="fas fa-check-double text-success"></i>
+                    {% elif notification.category == 'ProjectArrived' or notification.category == 'BidAdded' %}
+                    <i class="fas fa-gavel text-secondary"></i>
+                    {% else %}
+                    <i class="fas fa-bell text-secondary"></i>
+                    {% endif %}
+                    <span>
+                        {% if notification.category == 'BidAdded' %}
+                        <a href="{% url 'view-project-bids' notification.bid.project.slug %}"
+                            class="text-body">{{ notification.title }}</a>
+                        {% elif notification.category == 'ProjectAssigned' %}
+                        <a href="{% url 'project-assigned' %}" class="text-body">{{ notification.title }}</a>
+                        {% elif notification.category == 'registerdAsSeller' %}
+                        <a href="#" class="text-body">{{ notification.title }}</a>
+                        {% else %}
+                        {{ notification.title }}
+                        {% endif %}
+                    </span>
+                    <span class="clearfix">
+                        <span class="float-right">
+                            <span class="mr-5">{{ notification.created_on | naturaltime }}</span>
+                            <a href="{% url 'archieve' notification.id %}"><span class="mr-2" data-toggle="tooltip"
+                                    data-placement="left" title="Archive">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                        <path
+                                            d="M20.54 5.23l-1.39-1.68C18.88 3.21 18.47 3 18 3H6c-.47 0-.88.21-1.16.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6.5c0-.48-.17-.93-.46-1.27zM12 17.5L6.5 12H10v-2h4v2h3.5L12 17.5zM5.12 5l.81-1h12l.94 1H5.12z" />
+                                    </svg></span></a>
+                            <span><a href="{% url 'mark-as-read' notification.id %}"><i class="fas fa-book-open"
+                                        data-toggle="tooltip" data-placement="left" title="Mark as read"></i></a></span>
+                        </span>
+                    </span>
+                </li>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+            </ul>
+        </div>
+        <div class="tab-pane container fade p-0" id="read">
+            <br>
+            <ul class="list-group">
+                {% if read == 0 %}
+                <p class="text-center" style="margin-top: 15vh; margin-bottom: 15vh"><i class="fas fa-bell h1"
+                        style="color: rgb(141, 141, 141);"></i>
+                    <br>
+                    <span class="h3 font-weight-bold" style="color: rgb(78, 78, 78)">No new notifications.</span>
+                    <br><br>
+                    <span>Depending on <a href="#">your notification settings</a>, you’ll see updates here for your <br>
+                        conversations in watched repositories.</span>
+                </p>
+                {% else %}
+                {% for notification in notifications %}
+                {% if notification.archieve == False and notification.viewed == True %}
+                <li class="list-group-item list-group-item-light">
+                    {% if notification.category == 'OrderIncomplete' %}
+                    <i class="fas fa-times-circle text-danger"></i>
+                    {% elif notification.category == 'Alert' or notification.category == 'OrderIncomplete' or notification.category == 'PaymentDue' %}
+                    <i class="fas fa-exclamation-triangle text-warning"></i>
+                    {% elif notification.category == 'ProjectAssigned' %}
+                    <i class="fas fa-handshake text-success"></i>
+                    {% elif notification.category == 'OrderSuccess' or notification.category == 'PaymentSuccess' %}
+                    <i class="fas fa-check-double text-success"></i>
+                    {% elif notification.category == 'ProjectArrived' or notification.category == 'BidAdded' %}
+                    <i class="fas fa-gavel text-secondary"></i>
+                    {% else %}
+                    <i class="fas fa-bell text-secondary"></i>
+                    {% endif %}
+                    <span>
+                        {% if notification.category == 'BidAdded' %}
+                        <a href="{% url 'view-project-bids' notification.bid.project.slug %}"
+                            class="text-body">{{ notification.title }}</a>
+                        {% elif notification.category == 'ProjectAssigned' %}
+                        <a href="{% url 'project-assigned' %}" class="text-body">{{ notification.title }}</a>
+                        {% else %}
+                        {{ notification.title }}
+                        {% endif %}
+                    </span>
+                    <span class="clearfix">
+                        <span class="float-right">
+                            <span class="mr-5">{{ notification.created_on | naturaltime }}</span>
+                            <a href="{% url 'archieve' notification.id %}"><i class="mr-2" data-toggle="tooltip"
+                                    data-placement="left" title="Archive">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                        <path
+                                            d="M20.54 5.23l-1.39-1.68C18.88 3.21 18.47 3 18 3H6c-.47 0-.88.21-1.16.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6.5c0-.48-.17-.93-.46-1.27zM12 17.5L6.5 12H10v-2h4v2h3.5L12 17.5zM5.12 5l.81-1h12l.94 1H5.12z" />
+                                    </svg></i></a>
+                        </span>
+                    </span>
+                </li>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+            </ul>
+        </div>
+        <div class="tab-pane container fade p-0" id="archived">
+            <br>
+            <ul class="list-group">
+                {% if archive == 0 %}
+                <p class="text-center" style="margin-top: 15vh; margin-bottom: 15vh"><i class="fas fa-bell h1"
+                        style="color: rgb(141, 141, 141);"></i>
+                    <br>
+                    <span class="h3 font-weight-bold" style="color: rgb(78, 78, 78)">No new notifications.</span>
+                    <br><br>
+                    <span>Depending on <a href="#">your notification settings</a>, you’ll see updates here for your <br>
+                        conversations in watched repositories.</span>
+                </p>
+                {% else %}
+                {% for notification in notifications %}
+                {% if notification.archieve == True and notification.viewed == True %}
+                <li class="list-group-item list-group-item-custom" style="color: rgb(71, 71, 71)">
+                    {% if notification.category == 'OrderIncomplete' %}
+                    <i class="fas fa-times-circle text-danger"></i>
+                    {% elif notification.category == 'Alert' or notification.category == 'OrderIncomplete' or notification.category == 'PaymentDue' %}
+                    <i class="fas fa-exclamation-triangle text-warning"></i>
+                    {% elif notification.category == 'ProjectAssigned' %}
+                    <i class="fas fa-handshake text-success"></i>
+                    {% elif notification.category == 'OrderSuccess' or notification.category == 'PaymentSuccess' %}
+                    <i class="fas fa-check-double text-success"></i>
+                    {% elif notification.category == 'ProjectArrived' or notification.category == 'BidAdded' %}
+                    <i class="fas fa-gavel text-secondary"></i>
+                    {% else %}
+                    <i class="fas fa-bell text-secondary"></i>
+                    {% endif %}
+                    <span>
+                        {% if notification.category == 'BidAdded' %}
+                        <a href="{% url 'view-project-bids' notification.bid.project.slug %}"
+                            class="text-body">{{ notification.title }}</a>
+                        {% elif notification.category == 'ProjectAssigned' %}
+                        <a href="#" class="text-body">{{ notification.title }}</a>
+                        {% else %}
+                        {{ notification.title }}
+                        {% endif %}
+                    </span>
+                    <span class="clearfix">
+                        <span class="float-right">
+                            <span class="mr-5">{{ notification.created_on | naturaltime }}</span>
+                            <a href="{% url 'unarchieve' notification.id %}"><span class="mr-2" data-toggle="tooltip"
+                                    data-placement="left" title="Unarchive">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                        <path
+                                            d="M20.55 5.22l-1.39-1.68C18.88 3.21 18.47 3 18 3H6c-.47 0-.88.21-1.15.55L3.46 5.22C3.17 5.57 3 6.01 3 6.5V19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6.5c0-.49-.17-.93-.45-1.28zM12 9.5l5.5 5.5H14v2h-4v-2H6.5L12 9.5zM5.12 5l.82-1h12l.93 1H5.12z" />
+                                    </svg></span></a>
+                        </span>
+                    </span>
+                </li>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+
+</div>
+<hr>
+{% endblock %}

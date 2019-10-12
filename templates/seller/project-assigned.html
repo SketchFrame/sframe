@@ -1,0 +1,190 @@
+{% extends 'home/base.html' %}
+{% load humanize %}
+{% block title %}
+| Projects Assigned
+{% endblock %}
+
+{% block content %}
+<style>
+    .nav-item,
+    .nav-link,
+    .nav-link:hover {
+        color: rgb(29, 29, 29);
+    }
+
+    .nav-item,
+    .nav-link,
+    .nav-link:hover {
+        color: rgb(109, 109, 109);
+    }
+
+    .list-group-item-custom {
+        background-color: rgb(248, 248, 248);
+    }
+
+    @media(max-width: 500px) {
+        .menuBtn {
+            display: none;
+        }
+    }
+</style>
+<div class="container mt-4">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#bidded"><i class="fas fa-gavel text-secondary"></i>
+                <span class="menuBtn"> My Bids</span>
+                <span class="badge badge-danger p-1 pr-2 pl-2 rounded-circle">{{ bids.count }}
+                </span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#active"><i class="fas fa-circle text-success small"></i><span
+                    class="menuBtn">
+                    Active Projects</span>
+                <span class="badge badge-danger p-1 pr-2 pl-2 rounded-circle">{{ active.count }}
+                </span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#completed">
+                <i class="fas fa-check text-success"></i><span class="menuBtn">
+                    Completed</span>
+                <span class="badge badge-secondary p-1 pr-2 pl-2 rounded-circle">{{ completed.count }}
+                </span>
+            </a>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content" style="min-height: 150px;">
+        <div class="tab-pane container active p-0" id="bidded">
+            <br>
+            <ul class="list-group">
+                {% if bids.count == 0 %}
+                <p class="text-center" style="margin-top: 15vh; margin-bottom: 15vh"><i class="fas fa-gavel h1"
+                        style="color: rgb(141, 141, 141);"></i>
+                    <br>
+                    <span class="h3 font-weight-bold" style="color: rgb(78, 78, 78)">You haven't bidded on any project's
+                        yet</span>
+                    <br><br>
+                    <span>Start Bidding <a href="{% url 'view-projects' %}">now</a></span>
+                </p>
+                {% else %}
+                {% for bid in bids %}
+                <li class="list-group-item list-group-item-light">
+                    <span>
+                        {{ bid.project.title }}
+                    </span>
+                    <span class="clearfix">
+                        <span class="float-right">
+                            <span class="mr-5">{{ bid.bided_on | naturaltime }}</span>
+                            {% if bid.project.is_active == True and bid.project.is_assigned == False %}
+                            <i class="fas fa-circle text-success mr-2" data-toggle="tooltip" data-placement="left"
+                                title="Active!"></i>
+                            {% elif bid.project.is_active == True and bid.project.is_assigned == True and bid.project.assignedTo.user.username == user.username %}
+                            <i class="fas fa-circle text-success mr-2" data-toggle="tooltip" data-placement="left"
+                                title="Assigned to you!"></i>
+                            {% elif bid.project.is_active == True and bid.project.is_assigned == True %}
+                            <i class="fas fa-circle text-warning mr-2" data-toggle="tooltip" data-placement="left"
+                                title="Assigned to someone!"></i>
+                            {% else %}
+                            <i class="fas fa-circle text-danger mr-2" data-toggle="tooltip" data-placement="left"
+                                title=""></i>
+                            {% endif %}
+                        </span>
+                    </span>
+                </li>
+                {% endfor %}
+                {% endif %}
+            </ul>
+        </div>
+        <div class="tab-pane container fade p-0" id="active">
+            <br>
+            <ul class="list-group">
+                {% if active.count == 0 %}
+                <p class="text-center" style="margin-top: 15vh; margin-bottom: 15vh"><i class="fas fa-gavel h1"
+                        style="color: rgb(141, 141, 141);"></i>
+                    <br>
+                    <span class="h3 font-weight-bold" style="color: rgb(78, 78, 78)">No active project</span>
+                    <br><br>
+                    <span>Bid on <a href="{% url 'view-projects' %}">more projects</a> .</span>
+                </p>
+                {% else %}
+                {% for project in active %}
+                <li class="list-group-item list-group-item-light">
+                    <span>
+                        {{ project.title }}
+                    </span>
+                    <span class="clearfix">
+                        <span class="float-right">
+                            <span class="mr-5">{{ project.assignedOn | naturaltime }}</span>
+                            <span>
+                                <div class="modal fade" id="confirm-completed-{{ forloop.counter }}">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Are you sure?</h4>
+                                                <button type="button" class="close"
+                                                    data-dismiss="modal">&times;</button>
+                                            </div>
+                                            <div class="modal-body">
+                                                The project is completed and notify the client
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a class="btn btn-success"
+                                                    href="{% url 'project-completed' project.slug %}"
+                                                    style="cursor:pointer">Yes, Completed
+                                                    Project</a>
+                                                <button type="button" class="btn btn-danger"
+                                                    data-dismiss="modal">No</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <i class="fas fa-check mr-2" data-toggle="modal"
+                                    data-target="#confirm-completed-{{forloop.counter}}"></i>
+                            </span>
+                        </span>
+                    </span>
+                </li>
+                {% endfor %}
+                {% endif %}
+            </ul>
+        </div>
+        <div class="tab-pane container fade p-0" id="completed">
+            <br>
+            <ul class="list-group">
+                {% if completed.count == 0 %}
+                <p class="text-center" style="margin-top: 15vh; margin-bottom: 15vh"><i class="fas fa-gavel h1"
+                        style="color: rgb(141, 141, 141);"></i>
+                    <br>
+                    <span class="h3 font-weight-bold" style="color: rgb(78, 78, 78)">No active project</span>
+                    <br><br>
+                    <span>Bid on <a href="{% url 'view-projects' %}">more projects</a> .</span>
+                </p>
+                {% else %}
+                {% for project in completed %}
+                <li class="list-group-item list-group-item-light">
+                    <span>
+                        {{ project.title }}
+                    </span>
+                    <span class="clearfix">
+                        <span class="float-right">
+                            <span class="mr-5">{{ project.completedOn | naturaltime }}</span>
+                            <span>
+                                <i class="fas fa-check text-success mr-2"></i>
+                            </span>
+                        </span>
+                    </span>
+                </li>
+                {% endfor %}
+                {% endif %}
+            </ul>
+
+        </div>
+    </div>
+
+</div>
+<hr>
+{% endblock %}

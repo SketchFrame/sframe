@@ -1,0 +1,142 @@
+{% extends 'home/back.html' %}
+{% load is_seller %}
+{% load humanize %}
+{% block title %}
+| Project Description
+{% endblock %}
+{% load static %}
+{% block back-url %}{% url 'view-projects' %}{% endblock %}
+{% block content %}
+<style>
+    .nav-item,
+    .nav-link,
+    .nav-link:hover {
+        color: rgb(29, 29, 29);
+    }
+
+    .nav-item,
+    .nav-link,
+    .nav-link:hover {
+        color: rgb(109, 109, 109);
+    }
+
+    .list-group-item-custom {
+        background-color: rgb(248, 248, 248);
+    }
+    .wrapper{
+        border: 1px solid #e2e2e2;
+        padding: 8px;
+        font-size: 15px;
+        font-weight: 350;
+        color: #707070;
+        margin-top: 10px;
+        width: 42%;
+        text-align: center;
+    }
+    @media(max-width: 500px) {
+        .menuBtn {
+            display: block;
+        }
+    }
+</style>
+<div class="container">
+<p class="mt-2 mb-3 h2 text-center" style="color: #9e9e9e; font-weight: 300;">- {{project.title}} Description -</p>
+                <!-- Nav tabs -->
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#details">
+                <span class="menuBtn">DETAILS</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#bids">
+                <span class="menuBtn">BIDS</span>
+            </a>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content" style="min-height: 150px;">
+        <div class="tab-pane container active p-2" id="details">
+            <div class="clearfix border-bottom mt-2 pb-1">
+                <div class="float-left">
+                    <p class="small p-0 mb-0">Project Budget</p>
+                    <p class="m-0 font-weight-bold" style="margin-top: -1em"><i class="fas fa-rupee-sign"></i>{{ project.budget }} INR</p>
+                </div>
+                <div class="float-right">
+                    <p class="small p-0 mb-0">Total Bids</p>
+                    <p class="m-0 font-weight-bold" style="margin-top: -1em">{{bids.count}}</p>
+                </div>
+            </div>
+            <div class="card-text border-bottom">
+                <p>{{ project.description | linebreaks }}</p>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                <p class="m-0 font-weight-bold h5" style="margin-top: -1em">Project Category</p>
+                        <div class="wrapper">
+                        {{ project.category }}
+                    </div>
+                </div>
+                <div class="col-4">
+                    <p class="m-0 font-weight-bold h5">Status</p>
+                    <div class="wrapper">
+                        {% if project.is_active %}
+                        <span class="small text-success"><i class="fas fa-check"></i> Active</span>
+                        {% else %}
+                        <span class="small text-danger"><i class="fas fa-times-circle"></i> Expired</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-4">
+                <p class="m-0 font-weight-bold h5" style="margin-top: -1em">Posted on</p>
+                    <div class="wrapper">
+                        {{ project.posted_date | naturaltime }}
+                    </div>                            
+                </div>
+            </div>
+            {% if user.is_authenticated %}
+            {% if request.user|is_seller %}
+            <a href="{% url 'make-bid' project.slug %}" class="mt-4 btn btn-primary"> Place Bid</a>
+            {% else %}
+            <p class="mt-3 small text-muted">Only Sellers can bid on project's</a></p>
+            {% endif %}
+            {% else %}
+            <p class="mt-3 small text-muted">To place a bid <a class="text-priamry" href="{% url 'account_login' %}"><i class="fas fa-sign-in-alt"></i> Login now.</a></p>
+            {% endif %}
+        </div>
+        <div class="tab-pane container p-0" id="bids">
+            {% for bid in bids %}
+            <div class="row pt-1 pl-3 pr-3 pb-1">
+                <div class="media comment-box" style="width: 100%">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <p style="font-size: 17px;" class="media-heading">
+                            <a href="{% url 'view-seller-profile' bid.user.user.user.username  %}" class="text-primary">{{ bid.user.user.user.username }}</a>
+                            | <span style="font-size: 12px;">{{bid.bided_on | naturaltime}}</span>
+                        </p>
+                        <p>{{ bid.proposal | safe }}<br>
+                            <small>
+                            <strong>Price: </strong><span>{{bid.amount | intcomma}}</span>
+                            <br>
+                            <strong>Delivery in: </strong><span>{{bid.delivery_in}} days</span>
+                            </small>
+                            <br> 
+                        {% if bid.user.user.user == user %}
+                        <a href="{% url 'edit-bid' bid.id %}" class="small text-primary">Edit</a>
+                        {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div> 
+            {% endfor %}       
+        </div>
+    </div>
+
+</div>
+<hr>
+{% endblock %}

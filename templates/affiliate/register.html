@@ -1,0 +1,34 @@
+{% extends 'home/base.html' %}
+{% block title %}
+| Join Affiliate Program
+{% endblock %}
+
+{% block content %}
+<form method="POST" class="container">
+    <p class="mt-2 mb-3 h2 text-center" style="color: #9e9e9e; font-weight: 300;">- Join Affiliate Program -</p>
+    {% csrf_token %}
+    <div class="w-75 mw-100 mx-auto">
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam animi temporibus molestiae placeat quod non
+            commodi quidem molestias obcaecati consequuntur dolorem, hic autem? Voluptas quod adipisci illo, optio
+            debitis ab!
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur aliquid, est ut unde alias laborum
+            incidunt velit placeat minima mollitia distinctio natus, tempore asperiores soluta expedita excepturi illum
+            et sunt.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea officiis eligendi corporis aperiam? Quis
+            incidunt laborum, quas inventore dolorum sed aperiam quod sunt, nesciunt cum, maxime perspiciatis velit
+            ipsam totam.
+        </p>
+        <center>
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="customCheck" name="example1" required>
+                <label class="custom-control-label" for="customCheck">Join Affiliate Program</label>
+                <br>
+                <p class="text-muted small">By clicking on the <b>REGISTER</b> button, you agree to our <a
+                        href="#">terms & conditions</a></p>
+            </div>
+            <input type="submit" value="REGISTER" class="btn btn-success pl-5 pr-5">
+        </center>
+    </div>
+</form>
+<br>
+{% endblock %}

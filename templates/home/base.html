@@ -1,0 +1,561 @@
+{% load static %}
+{% load is_seller %}
+{% load cart_template_tags %}
+{% load active_notifications %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>SketchFrame {% block title %}{% endblock %}</title>
+    <meta name="theme-color" content="#1d1e1f">
+    <meta name="description" content="{% block description %}{% endblock %}"/>
+
+    <meta name="keywords" content="SketchFrame, sketchframe, sketchframe.com, sketches, paintings, buy paintings, buy sketches, buy paintings online, buy sketches online, {% block keywords %}{% endblock %}">
+
+    <meta charset="UTF-8">
+    <!-- <link rel='shortcut icon' href='https://sketchframe.s3.ap-south-1.amazonaws.com/logo/favicon-sm.jpg' type='image/x-icon' /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'css/Bootstrap_v4.3.1.css' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Righteous" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/custom-style.css' %}">
+    {% block extra_head %}{% endblock %}
+    <style>
+    
+    @import url('https://fonts.googleapis.com/css?family=Advent+Pro&display=swap');
+        .sidenav>a>i {
+            color: #fff;
+        }
+    
+        .sidenav>a {
+            padding-left: 30px;
+            padding-right: 50px;
+        }
+    
+        .closebtn {
+            margin-right: -50px;
+        }
+    
+        #results {
+            display: none;
+        }
+    
+        .quick-result-2>li {
+            padding-left: 100px;
+            border-left: none;
+            border-right: none;
+        }
+    
+        .quick-result-2>.result-li {
+            padding-left: 0px;
+        }
+    
+        @media(max-width: 991px) {
+            .quick-result-2>li {
+                padding-left: 50px;
+            }
+    
+            .quick-result-2>.result-li {
+                padding-left: 0px;
+            }
+        }
+    </style>
+    <style>
+
+    @import url('https://fonts.googleapis.com/css?family=Advent+Pro&display=swap');
+    body{
+        background-color: rgb(246, 246, 246);
+    }
+    .navbar-toggler:focus {
+        outline: none;
+        border: none;
+    }
+    .search-input > input:focus{
+        outline: none;
+        border: none;
+    }
+    /* Navbar Starts */
+    .navbar{
+        font-family: 'Advent Pro', sans-serif;
+        padding-top: 0px;
+        padding-bottom: 5px;
+        letter-spacing: 0.25px;
+    }
+    .bg-dark{
+        background-color: #1d1e1f !important;
+    }
+    .logo-first-half{
+        color: #d9d9d9;
+    }
+    .logo-second-half{
+        color: #fff;
+    }
+    .navbar-brand{
+        font-size: 2.50rem;
+        letter-spacing: 0px
+    }
+    .nav-link{
+        margin-top: 4px;
+        font-size: 1.1rem;
+    }
+    #artwork-options{
+        cursor: pointer;
+    }
+    .filter{
+        filter: invert(93%) sepia(0%) saturate(93%) hue-rotate(138deg) brightness(93%) contrast(96%);
+    }
+    /* Navbar Ends */
+
+    /* Main Starts */
+
+    .main-row{
+        background-color: #fff;
+        min-height: 100px;
+        height: auto;
+        border-radius: 5px;
+    }
+    .useful-links{
+        font-size: 15px
+    }
+    .useful-links > li{
+        border-left: none;
+        border-right: none;
+    }
+    .useful-links-title{
+        border: none;
+        border-bottom: 1px solid #e2e2e2;
+        border-radius: 0px; color: #8f8f8f;
+    }
+
+    /* The overlay effect with black background */
+    .overlay {
+    height: 100%;
+    width: 100%;
+    display: none;
+    position: fixed;
+    z-index: 3;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    /* background-color: rgb(246, 246, 246); */
+    }
+    .dropdown-menu{
+        background-color: rgb(249, 249, 249);
+    }
+    @media(max-width: 450px){
+        .navbar-brand{
+            font-size: 2rem;
+        }
+    }
+
+    /* Main Ends */
+
+
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand p-0" href="/">
+            <span class="logo-first-half">Sketch</span><span class="logo-second-half">frame</span>
+        </a>
+        <span>
+            <button class="navbar-toggler mr-0 pr-0" onclick="openSearch()" style="border: none;">
+                <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/search.svg" alt="search" class="filter">
+            </button>
+            <button class="navbar-toggler mr-0 pr-0" style="border: none;">
+                <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/cart.svg" alt="search" class="filter">
+            </button>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
+                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation"
+                style="border: none;" onclick="openMenu()">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </span>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" style="cursor: pointer">
+                        <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/search.svg" onclick="openSearch()" alt="search" class="filter">
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" id="artwork-options" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            Categories
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="artwork-options">
+                            <a href="#" class="dropdown-item">Pencil work</a>
+                            <a href="#" class="dropdown-item">Pastel colour</a>
+                            <a href="#" class="dropdown-item">Water colour</a>
+                            <a href="#" class="dropdown-item">Acrylic colour</a>
+                            <a href="#" class="dropdown-item">Fabric colour</a>
+                            <a href="#" class="dropdown-item">Oil colour</a>
+                            <a href="#" class="dropdown-item">Mix media</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" id="artwork-options" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            Sub Categories
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="artwork-options">
+                            <a href="#" class="dropdown-item">Sub categort 1</a>
+                            <a href="#" class="dropdown-item">Sub categort 2</a>
+                            <a href="#" class="dropdown-item">Sub categort 3</a>
+                            <a href="#" class="dropdown-item">Sub categort 4</a>
+                            <a href="#" class="dropdown-item">Sub categort 5</a>
+                            <a href="#" class="dropdown-item">Sub categort 6</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" id="artwork-options" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            Top artists
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="artwork-options">
+                            <a href="#" class="dropdown-item">Ankit Brijwasi</a>
+                            <a href="#" class="dropdown-item">Navdeep Kumar mishra</a>
+                            <a href="#" class="dropdown-item">Rajesh Joshi</a>
+                            <a href="#" class="dropdown-item">Harshita Arya</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Post a project</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/notification.svg" alt="notification" class="filter">
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/cart.svg" alt="cart" class="filter">
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Login</a>
+                </li>
+    
+            </ul>
+        </div>
+    </nav>
+    <div class="container-fluid overlay p-0" id="searchOverlay">
+        <div class="form-group pl-3 pr-3 pt-1 pb-1"
+            style="background-color: #fff; height: auto; border-bottom: 5px solid rgb(246, 246, 246)">
+            <span class="search-input" style="display:flex">
+                <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/back.svg" height="33px" onclick="closeSearch()" alt="back" class="filter"
+                    style="cursor: pointer; margin-top: 3px">
+                <input type="search" class="form-control" style="border: none"
+                    placeholder="Search for Products, Brand and More...">
+            </span>
+        </div>
+    </div>
+    <div class="container-fluid overlay p-0" id="menuOverlay" style="scrollbar-width: none;">
+        <div class="form-group pl-3 pr-3 pt-1 pb-1"
+            style="background-color: #fff; height: auto;">
+            <span class="search-input float-right" style="display:flex">
+                <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/close.svg" height="33px"
+                    onclick="closeMenu()" alt="back" class="filter" style="cursor: pointer; margin-top: 3px">
+            </span>
+            <ul class="list-group list-group-flush mt-5 text-center">
+                <li class="h5 list-group-item text-muted" style="border: none;">Categories</li>
+                <li class="h5 list-group-item text-muted" style="border: none;">Sub categories</li>
+                <li class="h5 list-group-item text-muted" style="border: none;">Top artists</li>
+                <li class="h5 list-group-item text-muted" style="border: none;">Post a project</li>
+                <li class="h5 list-group-item text-muted" style="border: none;">Notifications</li>
+                <li class="h5 list-group-item text-muted" style="border: none;">My Account</li>
+            </ul>
+        </div>
+    </div>
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} fade show alert-dismissible mb-1">
+        <button class="close" type="button" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+    <br>
+    {% else %}
+    <br>
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
+    <footer style="background-color: #1d1e1f; color: #f2f2f2; font-family: 'Advent Pro', sans-serif; letter-spacing: 0.25px">
+        <div id="footer">
+            <div class="footer-top">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-5 col-md-12 footer-info">
+                            <p class="logo-font mb-2 ml-0 pt-0">
+                                <a href="/" class="_1ff24g ml-0" style="font-size: 36px; letter-spacing: 0px">
+                                <span class="logo-first-half">Sketch</span><span class="logo-second-half">frame</span>
+                                </a>
+                            </p>
+                            <p style="color: #8c8c8c;">
+                                Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable.
+                            </p>
+                        </div>
+                        <div class="col-lg-4 col-md-6 footer-link">
+                            <h5 style="color: #edca20; font-weight: 500;">Useful links</h5>
+                            <div class="row" style="font-size: 15px">
+                                <div class="col-6 col-sm-6 col-md-6">
+                                    <ul style="line-height: 25px; list-style-type: none; margin-left: -2.5em;">
+                                        {% if request.user|is_seller %}
+                                        <li><a href="{% url 'my-shop' %}">Dashboard</a></li>
+                                        {% else %}
+                                        <li><a href="{% url 'register-seller' %}">Sell on SketchFrame</a></li>
+                                        {% endif %}
+                                        <li><a href="{% url 'shop' %}">Shop</a></li>
+                                        <li><a href="{% url 'tnc' %}">TnC</a></li>
+                                        <li><a href="/about">About us</a></li>
+                                        <li><a href="/contact">Contact us</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-6 col-sm-6 col-md-6">
+                                    <ul style="line-height: 25px; list-style-type: none; margin-left: -2.5em;">
+
+                                        <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
+                                        <li><a href="{% url 'register-affiliate' %}">Affiliate program</a></li>
+                                        <li><a href="{% url 'seller-faq' %}">Seller FAQ</a></li>
+                                        <li><a href="{% url 'user-faq' %}">User FAQ</a></li>
+                                        <li><a href="{% url 'affiliate-faq' %}">Affiliate FAQ</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 footer-contact" style="padding: 0px;">
+                                <h5 style="color: #edca20; font-weight: 500;">Follow us</h5>
+                                <a href="#" class="footer-icon">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="#" class="footer-icon">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="#" class="footer-icon">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="#" class="footer-icon">
+                                    <i class="fab fa-google-plus"></i>
+                                </a>
+                                <a href="#" class="footer-icon">
+                                    <i class="fab fa-linkedin"></i>
+                                </a>
+                            </div>
+                            <br>
+                            <div class="col-lg-12 col-md-12 col-sm-12 footer-newsletter" style="padding: 0px;">
+                                <h5 style="color: #edca20; font-weight: 500;">Newsletter</h5>
+                                <p style="color: #8c8c8c; font-size: 14px;">Subscribe to our newsletters to get the
+                                    notification about best discounts.</p>
+                                <div class="alert alert-dismissible" style="font-size: .85rem" id="response-message">
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <div id="content"></div>
+                                </div>
+                                <form class="subscribe-form" method="post" id="newsletter-form">
+                                    <input type="email" class="form-control email-input" placeholder="Email" id="email"
+                                        aria-describedby="basic-addon1" style="width: 60%">
+                                    <button type="submit" id="newsletter" class="btn btn-sm subscribe">Subscribe</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <style>
+        #response-message{
+            display: none;
+        }
+        </style>
+        <center>
+            <b>
+                <p class="copyright text-muted" style="letter-spacing: 1px">Copyright &copy;<a style="color: #edca20;" href="{% url 'home' %}">
+                        Sketchframe.com</a>
+                    2019</p>
+            </b>
+        </center>
+    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>   
+    <script src="{% static 'js/custom.js' %}"></script>
+    <script>
+        // Open the full screen search box
+        function openSearch() {
+            document.getElementById("searchOverlay").style.display = "block";
+        }
+
+        // Close the full screen search box
+        function closeSearch() {
+            document.getElementById("searchOverlay").style.display = "none";
+        } 
+         // Open the full screen search box
+        function openMenu() {
+            document.getElementById("menuOverlay").style.display = "block";
+        }
+
+        // Close the full screen search box
+        function closeMenu() {
+            document.getElementById("menuOverlay").style.display = "none";
+        } 
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+
+    <script>
+        $('#searchInput').keyup(function (e) {
+            var key = e.which;
+           // enter key code
+            if(key === 13){
+                document.searchForm.submit()
+            }
+            if($(this).val() === ''){
+                $("#results").hide();
+            }
+            // spacebar key code
+            else{
+                // if(key === 32){
+                $.ajax({
+                    type: "GET",
+                    url: "{% url 'quick-search' %}",
+                    data: {
+                        'q': $(this).val(),
+                    },
+                    dataType: 'html',
+                    success: searchSuccess
+                })
+                // }
+            }
+        });
+        $('#searchInput-2').keyup(function (e) {
+            var key = e.which;
+            // enter key code
+            if (key === 13) {
+                document.searchForm.submit()
+            }
+            if($(this).val() === ''){
+                $("#results-2").hide();
+            }
+            // spacebar key code
+            // if (key === 32) {
+            $.ajax({
+                type: "GET",
+                url: "{% url 'quick-search' %}",
+                data: {
+                    'q': $(this).val(),
+                },
+                dataType: 'html',
+                success: searchSuccess2
+            })
+            // }
+        });
+        $("#newsletter").on('click', function(e){
+            e.preventDefault();
+            $.ajaxSetup({ 
+                beforeSend: function(xhr, settings) {
+                    function getCookie(name) {
+                        var cookieValue = null;
+                        if (document.cookie && document.cookie != '') {
+                            var cookies = document.cookie.split(';');
+                            for (var i = 0; i < cookies.length; i++) {
+                                var cookie = jQuery.trim(cookies[i]);
+                                // Does this cookie string begin with the name we want?
+                                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                    break;
+                                }
+                            }
+                        }
+                        return cookieValue;
+                    }
+                    if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                        // Only send the token to relative URLs i.e. locally.
+                        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                    }
+                } 
+            });
+            $.ajax({
+                type: "POST",
+                url: "{% url 'subscribe-newsletter' %}",
+                data: {
+                    'email': $("#email").val(),
+                },
+                dataType: 'json',
+                success: function(resp){
+                    if(resp['text'] === "success"){
+                        $("#response-message").show(300);
+                        $("#response-message").addClass('alert-success');
+                        $("#content").html(resp['message'])
+                        $("#newsletter-form").trigger("reset");
+                    }
+                    if(resp['text'] === "email-exists"){
+                        $("#response-message").show(300);
+                        $("#response-message").addClass('alert-warning');
+                        $("#content").html(resp['message'])
+                    }
+                    if(resp['text'] === "validation-error"){
+                        $("#response-message").show(300);
+                        $("#response-message").addClass('alert-danger');
+                        $("#content").html(resp['message'])
+                    }
+                }
+            })
+        })
+        function searchSuccess(data, textStatus, jqXHR){
+            $("#results").show();
+            $('#results').html(data);
+        }
+        function searchSuccess2(data, textStatus, jqXHR) {
+            $("#results-2").show();
+            $('#results-2').html(data);
+        }
+        window.onscroll = function () { scrollFunction() };
+        function scrollFunction() {
+            if (document.body.scrollTop >= 85 || document.documentElement.scrollTop >= 85) {
+                $("#firstNavbar").css({
+                    'top': '-100px',
+                    'transition': 'top 0.3s ease-out'
+                });
+                $("#secondNavbar").css({
+                    'top': '0px',
+                    'transition': 'top 0.5s ease-in'
+                });
+                if($("#searchInput-2").val() !== ''){
+                    $("#searchInput").val($("#searchInput-2").val());
+                }
+                // $("#firstNavbar").addClass("fixed-top");
+            } else {
+                $("#firstNavbar").css({
+                    'top': '0',
+                    'transition': 'top 0.5s ease-in'
+                });
+                $("#secondNavbar").css({
+                    'top': '-100px',
+                    'transition': 'top 0.3s ease-out'
+                });
+                $("#results-2").hide();
+                // $("#firstNavbar").removeClass("fixed-top");
+                if($("#searchInput").val() !== ''){
+                    $("#searchInput-2").val($("#searchInput").val());
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>

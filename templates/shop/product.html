@@ -1,0 +1,367 @@
+{% extends 'home/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}| {{ item.title }}{% endblock %}
+
+{% block keywords %}{{item.title}}{% endblock %}
+{% block description %}{{ item.shortDescription }}{% endblock %}
+{% block content %}
+<style>
+    a {
+        color: #707070;
+    }
+
+    a:hover {
+        color: #404040
+    }
+
+    .item-card {
+        cursor: pointer;
+    }
+
+    .card-img-top {
+        opacity: 1;
+        display: block;
+        width: 100%;
+        height: auto;
+        transition: .5s ease;
+        backface-visibility: hidden;
+    }
+
+    .middle {
+        transition: .5s ease;
+        opacity: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        text-align: center;
+    }
+
+    .item-card:hover {
+        opacity: 0.8;
+        transition: 0.3s ease;
+    }
+
+    .item-card:hover .middle {
+        opacity: 1;
+    }
+
+    .small-devices,
+    .add-to-card-small {
+        display: none;
+    }
+
+    @media (max-width: 991px) {
+        .middle {
+            display: none;
+        }
+
+        .small-devices,
+        .add-to-card-small {
+            display: block;
+        }
+    }
+</style>
+<div class="container-fluid dark-grey-text">
+    <div class="row wow fadeIn">
+        <div class="col-md-6 mb-3">
+
+            <ul class="breadcrumb">
+                <li><a href="{% url 'shop' %}">Products</a></li>
+                <li><a>{{ item.title }}</a></li>
+            </ul>
+            <!-- <center>
+                <img src="{{ itemImages.1.image.url }}" class="img-fluid" alt="" style="max-height: 400px">
+            </center> -->
+
+            <div class="slideshow-container">
+                {% for itemImage in itemImages %}
+                <div class="mySlides">
+                    <div class="numbertext">{{forloop.counter}}</div>
+                    <div
+                        style="background: url('{{itemImage.image.url}}') no-repeat; width: 100%; height: 400px; background-size: cover; background-position: center;">
+
+                    </div>
+                    <!-- <img src="{{itemImage.image.url}}" style="height: auto"
+                        alt="{{item.title}} image-{{forloop.counter}}" class="rounded img-fluid"> -->
+                </div>
+                {% endfor %}
+                <hr>
+                <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                <a class="next" onclick="plusSlides(1)">&#10095;</a>
+                <!-- <div class="caption-container">
+                    <p id="caption"></p>
+                </div> -->
+                <div class="slideshow-row">
+                    {% for itemImage in itemImages %}
+                    <div class="column demo cursor"
+                        style="background: url('{{itemImage.image.url}}') no-repeat; width: 33.33%; height: 100px; background-size: cover; background-position: center;"
+                        onclick="currentSlide('{{forloop.counter}}')">
+
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-1">
+
+            <div class="p-4">
+
+                <p class="h3">{{ item.title }}</p>
+                <a>
+                {% if item.get_category_display %}
+                    <span class="badge badge-primary p-1 mb-2"
+                    style="padding-top: 3px;">{{ item.get_category_display }}</span>
+                {% endif %}
+                </a>
+
+                <div class="row mb-2">
+                    <div class="col-sm-12" style="font-size: 15px;color: #ffb800">
+                        {% if item.ratings >= 5 %}
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        {% elif item.ratings >= 4.5 %}
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        {% elif item.ratings >= 4 %}
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        {% elif item.ratings >= 3.5 %}
+                        <i class="fa fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <i class="far fa-star"></i>
+                        {% elif item.ratings >= 3 %}
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        {% elif item.ratings >= 2.5 %}
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        {% elif item.ratings >= 2 %}
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        {% elif item.ratings >= 1.5 %}
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        {% elif item.ratings >= 1 %}
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        {% elif item.ratings >= 0.5 %}
+                        <i class="fas fa-star-half-alt"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        {% elif item.ratings >= 0 %}
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        {% endif %}
+                    </div>
+                </div>
+                <p class="small text-muted" style="color: #404040">By - <a class="text-info"
+                        href="{% url 'view-seller-profile' item.seller.user.user.username %}">{{ item.seller.user.user.username }}</a>
+                </p>
+                <p class="lead">
+                    {% if item.discount_price %}
+                    <span class="mr-1">
+                        <del>Rs.{{ item.price }}</del>
+                    </span>
+                    <span>Rs.{{ item.discount_price }}</span>
+                    {% else %}
+                    <span>Rs.{{ item.price }}</span>
+                    {% endif %}
+                </p>
+                <p class="lead text-muted mb-0">Stock: <b style="color:#404040 ;">{{ item.stock }}</b></p>
+                <p class="h6 lead" style="color: #404040;">Dimensions: <b>{{ item.height }} x {{ item.width }} (inches)</b></b></p>
+                <p class="h3" style="color: #555555; font-weight: 300;">Description</p>
+                <div class="productDescription" style="color: #424242; font-weight: 400;">
+                    <p>{{ item.description | safe }}</p>
+                </div>
+                <div class="clearfix">
+                    {% if item.stock == 0 %}
+                    <a class="btn btn-primary btn-sm pl-3 pr-3 float-left disabled" data-toggle="tooltip" data-placement="top" title="Not in stock!" style="color:#fff">Out of stock
+                        <i class="fas fa-ban ml-1"></i>
+                    </a>
+                    {% else %}
+                    <a href="{{ item.get_add_to_cart_url }}" class="btn btn-primary btn-sm pl-3 pr-3 float-left">Add
+                        to cart
+                        <i class="fas fa-shopping-cart ml-1"></i>
+                    </a>
+                    <a href="{{ item.get_remove_from_cart_url }}"
+                        class="btn btn-danger btn-sm pl-3 pr-3 float-right">Remove
+                        from cart
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p class="mt-4 mb-3 h2 text-center" style="color: #9e9e9e; font-weight: 300;">- Similar Products -
+    </p>
+    <section class="text-center mb-4">
+        <div class="row wow fadeIn">
+
+            {% for item in products %}
+
+            <div href="{% url 'product' item.item.slug %}"
+                class="col-lg-3 col-md-6 mb-4 item-card {% if item.get_category_display %}{{ item.get_category_display }}{% elif item.similar1.get_category_display %}{{ item.similar1.get_category_display }}{% elif item.similar2.get_category_display %}{{ item.similar2.get_category_display }}{% endif %}">
+                <div class="card" style="background-color: #fff; box-shadow: none; border: none">
+                    <div class="view"
+                        style="height: 180px; background: url('{{item.image.image.url}}'); background-position: center; background-size: cover;">
+                        <!-- <img src="" class="card-img-top" alt=""> -->
+
+                        <a class="small-devices" href="{% url 'product' item.item.slug %}">
+                            <div class="mask rgba-white-slight"></div>
+                        </a>
+                    </div>
+                    <div class="card-body text-center">
+
+                        <h5>
+                            <strong>
+                                <a href="{% url 'product' item.item.slug %}"
+                                    class="dark-grey-text h5">{{ item.item.title }}
+                                </a>
+                                <br>
+                                <small>
+                                    <a href="{% url 'product' item.item.slug %}" class="badge badge-primary"
+                                        style="padding-top: 2px">{{ item.item.category }}
+                                    </a>
+                                </small>
+                            </strong>
+                        </h5>
+                        <h6 class="font-weight-bold blue-text">
+                            <a href="{% url 'product' item.item.slug %}">
+                                <strong>Rs.
+                                    {% if item.item.discount_price %}
+                                    {{ item.item.discount_price }}
+                                    {% else %}
+                                    {{ item.item.price }}
+                                    {% endif %}
+                                </strong>
+                            </a>
+                            <a class="add-to-card-small" href="{{ item.item.get_add_to_cart_url }}"><i
+                                    class="fas fa-plus-circle float-right" style="color: #4caf50"></i></a>
+                        </h6>
+                    </div>
+                </div>
+                <div class="middle">
+                    <div class="text">
+                        <a href="{{ item.item.get_add_to_cart_url }}" class="btn btn-primary btn-md pl-3 pr-3"
+                            style="margin-top: -50px;">Add to cart</a>
+                    </div>
+                </div>
+            </div>
+            
+            {% endfor %}
+
+
+        </div>
+    </section>
+    <div class="container">
+        <h4 class="my-4 h4">Reviews ({{ comments.count }})</h4>
+        {% for comment in comments %}
+        <!-- Comments -->
+        <div class="row">
+            <div class="media comment-box" style="width: 100%">
+                <div class="media-left">
+                    <a href="#">
+                        <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <p style="font-size: 17px;" class="media-heading"> 
+                        {% if comment.user.is_seller %}
+                        <a href="{% url 'view-seller-profile' comment.user.user.username  %}" class="text-primary">{{ comment.user.user.username }}</a>
+                        {% else %}
+                        <a class="text-body">{{ comment.user.user.username }}</a>
+                        {% endif %}
+                         | <span
+                            style="font-size: 12px;">{{comment.created_date.day}}-{{comment.created_date.month}}-{{comment.created_date.year}}</span><span
+                            class="ml-2 pr-1 pl-1 float-right"
+                            style="background-color: #e22b37; border-radius: 3px; color: #fff;"><i
+                                style="color: #ffff00"
+                                class="fas fa-star mr-1 pt-1 pb-1"></i><b>{{ comment.rating }}.0</b></span>
+                    </p>
+                    <p>{{ comment.text }}
+                        <br> 
+                    {% if comment.user.user == user %}
+                    <a href="{% url 'edit-comment-product' comment.id %}" class="small text-primary">Edit</a>
+                    {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- End Comments -->
+        {% endfor %}
+        {% if user.is_authenticated %}
+        <div class="row">
+            <div class="widget-area no-padding blank">
+                <div class="status-upload">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <textarea name="review-msg" required
+                            placeholder="How was your experience at {{ object.ShopName }}?"></textarea>
+                        <select name="rating" class="custom-select m-2"
+                            style="width: 45%;color: #ffb800; font-size: 18px; font-weight: bold">
+                            <option value="5">&#9733; &#9733; &#9733; &#9733; &#9733;</option>
+                            <option value="4">&#9733; &#9733; &#9733; &#9733;</option>
+                            <option value="3">&#9733; &#9733; &#9733;</option>
+                            <option value="2">&#9733; &#9733;</option>
+                            <option value="1">&#9733;</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary btn-md"><b>Post comment</b></button>
+                    </form>
+                    <p style="content:''"></p>
+                </div><!-- Status Upload  -->
+            </div><!-- Widget Area -->
+        </div>
+        {% endif %}
+        <!-- End Comments -->
+    </div>
+
+</div>
+<br>
+<hr>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("div[href]").click(function () {
+            window.location = $(this).attr("href");
+        });
+    });
+
+</script>
+{% endblock %}
