@@ -38,7 +38,6 @@ def home(request):
         'https://cdn.eventfinda.co.nz/uploads/events/transformed/1246598-555064-34.jpg?v=2',
         'https://render.fineartamerica.com/images/rendered/default/print/10.000/8.375/break/images-medium-5/fledglings-anna-bain.jpg',
         'https://d3nn873nee648n.cloudfront.net/HomeImages/Without-People.jpg',
-        'http://www.lacma.org/sites/default/files/styles/exhibition_image/public/primary_image/2018-11/AC1992_136_1-20140414.jpg?itok=7ibfPJPQ',
         'https://www.washingtonian.com/wp-content/uploads/2019/07/BR2603-2048x2698.jpg',
         'https://i.pinimg.com/originals/a5/b3/4a/a5b34ac8665dd7945d95698662232c9b.jpg',
         'https://i.pinimg.com/originals/a3/18/c7/a318c734f63664e3f42d61792ddeeaeb.jpg',
