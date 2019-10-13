@@ -42,7 +42,7 @@ class SellerDetialsForm(forms.ModelForm):
             'lname',
             'gstNumber',
             'experience',
-            'specialty',
+            'speciality',
             'gender',
         ]
 
@@ -51,14 +51,14 @@ class SellerDetialsForm(forms.ModelForm):
             'lname':  forms.TextInput(attrs={'class': 'lname', 'id': 'lname', 'required': True, 'placeholder': 'e.g. Ghosh'}),
             'gstNumber': forms.TextInput(attrs={'placeholder': 'GST Number'}),
             'experience': forms.NumberInput(attrs={'placeholder': "in years"}),
-            'specialty': forms.TextInput(attrs={'placeholder': "e.g. Landscape or Art Acrylic"}),
+            'speciality': forms.TextInput(attrs={'placeholder': "e.g. Landscape or Art Acrylic"}),
         }
         labels = {
             'fname': 'First Name',
             'lname': 'Last Name',
             'gstNumber': "GST Registration Number(For Indian Artists)",
             'experience': "Since how many years have you been selling Art ?",
-            'specialty': "Your special art form ?",
+            'speciality': "Your special art form ?",
             'gender': "Gender",
         }
 
