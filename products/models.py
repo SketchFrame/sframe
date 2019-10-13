@@ -11,6 +11,8 @@ from users.models import *
 from django.utils import timezone
 from core.models import *
 from sorl.thumbnail import ImageField
+import uuid
+
 
 CATEGORY_CHOICES = (
     ('Pencil work', 'Pencil work'),
@@ -21,6 +23,7 @@ CATEGORY_CHOICES = (
     ('Oil colours', 'Oil colours'),
     ('Mix media', 'Mix Media'),
 )
+
 SUB_CATEGORY_CHOICES = (
     ('Abstract', 'Abstract'),
     ('Conceptual', 'Conceptual'),
@@ -47,7 +50,6 @@ SUB_CATEGORY_CHOICES = (
     ('Other', 'Other')
 )
 
-
 class Item(models.Model):
     seller = models.ForeignKey(
         'seller.Seller', on_delete=models.CASCADE, null=True, related_name='item_by')
@@ -56,25 +58,40 @@ class Item(models.Model):
         choices=CATEGORY_CHOICES, max_length=20)
     subCategory = models.CharField(
         choices=SUB_CATEGORY_CHOICES, blank=True, null=True, default="Other", max_length=50)
+    
     originalPrice = models.FloatField()
-    originalDiscount_price = models.FloatField(default=None, blank=True, null=True)
-    serviceCharge = models.FloatField(blank=True, null=True)
     gst = models.FloatField(blank=True, null=True)
     price = models.FloatField(blank=True, null=True)
     discount_price = models.FloatField(blank=True, null=True)
+
     slug = models.SlugField(unique=True, blank=True, null=True)
+    
     description = RichTextField()
     shortDescription = models.CharField(max_length=150)
+    
     makingTime = models.IntegerField(default=0)
     ratings = models.FloatField(blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
+    
     published = models.BooleanField(default=False)
+    
     approved = models.BooleanField(default=False)
+    
     height = models.FloatField()
     width = models.FloatField()
     weight = models.FloatField()
     stock = models.IntegerField(default=1)
+    
+    sku = models.CharField(max_length=50, blank=True, null=True)
+    hsn = models.CharField(max_length=50, blank=True, null=True)
+    colour = models.CharField(max_length=20, blank=True, null=True)
+    
+    addFrame = models.BooleanField(default=False)
+    frameCost = models.FloatField(blank=True, null=True)
+
+    finallySubmitted = models.BooleanField(default=False)
+    settlement = models.FloatField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.title} by {self.seller.user.user.username}"
@@ -82,28 +99,29 @@ class Item(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = self._get_unique_slug()
-        charges = Charges.objects.get(category=self.category)
         
-        gst = charges.gst
-        serviceCharge = charges.serviceCharge
+        # charges = Charges.objects.get(category=self.category)
+        
+        # gst = charges.gst
+        # serviceCharge = charges.serviceCharge
 
-        # For no discount
-        self.serviceCharge = (self.originalPrice * (serviceCharge/100))
+        # # For no discount
+        # self.serviceCharge = (self.originalPrice * (serviceCharge/100))
         
-        self.gst = ((self.originalPrice + self.serviceCharge) * (gst/100))
+        # self.gst = ((self.originalPrice + self.serviceCharge) * (gst/100))
         
-        self.price = round((self.originalPrice + self.gst + self.serviceCharge), 2)
+        # self.price = round((self.originalPrice + self.gst + self.serviceCharge), 2)
         
-        if self.originalDiscount_price == None:
-            self.discount_price = None
-        elif self.originalDiscount_price != None:
-            self.serviceCharge = (
-                self.originalDiscount_price * (serviceCharge/100))
+        # if self.originalDiscount_price == None:
+        #     self.discount_price = None
+        # elif self.originalDiscount_price != None:
+        #     self.serviceCharge = (
+        #         self.originalDiscount_price * (serviceCharge/100))
 
-            self.gst = ((self.originalDiscount_price +
-                         self.serviceCharge) * (gst/100))
+        #     self.gst = ((self.originalDiscount_price +
+        #                  self.serviceCharge) * (gst/100))
             
-            self.discount_price = round((self.originalDiscount_price + self.gst + self.serviceCharge), 2)
+        #     self.discount_price = round((self.originalDiscount_price + self.gst + self.serviceCharge), 2)
         
         super().save(*args, **kwargs)
 
@@ -130,6 +148,16 @@ class Item(models.Model):
     def get_absolute_url(self):
         return reverse('product', args=[self.slug])
 
+
+class PackageInformation(models.Model):
+    item = models.ForeignKey('Item', on_delete=models.CASCADE)
+    packageLength = models.FloatField(blank=True, null=True)
+    packageWidth = models.FloatField(blank=True, null=True)
+    packageHeight = models.FloatField(blank=True, null=True)
+    packageWeight = models.FloatField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.item.title} package information"
 
 class OrderItem(models.Model):
     user = models.ForeignKey(

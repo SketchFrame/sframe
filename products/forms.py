@@ -1,73 +1,108 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.db import models
-from .models import Item, ItemImages
+from .models import Item, ItemImages, PackageInformation
 from ckeditor.fields import RichTextField
 
-
-class AddItemForm(forms.ModelForm):
-    title = models.CharField(max_length=50)
-    price = models.FloatField()
-    discount_price = models.FloatField()
-    description = RichTextField()
-
+class AddItemCategoryForm(forms.ModelForm):
     class Meta:
         model = Item
-        fields = [
-            'title',
-            'originalPrice',
-            'category',
-            'subCategory',
-            'originalDiscount_price',
-            'description',
-            'shortDescription',
-            'makingTime',
-            'stock',
-            'published',
-            'height',
-            'width',
-            'weight',
-        ]
+        fields = ('category', 'subCategory')
+
+class AddItemForm(forms.ModelForm):
+    class Meta:
+        model = Item
+        exclude = ('seller', 'slug', 'approved', 'price', )
         widgets = {
-            'shortDescription': forms.Textarea(attrs={'col': '1', 'rows': '2'})
+            'title': forms.TextInput(attrs={'placeholder': "eg. My lovely artwork", 'id': 'title'}),
+            'sku': forms.TextInput(attrs={'placeholder': "eg. SFRAME100", 'id': 'sku'}),
+            'stock': forms.NumberInput(attrs={'placeholder': "eg. 2", 'id': 'stock'}),
+            'originalPrice': forms.NumberInput(attrs={'placeholder': "eg. 25,000", 'id': 'price'}),
+            'gst': forms.TextInput(attrs={'placeholder': "your GST number", 'id': 'gst'}),
+            'dispatch_time': forms.NumberInput(attrs={'placeholder': "eg. 2 days", 'id': 'dispatchTime'}),
+            'listing_status': forms.CheckboxInput(attrs={'class': "custom-control-input", 'id': "publish"}),
+            'color': forms.TextInput(attrs={'placeholder': "eg. Green", 'id': 'color'}),
+            'shortDescription': forms.TextInput(attrs={'placeholder': "Choose from the wide variety of art, on demand paintings, sketches and a lot more", 'id': "shortDescription"}),
+            'fullDescription': forms.Textarea(attrs={'placeholder': "Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable.", 'id': "fullDescription"}),
+            'weight': forms.NumberInput(attrs={'placeholder': "eg. 750", 'id':'weight'}),
+            'length': forms.NumberInput(attrs={'placeholder': "eg. 20", 'id': "length"}),
+            'height': forms.NumberInput(attrs={'placeholder': "eg. 20", 'id': "height"}),
+            'hsnCode': forms.TextInput(attrs={'placeholder': "eg. XXXXXXX", 'id': "hsnCode"}),
+            'frameCost': forms.NumberInput(attrs={'placeholder': "eg. 1000", 'id':"framingCost"}),
+            'addFrame': forms.CheckboxInput(attrs={'class': "custom-control-input", 'id': "frame"}),
         }
         labels = {
-            'published': 'Publish',
-            'height': 'Height (inches)',
-            'width': 'Width (inches)',
-            'weight': 'Weight (grams)', 
-            'subCategory': 'Sub Category',
-            'originalPrice': 'Price',
-            'originalDiscount_price': 'Discount Price'
+            'title': '',
+            'sku': '',
+            'stock': '',
+            'originalPrice': '',
+            'gst': '',
+            'dispatch_time': '',
+            'listing_status': '',
+            'color': '',
+            'shortDescription': '',
+            'fullDescription': '',
+            'weight': '',
+            'length': '',
+            'height': '',
+            'hsnCode': '',
+            'frameCost': '',
+            'addFrame': '',
+        }
+
+class PackageDetailsForm(forms.ModelForm):
+    class Meta:
+        model = PackageInformation
+        exclude = ('item',)
+
+        widgets = {
+            'packageLength': forms.NumberInput(attrs={'placeholder': 'e.g. 40', 'id': 'packageLength'}),
+            'packageWidth': forms.NumberInput(attrs={'placeholder': 'e.g. 40', 'id': 'packageWidth'}),
+            'packageHeight': forms.NumberInput(attrs={'placeholder': 'e.g. 40', 'id': 'packageHeight'}),
+            'packageWeight': forms.NumberInput(attrs={'placeholder': 'e.g. 1000', 'id': 'packageWeight'}),
         }
 
 class EditProduct(forms.ModelForm):
     class Meta:
         model = Item
-        fields = [
-            'title',
-            'originalPrice',
-            'originalDiscount_price',
-            'shortDescription',
-            'description',
-            'category',
-            'makingTime',
-            'published',
-            'height',
-            'width',
-            'weight',
-            'stock',
-            'subCategory'
-        ]
-        labels = {
-            'published': 'Publish',
-            'height': 'Height (inches)',
-            'width': 'Width (inches)',
-            'weight': 'Weight (grams)', 
-            'subCategory': 'Sub Category',
-            'originalPrice': 'Price',
-            'originalDiscount_price': 'Discount Price'
+        exclude = ('seller', 'slug', 'approved', 'price', )
+        widgets = {
+            'title': forms.TextInput(attrs={'placeholder': "eg. My lovely artwork", 'id': 'title'}),
+            'sku': forms.TextInput(attrs={'placeholder': "eg. SFRAME100", 'id': 'sku'}),
+            'stock': forms.NumberInput(attrs={'placeholder': "eg. 2", 'id': 'stock'}),
+            'originalPrice': forms.NumberInput(attrs={'placeholder': "eg. 25,000", 'id': 'price'}),
+            'gst': forms.TextInput(attrs={'placeholder': "your GST number", 'id': 'gst'}),
+            'dispatch_time': forms.NumberInput(attrs={'placeholder': "eg. 2 days", 'id': 'dispatchTime'}),
+            'listing_status': forms.CheckboxInput(attrs={'class': "custom-control-input", 'id': "publish"}),
+            'color': forms.TextInput(attrs={'placeholder': "eg. Green", 'id': 'color'}),
+            'shortDescription': forms.TextInput(attrs={'placeholder': "Choose from the wide variety of art, on demand paintings, sketches and a lot more", 'id': "shortDescription"}),
+            'fullDescription': forms.Textarea(attrs={'placeholder': "Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable.", 'id': "fullDescription"}),
+            'weight': forms.NumberInput(attrs={'placeholder': "eg. 750", 'id':'weight'}),
+            'length': forms.NumberInput(attrs={'placeholder': "eg. 20", 'id': "length"}),
+            'height': forms.NumberInput(attrs={'placeholder': "eg. 20", 'id': "height"}),
+            'hsnCode': forms.TextInput(attrs={'placeholder': "eg. XXXXXXX", 'id': "hsnCode"}),
+            'frameCost': forms.NumberInput(attrs={'placeholder': "eg. 1000", 'id':"framingCost"}),
+            'addFrame': forms.CheckboxInput(attrs={'class': "custom-control-input", 'id': "frame"}),
         }
+        labels = {
+            'title': '',
+            'sku': '',
+            'stock': '',
+            'originalPrice': '',
+            'gst': '',
+            'dispatch_time': '',
+            'listing_status': '',
+            'color': '',
+            'shortDescription': '',
+            'fullDescription': '',
+            'weight': '',
+            'length': '',
+            'height': '',
+            'hsnCode': '',
+            'frameCost': '',
+            'addFrame': '',
+        }
+
 
 
 class AddItemImagesForm(forms.ModelForm):

@@ -4,8 +4,9 @@
 {% block content %}
 <style>
     .table .thead-dark th {
-        background-color: #007eff;
-        border: #007eff;
+        background-color: #1d1e1f;
+        border: none;
+        font-weight: 400;
     }
 </style>
 <main>
@@ -55,12 +56,12 @@
                         </td>
                     </tr>
                     {% empty %}
-                    <tr>
+                    <tr class="text-center">
                         <td colspan="5">Your cart is empty</td>
                     </tr>
                     <tr>
                         <td colspan="5">
-                            <a class="btn btn-primary float-right" href="/">Continue shopping</a>
+                            <a class="btn btn-dark float-right" href="/">Continue shopping</a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -82,13 +83,11 @@
         {% if object.item.count > 0 %}
 
         <div class="clearfix">
-            <a class="btn btn-primary float-right" href="{% url 'checkout' %}" style="padding: 10px">Checkout</a>
-            <a class="btn btn-secondary float-left" href="{% url 'shop' %}" style="padding: 10px">Continue
-                shopping</a>
+            <a class="btn btn-dark float-right" href="{% url 'checkout' %}" style="padding: 10px">Checkout</a>
+            <a class="btn btn-secondary float-left" href="{% url 'shop' %}" style="padding: 10px">Continue shopping</a>
         </div>
         {% endif %}
     </div>
 </main>
 <br>
-<hr>
 {% endblock %}
