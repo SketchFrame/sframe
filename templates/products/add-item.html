@@ -13,14 +13,31 @@
         display: none;
     }
 
+    .cursor {
+        cursor: pointer;
+    }
+
     .custom-file-upload {
         border: 1px solid #ccc;
         display: inline-block;
         padding: 6px 12px;
+        width: 110px;
         cursor: pointer;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
-    .filter-gray{
-        filter: invert(88%) sepia(0%) saturate(0%) hue-rotate(212deg) brightness(103%) contrast(95%);
+
+    #default-img {
+        position: relative;
+        display: block;
+    }
+
+    #previewImg {
+        display: none;
+    }
+
+    .no-img-selected {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -28,19 +45,39 @@
         width: 104px;
         height: 104px;
     }
+
+    .filter-gray {
+        filter: invert(88%) sepia(0%) saturate(0%) hue-rotate(212deg) brightness(103%) contrast(95%);
+    }
 </style>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-5">
             <div class="card p-0 pt-3 pl-3 pr-3 pb-0" style="background-color: #fff">
-                <div class="display-image" style="border: 2px dashed #e2e2e2; height: 300px;">
-                    <div class="d-flex justify-content-center align-items-center">
-                        <!-- <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/insert_photo_48px.sv" class="filter-gray" alt=""> -->
+                <div id="default-img" style="border: 2px dashed #e2e2e2; height: 300px;">
+                    <div class="d-flex justify-content-center align-content-center">
+                        <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/insert_photo_48px.svg"
+                            class="filter-gray no-img-selected" alt="no image selected">
                     </div>
+                </div>
+                <img src="" alt="image cannot be displayed" id="previewImg"
+                    style="max-width: 100%;height: 300px; object-fit: contain;">
+                <div class="d-flex justify-content-center align-content-center flex-row flex-wrap mt-1">
+                    <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/insert_photo_48px.svg"
+                        class="filter-gray m-1 cursor" alt="image cannot be displayed" id="previewImg1"
+                        onclick="preivewImg(this)">
+
+                    <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/insert_photo_48px.svg"
+                        class="filter-gray m-1 cursor" alt="image cannot be displayed" id="previewImg2"
+                        onclick="preivewImg(this)">
+                    <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/insert_photo_48px.svg"
+                        class="filter-gray m-1 cursor" alt="image cannot be displayed" id="previewImg3"
+                        onclick="preivewImg(this)">
                 </div>
                 <div class="row d-flex position-relative justify-content-center align-items-center mt-2">
                     {% for f in formset %}
-                    <label for="id_form-{{ forloop.counter0 }}-image" class="custom-file-upload ml-1 mr-1" id="label-{{forloop.counter0}}">Choose
+                    <label for="id_form-{{ forloop.counter0 }}-image" class="custom-file-upload ml-1 mr-1"
+                        id="label-{{forloop.counter0}}">Choose
                         file</label>
                     {% endfor %}
                     {{ formset }}
@@ -55,7 +92,8 @@
                             Selling information
                         </div>
                         <div class="float-right">
-                            <button class="btn btn-link p-0 pb-1 m-0"><small class="text-primary" data-target="#price-modal" data-toggle="modal">Edit</small></button>
+                            <button class="btn btn-link p-0 pb-1 m-0"><small class="text-primary"
+                                    data-target="#price-modal" data-toggle="modal">Edit</small></button>
                         </div>
                     </div>
                 </div>
@@ -93,7 +131,8 @@
                             Product description
                         </div>
                         <div class="float-right">
-                            <button class="btn btn-link p-0 pb-1 m-0"><small class="text-primary" data-target="#product-modal" data-toggle="modal">Edit</small></button>
+                            <button class="btn btn-link p-0 pb-1 m-0"><small class="text-primary"
+                                    data-target="#product-modal" data-toggle="modal">Edit</small></button>
                         </div>
                     </div>
                 </div>
@@ -140,7 +179,8 @@
                             Package information
                         </div>
                         <div class="float-right">
-                            <button class="btn btn-link p-0 pb-1 m-0"><small class="text-primary" data-target="#package-modal" data-toggle="modal">Edit</small></button>
+                            <button class="btn btn-link p-0 pb-1 m-0"><small class="text-primary"
+                                    data-target="#package-modal" data-toggle="modal">Edit</small></button>
                         </div>
                     </div>
                 </div>
@@ -152,7 +192,7 @@
                         <div class="col-6">
                             <p class="p-0 text-muted">Weight</p>
                         </div>
-                    </div>            
+                    </div>
                 </div>
             </div>
         </div>
@@ -169,115 +209,111 @@
             </div>
 
             <!-- Modal body -->
-            <div class="modal-body p-2 pl-4 pr-4">
-                <form role="form" method="POST">
-                    {% csrf_token %}
-                    <div class="form-row">
-                        <div class="col-md-6 form-group d-flex flex-row">
-                            <label for="sku" class="pt-2 pb-2 pr-1">SKU: </label>
-                            <input type="text" class="form-control w-75" id="sku" placeholder="eg. SFRAME100">
-                            <i data-toggle="tooltip" data-placement="left"
-                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
-                                <span class="ml-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                        style="margin-top: 12px; margin-top: 12px;">
-                                        <path
-                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
-                                        </svg>
-                                </span>
-                            </i>
-                        </div>
-                        <div class="col-md-6 form-group d-flex flex-row">
-                            <label for="stock" class="pt-2 pb-2 pr-2">Stock: </label>
-                            <input type="text" class="form-control w-75" id="stock" placeholder="eg. 1">
-                            <i data-toggle="tooltip" data-placement="left"
-                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
-                                <span class="ml-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                        style="margin-top: 12px; margin-top: 12px;">
-                                        <path
-                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
-                                        </svg>
-                                </span>
-                            </i>
-                        </div>
+            <form method="POST" class="modal-body p-2 pl-4 pr-4">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="col-md-6 form-group d-flex flex-row">
+                        <label for="sku" class="pt-2 pb-2 pr-1">SKU: </label>
+                        {{ seller_information.sku | as_crispy_field }}
+                        <i data-toggle="tooltip" data-placement="left"
+                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            <span class="ml-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    style="margin-top: 12px;">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                </svg>
+                            </span>
+                        </i>
                     </div>
+                    <div class="col-md-6 form-group d-flex flex-row">
+                        <label for="stock" class="pt-2 pb-2 pr-2">Stock: </label>
+                        {{ seller_information.stock | as_crispy_field }}
+                        <i data-toggle="tooltip" data-placement="left"
+                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            <span class="ml-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    style="margin-top: 12px;">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                </svg>
+                            </span>
+                        </i>
+                    </div>
+                </div>
 
-                    <div class="form-row">
-                        <div class="col-md-6 form-group d-flex flex-row">
-                            <label for="price" class="pt-2 pb-2 pr-1">Price: </label>
-                            <input type="number" class="form-control w-75" id="price" placeholder="eg. 25,000">
-                            <i data-toggle="tooltip" data-placement="left"
-                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
-                                <span class="ml-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                        style="margin-top: 12px; margin-top: 12px;">
-                                        <path
-                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
-                                        </svg>
-                                </span>
-                            </i>
-                        </div>
-                        <div class="col-md-6 form-group d-flex flex-row">
-                            <label for="stock" class="pt-2 pb-2 pr-2">GST: </label>
-                            <input type="number" class="form-control w-75" id="stock" placeholder="eg. 12%">
-                            <i data-toggle="tooltip" data-placement="left"
-                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
-                                <span class="ml-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                        style="margin-top: 12px; margin-top: 12px;">
-                                        <path
-                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
-                                        </svg>
-                                </span>
-                            </i>
-                        </div>
+                <div class="form-row">
+                    <div class="col-md-6 form-group d-flex flex-row">
+                        <label for="price" class="pt-2 pb-2 pr-1">Price: </label>
+                        {{ seller_information.originalPrice | as_crispy_field }}
+                        <i data-toggle="tooltip" data-placement="left"
+                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            <span class="ml-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    style="margin-top: 12px;">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                </svg>
+                            </span>
+                        </i>
                     </div>
-                    <div class="form-row">
-                        <div class="col-md-6 form-group d-flex flex-row">
-                            <label for="dispatchTime" class="pt-2 pb-2 pr-1">Dispatch time: </label>
-                            <input type="text" class="form-control w-50" id="dispatchTime" placeholder="eg. 2 days ">
-                            <i data-toggle="tooltip" data-placement="left"
-                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
-                                <span class="ml-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                        style="margin-top: 12px; margin-top: 12px;">
-                                        <path
-                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
-                                    </svg>
-                                </span>
-                            </i>
-                        </div>
-                        <div class="col-md-6 form-group d-flex flex-row justify-content-center">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
-                                <label class="custom-control-label" for="customCheck">Publish</label>
-                            </div>
-                            <i>
-                                <span class="ml-2" data-toggle="tooltip" data-placement="left"
-                                    title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                                        <path
-                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
-                                    </svg>
-                                </span>
-                            </i>
-                        </div>
+                    <div class="col-md-6 form-group d-flex flex-row">
+                        <label for="gst" class="pt-2 pb-2 pr-2">GST: </label>
+                        {{ seller_information.gst | as_crispy_field }}
+                        <i data-toggle="tooltip" data-placement="left"
+                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            <span class="ml-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    style="margin-top: 12px;">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                </svg>
+                            </span>
+                        </i>
                     </div>
-                </form>
-            </div>
-
-            <!-- Modal footer -->
-            <div class="modal-footer p-2">
-                <button type="button" class="btn btn-warning pl-5 pr-5"
-                    style="background-color: #edca20; border-radius: 20px; color: #404040; font-weight: 650; letter-spacing: 1px">Save</button>
-            </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-6 form-group d-flex flex-row">
+                        <label for="dispatch_time" class="pt-2 pb-2 pr-1">Dispatch time: </label>
+                        {{ seller_information.dispatch_time | as_crispy_field }}
+                        <i data-toggle="tooltip" data-placement="left"
+                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            <span class="ml-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    style="margin-top: 12px;">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                </svg>
+                            </span>
+                        </i>
+                    </div>
+                    <div class="col-md-6 form-group d-flex flex-row justify-content-center">
+                        <div class="custom-control custom-checkbox">
+                            {{ seller_information.listing_status }}
+                            <label class="custom-control-label" for="publish">Publish</label>
+                        </div>
+                        <i>
+                            <span class="ml-2" data-toggle="tooltip" data-placement="left"
+                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                </svg>
+                            </span>
+                        </i>
+                    </div>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer p-2">
+                    <button type="submit" name="seller_information" class="btn btn-warning pl-5 pr-5"
+                        style="background-color: #edca20; border-radius: 20px; color: #404040; font-weight: 650; letter-spacing: 1px">Save</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
-
 <div class="modal fade" id="product-modal">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" style="max-width: 80% !important;">
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header p-2 pl-4 pr-4">
@@ -286,170 +322,175 @@
             </div>
 
             <!-- Modal body -->
-            <div class="modal-body p-2 pl-4 pr-4">
-                <form role="form" method="POST">
-                    {% csrf_token %}
-                    
-                    <div class="form-row">
-                        <div class="col-md-6 form-group d-flex flex-row">
-                            <label for="title" class="pt-2 pb-2 pr-1">Title: </label>
-                            <input type="text" class="form-control w-75" id="title" placeholder="eg. My lovely artwork">
-                            <i data-toggle="tooltip" data-placement="left"
-                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
-                                <span class="ml-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                        style="margin-top: 12px; margin-top: 12px;">
-                                        <path
-                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
-                                    </svg>
-                                </span>
-                            </i>
-                        </div>
-                        <div class="col-md-6 form-group d-flex flex-row">
-                            <label for="colour" class="pt-2 pb-2 pr-2">Colour: </label>
-                            <input type="text" class="form-control w-75" id="colour" placeholder="eg. Green">
-                            <i data-toggle="tooltip" data-placement="left"
-                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
-                                <span class="ml-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                        style="margin-top: 12px; margin-top: 12px;">
-                                        <path
-                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
-                                    </svg>
-                                </span>
-                            </i>
-                        </div>
+            <form role="form" method="POST" class="modal-body p-2 pl-4 pr-4">
+                {% csrf_token %}
+                {{product_description.media}}
+                <div class="form-row">
+                    <style>
+                        #div_id_title,
+                        #div_id_color,
+                        #div_id_stock,
+                        #div_id_sku,
+                        #div_id_originalPrice,
+                        #div_id_gst {
+                            width: 100% !important;
+                        }
+                    </style>
+                    <div class="col-md-8 form-group d-flex flex-row">
+                        <label for="title" class="pt-2 pb-2 pr-1">Title: </label>
+                        {{product_description.title | as_crispy_field}}
+                        <i data-toggle="tooltip" data-placement="left"
+                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            <span class="ml-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    style="margin-top: 12px;">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                </svg>
+                            </span>
+                        </i>
                     </div>
+                    <div class="col-md-4 form-group d-flex flex-row">
+                        <label for="colour" class="pt-2 pb-2 pr-2">Colour: </label>
+                        {{product_description.color | as_crispy_field}}
+                        <i data-toggle="tooltip" data-placement="left"
+                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            <span class="ml-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    style="margin-top: 12px;">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                </svg>
+                            </span>
+                        </i>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12 form-group">
+                        <label for="shortDescription" class="pt-2 pb-2 pr-1">Short Description:
+                            <i data-toggle="tooltip" data-placement="left"
+                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                </svg>
+                            </i>
+                        </label>
+                        {{product_description.shortDescription | as_crispy_field}}
+                    </div>
+                </div>
 
-                    <div class="form-row">
-                        <div class="col-md-12 form-group ">
-                            <label for="price" class="pt-2 pb-2 pr-1">Short Description:
-                                <i data-toggle="tooltip" data-placement="left"
-                                    title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                                        <path
-                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
-                                    </svg>
-                                </i>
-                            </label>
-                            <input type="text" class="form-control w-100" id="price" placeholder="eg. Choose from the wide variety of art, on demand paintings, sketches and a lot more.">
-                        </div>
+                <div class="form-row">
+                    <div class="col-md-12 form-group">
+                        <label for="fullDescriptipn" class="pt-2 pb-2 pr-1">Full Description:
+                            <i data-toggle="tooltip" data-placement="left"
+                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                </svg>
+                            </i>
+                        </label>
+                        {{product_description.fullDescription | as_crispy_field}}
                     </div>
-                    
-                    <div class="form-row">
-                        <div class="col-md-12 form-group">
-                            <label for="price" class="pt-2 pb-2 pr-1">Full Description:
-                                <i data-toggle="tooltip" data-placement="left"
-                                    title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                                        <path
-                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
-                                    </svg>
-                                </i>
-                            </label>
-                            <textarea class="form-control w-100" name="fullDescriptipn" id="fullDescriptipn" rows="3"></textarea>
-                        </div>
-                    </div>
+                </div>
 
-                    <div class="form-row">
-                        <div class="col-md-4 form-group d-flex flex-row">
-                            <label for="weight" class="pt-2 pb-2 pr-1">Weight:(g) </label>
-                            <input type="text" class="form-control w-50" id="weight" placeholder="eg. 750">
-                            <i data-toggle="tooltip" data-placement="left"
-                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
-                                <span class="ml-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                        style="margin-top: 12px; margin-top: 12px;">
-                                        <path
-                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
-                                    </svg>
-                                </span>
-                            </i>
-                        </div>
-                        <div class="col-md-4 form-group d-flex flex-row">
-                            <label for="weight" class="pt-2 pb-2 pr-1">Length:(cm) </label>
-                            <input type="text" class="form-control w-50" id="weight" placeholder="eg. 20">
-                            <i data-toggle="tooltip" data-placement="left"
-                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
-                                <span class="ml-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                        style="margin-top: 12px; margin-top: 12px;">
-                                        <path
-                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
-                                    </svg>
-                                </span>
-                            </i>
-                        </div>
-                        <div class="col-md-4 form-group d-flex flex-row">
-                            <label for="colour" class="pt-2 pb-2 pr-2">Width:(cm) </label>
-                            <input type="text" class="form-control w-50" id="colour" placeholder="eg. 20">
-                            <i data-toggle="tooltip" data-placement="left"
-                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
-                                <span class="ml-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                        style="margin-top: 12px; margin-top: 12px;">
-                                        <path
-                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
-                                    </svg>
-                                </span>
-                            </i>
-                        </div>
+                <div class="form-row">
+                    <div class="col-md-4 form-group d-flex flex-row">
+                        <label for="weight" class="pt-2 pb-2 pr-1">Weight:(g) </label>
+                        {{product_description.weight | as_crispy_field}}
+                        <i data-toggle="tooltip" data-placement="left"
+                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            <span class="ml-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    style="margin-top: 12px;">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                </svg>
+                            </span>
+                        </i>
                     </div>
-
-                    <div class="form-row">
-                        <div class="col-md-4 form-group d-flex flex-row">
-                            <label for="weight" class="pt-2 pb-2 pr-1">HSN Code: </label>
-                            <input type="text" class="form-control w-50" id="weight" placeholder="eg. XXXXXXX">
-                            <i data-toggle="tooltip" data-placement="left"
-                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
-                                <span class="ml-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                        style="margin-top: 12px; margin-top: 12px;">
-                                        <path
-                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
-                                    </svg>
-                                </span>
-                            </i>
-                        </div>
-                        <div class="col-md-3 form-group d-flex flex-row">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="frame" name="example1">
-                                <label class="custom-control-label" for="frame">Add Frame</label>
-                            </div>
-                            <i>
-                                <span class="ml-2" data-toggle="tooltip" data-placement="left"
-                                    title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                                        <path
-                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
-                                    </svg>
-                                </span>
-                            </i>
-                        </div>
-                        <div class="col-md-5 form-group d-flex flex-row">
-                            <label for="framingCost" class="pt-2 pb-2 pr-1">Framing cost: </label>
-                            <input type="text" class="form-control w-50" id="framingCost" placeholder="eg. 1000">
-                            <i data-toggle="tooltip" data-placement="left"
-                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
-                                <span class="ml-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                        style="margin-top: 12px; margin-top: 12px;">
-                                        <path
-                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
-                                    </svg>
-                                </span>
-                            </i>
-                        </div>
+                    <div class="col-md-4 form-group d-flex flex-row">
+                        <label for="length" class="pt-2 pb-2 pr-1">Length:(cm) </label>
+                        {{product_description.length | as_crispy_field}}
+                        <i data-toggle="tooltip" data-placement="left"
+                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            <span class="ml-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    style="margin-top: 12px;">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                </svg>
+                            </span>
+                        </i>
                     </div>
-                
-                </form>
-            </div>
+                    <div class="col-md-4 form-group d-flex flex-row">
+                        <label for="width" class="pt-2 pb-2 pr-2">Width:(cm) </label>
+                        {{product_description.height | as_crispy_field}}
+                        <i data-toggle="tooltip" data-placement="left"
+                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            <span class="ml-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    style="margin-top: 12px;">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                </svg>
+                            </span>
+                        </i>
+                    </div>
+                </div>
 
-            <!-- Modal footer -->
-            <div class="modal-footer p-2">
-                <button type="button" class="btn btn-warning pl-5 pr-5"
-                    style="background-color: #edca20; border-radius: 20px; color: #404040; font-weight: 650; letter-spacing: 1px">Save</button>
-            </div>
+                <div class="form-row">
+                    <div class="col-md-4 form-group d-flex flex-row">
+                        <label for="hsnCode" class="pt-2 pb-2 pr-1">HSN Code: </label>
+                        {{product_description.hsnCode | as_crispy_field}}
+                        <i data-toggle="tooltip" data-placement="left"
+                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            <span class="ml-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    style="margin-top: 12px;">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                </svg>
+                            </span>
+                        </i>
+                    </div>
+                    <div class="col-md-4 form-group d-flex flex-row justify-content-center">
+                        <div class="custom-control custom-checkbox">
+                            {{ product_description.addFrame }}
+                            <label class="custom-control-label" for="frame">Add Frame</label>
+                        </div>
+                        <i>
+                            <span class="ml-2" data-toggle="tooltip" data-placement="left"
+                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                </svg>
+                            </span>
+                        </i>
+                    </div>
+                    <div class="col-md-4 form-group d-flex flex-row">
+                        <label for="framingCost" class="pt-2 pb-2 pr-1">Framing cost: </label>
+                        {{product_description.frameCost | as_crispy_field}}
+                        <i data-toggle="tooltip" data-placement="left"
+                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            <span class="ml-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    style="margin-top: 12px;">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                </svg>
+                            </span>
+                        </i>
+                    </div>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer p-2">
+                    <button type="submit" class="btn btn-warning pl-5 pr-5" name="product_description"
+                        style="background-color: #edca20; border-radius: 20px; color: #404040; font-weight: 650; letter-spacing: 1px">Save</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -464,167 +505,143 @@
             </div>
 
             <!-- Modal body -->
-            <div class="modal-body p-2 pl-4 pr-4">
-                <form role="form" method="POST">
-                    {% csrf_token %}
-                    <div class="form-row">
-                        <div class="col-md-6 form-group d-flex flex-row">
-                            <label for="sku" class="pt-2 pb-2 pr-1">Length(cm): </label>
-                            <input type="number" class="form-control w-75" id="sku" placeholder="eg. 22">
-                            <i data-toggle="tooltip" data-placement="left"
-                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
-                                <span class="ml-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                        style="margin-top: 12px; margin-top: 12px;">
-                                        <path
-                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
-                                    </svg>
-                                </span>
-                            </i>
-                        </div>
-                        <div class="col-md-6 form-group d-flex flex-row">
-                            <label for="stock" class="pt-2 pb-2 pr-2">Width(cm): </label>
-                            <input type="number" class="form-control w-75" id="stock" placeholder="eg. 22">
-                            <i data-toggle="tooltip" data-placement="left"
-                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
-                                <span class="ml-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                        style="margin-top: 12px; margin-top: 12px;">
-                                        <path
-                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
-                                    </svg>
-                                </span>
-                            </i>
-                        </div>
+            <form role="form" method="POST" class="modal-body p-2 pl-4 pr-4">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="col-md-6 form-group d-flex flex-row">
+                        <label for="packageLength" class="pt-2 pb-2 pr-1">Length(cm): </label>
+                        {{packageForm.packageLength | as_crispy_field}}
+                        <i data-toggle="tooltip" data-placement="left"
+                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            <span class="ml-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    style="margin-top: 12px;">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                </svg>
+                            </span>
+                        </i>
                     </div>
-
-                    <div class="form-row">
-                        <div class="col-md-6 form-group d-flex flex-row">
-                            <label for="price" class="pt-2 pb-2 pr-1">Height(cm): </label>
-                            <input type="number" class="form-control w-75" id="price" placeholder="eg. 5">
-                            <i data-toggle="tooltip" data-placement="left"
-                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
-                                <span class="ml-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                        style="margin-top: 12px; margin-top: 12px;">
-                                        <path
-                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
-                                    </svg>
-                                </span>
-                            </i>
-                        </div>
-                        <div class="col-md-6 form-group d-flex flex-row">
-                            <label for="stock" class="pt-2 pb-2 pr-2">Weight(g): </label>
-                            <input type="number" class="form-control w-75" id="stock" placeholder="eg. 1000">
-                            <i data-toggle="tooltip" data-placement="left"
-                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
-                                <span class="ml-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                        style="margin-top: 12px; margin-top: 12px;">
-                                        <path
-                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
-                                    </svg>
-                                </span>
-                            </i>
-                        </div>
+                    <div class="col-md-6 form-group d-flex flex-row">
+                        <label for="packageWidth" class="pt-2 pb-2 pr-2">Width(cm): </label>
+                        {{packageForm.packageWidth | as_crispy_field}}
+                        <i data-toggle="tooltip" data-placement="left"
+                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            <span class="ml-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    style="margin-top: 12px;">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                </svg>
+                            </span>
+                        </i>
                     </div>
-                </form>
-            </div>
+                </div>
 
-            <!-- Modal footer -->
-            <div class="modal-footer p-2">
-                <button type="button" class="btn btn-warning pl-5 pr-5"
-                    style="background-color: #edca20; border-radius: 20px; color: #404040; font-weight: 650; letter-spacing: 1px">Save</button>
-            </div>
+                <div class="form-row">
+                    <div class="col-md-6 form-group d-flex flex-row">
+                        <label for="packageHeight" class="pt-2 pb-2 pr-1">Height(cm): </label>
+                        {{packageForm.packageHeight | as_crispy_field}}
+                        <i data-toggle="tooltip" data-placement="left"
+                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            <span class="ml-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    style="margin-top: 12px;">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                </svg>
+                            </span>
+                        </i>
+                    </div>
+                    <div class="col-md-6 form-group d-flex flex-row">
+                        <label for="packageWeight" class="pt-2 pb-2 pr-2">Weight(g): </label>
+                        {{packageForm.packageWeight | as_crispy_field}}
+                        <i data-toggle="tooltip" data-placement="left"
+                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            <span class="ml-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    style="margin-top: 12px;">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                </svg>
+                            </span>
+                        </i>
+                    </div>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer p-2">
+                    <button type="submit" class="btn btn-warning pl-5 pr-5" name="package_information"
+                        style="background-color: #edca20; border-radius: 20px; color: #404040; font-weight: 650; letter-spacing: 1px">Save</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
 <div class="container-fluid">
     <div class="clearfix mt-3">
-            <a href="{% url 'my-shop' %}" class="btn btn-secondary btn-md pr-5 pl-5" style="border-radius: 20px">Cancel</a>
-            <button type="submit" class="btn btn-md btn-dark pr-5 pl-5" style="border-radius: 20px; float: right;">save</button>
-            
-        </div>
+        <a href="{% url 'my-shop' %}" class="btn btn-secondary btn-md pr-5 pl-5" style="border-radius: 20px">Cancel</a>
+        <button type="submit" class="btn btn-md btn-dark pr-5 pl-5"
+            style="border-radius: 20px; float: right;">save</button>
+
+    </div>
 </div>
 <br>
 <script src="{% static 'js/Jquery_V3.4.1.js' %}"></script>
 <script type="text/javascript">
+    function preivewImg(event) {
+        if (event.src !== "https://sketchframe.s3.ap-south-1.amazonaws.com/svg/insert_photo_48px.svg") {
+            return document.getElementById("previewImg").src = event.src
+        } else {
+            return true;
+        }
+    }
     $(document).ready(function () {
         $('input[name="form-0-image"]').change(function (e) {
             var fileName0 = e.target.files[0].name;
+            var defaultImg = document.getElementById("default-img");
+            defaultImg.style.display = "none";
+            var previewImg = document.getElementById("previewImg");
+            previewImg.src = URL.createObjectURL(e.target.files[0])
+            previewImg.style.display = "block";
+            previewImg1 = document.getElementById("previewImg1");
+            previewImg1.className = previewImg1.className.replace(/\bfilter-gray\b/g, "");
+            previewImg1.src = URL.createObjectURL(e.target.files[0])
+            previewImg1.style.width = "60px";
+            previewImg1.style.height = "55px";
+            previewImg1.style.objectFit = "cover";
             $('#label-0').html(fileName0)
         });
         $('input[name="form-1-image"]').change(function (e) {
             var fileName1 = e.target.files[0].name;
+            var defaultImg = document.getElementById("default-img");
+            defaultImg.style.display = "none";
+            var previewImg = document.getElementById("previewImg");
+            previewImg.src = URL.createObjectURL(e.target.files[0])
+            previewImg.style.display = "block";
+            previewImg2 = document.getElementById("previewImg2");
+            previewImg2.className = previewImg2.className.replace(/\bfilter-gray\b/g, "");
+            previewImg2.src = URL.createObjectURL(e.target.files[0])
+            previewImg2.style.width = "60px";
+            previewImg2.style.height = "55px";
+            previewImg2.style.objectFit = "cover";
             $('#label-1').html(fileName1)
         });
         $('input[name="form-2-image"]').change(function (e) {
             var fileName2 = e.target.files[0].name;
+            var defaultImg = document.getElementById("default-img");
+            defaultImg.style.display = "none";
+            var previewImg = document.getElementById("previewImg");
+            previewImg.src = URL.createObjectURL(e.target.files[0])
+            previewImg.style.display = "block";
+            previewImg3 = document.getElementById("previewImg3");
+            previewImg3.className = previewImg1.className.replace(/\bfilter-gray\b/g, "");
+            previewImg3.src = URL.createObjectURL(e.target.files[0])
+            previewImg3.style.width = "60px";
+            previewImg3.style.height = "55px";
+            previewImg3.style.objectFit = "cover";
             $('#label-2').html(fileName2)
         });
-        $("#id_category").on('change', function(){
-            if($(this).val() != ''){
-                $.ajaxSetup({ 
-                    beforeSend: function(xhr, settings) {
-                        function getCookie(name) {
-                            var cookieValue = null;
-                            if (document.cookie && document.cookie != '') {
-                                var cookies = document.cookie.split(';');
-                                for (var i = 0; i < cookies.length; i++) {
-                                    var cookie = jQuery.trim(cookies[i]);
-                                    // Does this cookie string begin with the name we want?
-                                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                                        break;
-                                    }
-                                }
-                            }
-                            return cookieValue;
-                        }
-                        if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-                            // Only send the token to relative URLs i.e. locally.
-                            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-                        }
-                    } 
-                });
-                $.ajax({
-                    type: "POST",
-                    url: "{% url 'get-charges' %}",
-                    data: {
-                        'category': $(this).val(),
-                    },
-                    dataType: 'json',
-                    success: function(data){
-                        console.log(`${data['tax']} ${data['charge']}`)                
-                        $("#id_originalPrice").on('keyup', function(){
-                            if ($(this).val() == ''){
-                                $("#displayPrice").hide()
-                            }else{
-                                $("#displayPrice").show()
-                                var initialValue = parseFloat($(this).val());
-                                commision = initialValue*(parseFloat(data['charge'])/100);
-                                tax = (commision + initialValue) * (parseFloat(data['tax'])/100)
-                                totalPrice = parseFloat(initialValue+commision+ tax).toFixed(2);
-                                $("#new_price").html(totalPrice);
-                            }
-                        })
-                        $("#id_originalDiscount_price").on('keyup', function () {
-                            if ($(this).val() == '') {
-                                $("#displayDiscountPrice").hide()
-                            } else {
-                                $("#displayDiscountPrice").show()
-                                var initialValue = parseFloat($(this).val());
-                                commision = initialValue * (parseFloat(data['charge'])/100);
-                                tax = (commision + initialValue) * (parseFloat(data['tax'])/100)
-                                totalPrice = parseFloat(initialValue + commision + tax).toFixed(2);
-                                $("#new_discount_price").html(totalPrice);
-                            }
-                        })
-                    }
-                })
-            }
-        })
     });
 </script>
 {% endblock %}

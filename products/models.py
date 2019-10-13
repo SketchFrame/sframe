@@ -79,7 +79,7 @@ class Item(models.Model):
     approved = models.BooleanField(default=False)
     
     height = models.FloatField(blank=True, null=True)
-    width = models.FloatField(blank=True, null=True)
+    length = models.FloatField(blank=True, null=True)
     weight = models.FloatField(blank=True, null=True)
     stock = models.IntegerField(default=1)
     
@@ -97,33 +97,11 @@ class Item(models.Model):
         return f"{self.title} by {self.seller.user.user.username}"
 
     def save(self, *args, **kwargs):
-        if not self.slug:
+        if self.slug == '' or self.title:
+            self.slug = None
+            super().save(*args, **kwargs)
             self.slug = self._get_unique_slug()
-        
-        # charges = Charges.objects.get(category=self.category)
-        
-        # gst = charges.gst
-        # serviceCharge = charges.serviceCharge
-
-        # # For no discount
-        # self.serviceCharge = (self.originalPrice * (serviceCharge/100))
-        
-        # self.gst = ((self.originalPrice + self.serviceCharge) * (gst/100))
-        
-        # self.price = round((self.originalPrice + self.gst + self.serviceCharge), 2)
-        
-        # if self.originalDiscount_price == None:
-        #     self.discount_price = None
-        # elif self.originalDiscount_price != None:
-        #     self.serviceCharge = (
-        #         self.originalDiscount_price * (serviceCharge/100))
-
-        #     self.gst = ((self.originalDiscount_price +
-        #                  self.serviceCharge) * (gst/100))
-            
-        #     self.discount_price = round((self.originalDiscount_price + self.gst + self.serviceCharge), 2)
-        
-        super().save(*args, **kwargs)
+            super().save(*args, **kwargs)
 
     def _get_unique_slug(self):
         if self.title:

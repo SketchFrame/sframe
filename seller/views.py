@@ -154,7 +154,7 @@ def myShop(request):
     images = ItemImages.objects.filter(
         item__seller__user__user=request.user)
     for item in items:
-        if item.published:
+        if item.listing_status:
             published_items += 1
         for image in images:
             if item.slug == image.item.slug:
@@ -184,7 +184,7 @@ def myShop(request):
         'total_sale_this_month': total_sale_this_month,
         'total_income_this_month': total_income_this_month,
         'total_products': Item.objects.filter(seller__user__user=request.user).count(),
-        'published_items': Item.objects.filter(Q(seller__user__user=request.user) & Q(published=True)).count()
+        'published_items': Item.objects.filter(Q(seller__user__user=request.user) & Q(listing_status=True)).count()
     }
     return render(request, 'seller/home.html', context)
 
@@ -290,8 +290,8 @@ def complete_profile(request):
             s.fname = info_form.cleaned_data['fname']
             s.lname = info_form.cleaned_data['lname']
             s.gstNumber = info_form.cleaned_data['gstNumber']
+            s.speciality = info_form.cleaned_data['speciality']
             s.experience = info_form.cleaned_data['experience']
-            s.specialty = info_form.cleaned_data['specialty']
             s.gender = info_form.cleaned_data['gender']
             s.basic_profile_completed = True
             s.save()
