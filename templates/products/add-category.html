@@ -1,0 +1,12 @@
+{% extends 'home/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container">
+    <form method="POST" class="mt-5 mb-3">
+        {% csrf_token %}
+        <h4 class="modal-title h4 text-center" style="font-weight: 200;">- Add Category -</h4>
+        {{ form | crispy }}
+        <input type="submit" class="btn btn-warning" value="Next">
+    </form>
+</div>
+{% endblock %}

@@ -6,71 +6,559 @@
 {% endblock %}
 
 {% block content %}
+<style>
+    .upload-file {
+        display: none;
+    }
+
+    .custom-file-upload {
+        border: 1px solid #ccc;
+        display: inline-block;
+        padding: 6px 12px;
+        cursor: pointer;
+    }
+
+    .filter-gray {
+        filter: invert(88%) sepia(0%) saturate(0%) hue-rotate(212deg) brightness(103%) contrast(95%);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 104px;
+        height: 104px;
+    }
+</style>
 <p class="mt-2 mb-3 h3 text-center" style="color: #9e9e9e; font-weight: 300;">
-    - Edit {{ form.title.value }} -
+    - Edit {% if form.title.value %}{{ form.title.value }}{% else %}Product{% endif %} -
 </p>
+
 <div class="container-fluid">
-    <form method="POST" class="container">
-        {% csrf_token %}
-        {{ form.media }}
-        {{ form.title | as_crispy_field }}
-        <div class="form-row">
-            <div class="col-md-6">
-                {{ form.category | as_crispy_field }}
-            </div>
-            <div class="col-md-6">
-                {{ form.subCategory | as_crispy_field }}
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="col-md-6">
-                {{ form.originalPrice | as_crispy_field }}
-                <div id="displayPrice" style="display: none">Display Price: <i class="fas fa-inr"></i><span id="new_price" class="font-weight-bold"></span> (15% Service charge + 12% GST)</div>
-            </div>
-            <div class="col-md-6">
-                {{ form.originalDiscount_price | as_crispy_field }}
-                <div id="displayDiscountPrice" style="display: none">Display Price: <i class="fas fa-inr"></i><span id="new_discount_price" class="font-weight-bold"> </span> (15% Service charge + 12% GST)</div>
+    <div class="row">
+        <div class="col-md-5">
+            <div class="card p-0 pt-3 pl-3 pr-3 pb-0" style="background-color: #fff">
+                <div class="display-image" style="border: 2px dashed #e2e2e2; height: 300px;">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <!-- <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/insert_photo_48px.sv" class="filter-gray" alt=""> -->
+                    </div>
+                </div>
+                <div class="row d-flex position-relative justify-content-center align-items-center mt-2">
+                    {% for f in formset %}
+                    <label for="id_form-{{ forloop.counter0 }}-image" class="custom-file-upload ml-1 mr-1"
+                        id="label-{{forloop.counter0}}">Choose
+                        file</label>
+                    {% endfor %}
+                    {{ formset }}
+                </div>
             </div>
         </div>
-        <div class="form-row">
-            <div class="col-md-4">
-                {{ form.height | as_crispy_field }}
+        <div class="col-md-7">
+            <div class="card w-100 mw-100 p-2">
+                <div class="card-text">
+                    <div class="clearifx">
+                        <div class="h5 float-left text-secondary" style="font-weight: 200">
+                            Selling information
+                        </div>
+                        <div class="float-right">
+                            <button class="btn btn-link p-0 pb-1 m-0"><small class="text-primary"
+                                    data-target="#price-modal" data-toggle="modal">Edit</small></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0 m-0 border-top" style="font-size: 14px;">
+                    <div class="row pt-2 m-auto">
+                        <div class="col-4">
+                            <p class="p-0 text-muted">SKU</p>
+                        </div>
+                        <div class="col-4">
+                            <p class="p-0 text-muted">Stock</p>
+                        </div>
+                        <div class="col-4">
+                            <p class="p-0 text-muted">Listing Status</p>
+                        </div>
+
+                    </div>
+                    <div class="row m-auto">
+                        <div class="col-4">
+                            <p class="p-0 text-muted">Price detail</p>
+                        </div>
+                        <div class="col-4">
+                            <p class="p-0 text-muted">GST</p>
+                        </div>
+                        <div class="col-4">
+                            <p class="p-0 text-muted">Dispatch time</p>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-            <div class="col-md-4">
-                {{ form.width | as_crispy_field }}
+            <div class="card w-100 mt-2 mw-100 p-2">
+                <div class="card-text">
+                    <div class="clearifx">
+                        <div class="h5 float-left text-secondary" style="font-weight: 200">
+                            Product description
+                        </div>
+                        <div class="float-right">
+                            <button class="btn btn-link p-0 pb-1 m-0"><small class="text-primary"
+                                    data-target="#product-modal" data-toggle="modal">Edit</small></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0 m-0 border-top" style="font-size: 14px;">
+                    <div class="row pt-2 m-auto">
+                        <div class="col-4">
+                            <p class="p-0 text-muted">Title</p>
+                        </div>
+                        <div class="col-4">
+                            <p class="p-0 text-muted">Colour</p>
+                        </div>
+                        <div class="col-4">
+                            <p class="p-0 text-muted">Short Description</p>
+                        </div>
+                    </div>
+                    <div class="row m-auto">
+                        <div class="col-4">
+                            <p class="p-0 text-muted">Full Description</p>
+                        </div>
+                        <div class="col-4">
+                            <p class="p-0 text-muted">Weight</p>
+                        </div>
+                        <div class="col-4">
+                            <p class="p-0 text-muted">Dimensions</p>
+                        </div>
+                    </div>
+                    <div class="row m-auto">
+                        <div class="col-4">
+                            <p class="p-0 text-muted">HSN Code</p>
+                        </div>
+                        <div class="col-4">
+                            <p class="p-0 text-muted">Framing options</p>
+                        </div>
+                        <div class="col-4">
+                            <p class="p-0 text-muted">Search Keyword</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-4">
-                {{ form.weight | as_crispy_field }}
+            <div class="card w-100 mt-2 mw-100 p-2">
+                <div class="card-text">
+                    <div class="clearifx">
+                        <div class="h5 float-left text-secondary" style="font-weight: 200">
+                            Package information
+                        </div>
+                        <div class="float-right">
+                            <button class="btn btn-link p-0 pb-1 m-0"><small class="text-primary"
+                                    data-target="#package-modal" data-toggle="modal">Edit</small></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0 m-0 border-top" style="font-size: 14px;">
+                    <div class="row pt-2 m-auto">
+                        <div class="col-6">
+                            <p class="p-0 text-muted">Dimensions</p>
+                        </div>
+                        <div class="col-6">
+                            <p class="p-0 text-muted">Weight</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        {{ form.description | as_crispy_field }}
-        {{ form.shortDescription | as_crispy_field }}
-        
-        <div class="form-row">
-            <div class="col-md-6">
-                {{ form.makingTime | as_crispy_field }}
-            </div>
-            <div class="col-md-6">
-                {{ form.stock | as_crispy_field }}
-            </div>
-        </div>
-        {{ form.published | as_crispy_field }}
-        <div class="row p-3">
-            {% for image in images %}
-            <div class="col-12 col-md-4" style="background: url('{{image.image.url}}') no-repeat; background-position: center; background-size: cover; height: 200px;border:3px solid #fff">
-            </div>
-            {% endfor %}
-        </div><br>
-        <div class="clearfix mt-3 mb-3">
-            <input type="submit" value="Save" class="btn btn-outline-success shadow-sm btn-md float-right">
-            <a href="{% url 'view-all-product' %}" class="btn btn-secondary btn-md">Back</a>
-            <a href="{% url 'edit-product-images' product_slug %}" class="btn btn-outline-secondary btn-md">Edit
-                Images</a>
-        </div>
-    </form>
+    </div>
 </div>
+
+<div class="modal fade" id="price-modal">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header p-2 pl-4 pr-4">
+                <h4 class="modal-title h5" style="font-weight: 200;">Selling Information</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body p-2 pl-4 pr-4">
+                <form role="form" method="POST">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="col-md-6 form-group d-flex flex-row">
+                            <label for="sku" class="pt-2 pb-2 pr-1">SKU: </label>
+                            <input type="text" class="form-control w-75" id="sku" placeholder="eg. SFRAME100">
+                            <i data-toggle="tooltip" data-placement="left"
+                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                <span class="ml-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        style="margin-top: 12px; margin-top: 12px;">
+                                        <path
+                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                    </svg>
+                                </span>
+                            </i>
+                        </div>
+                        <div class="col-md-6 form-group d-flex flex-row">
+                            <label for="stock" class="pt-2 pb-2 pr-2">Stock: </label>
+                            <input type="text" class="form-control w-75" id="stock" placeholder="eg. 1">
+                            <i data-toggle="tooltip" data-placement="left"
+                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                <span class="ml-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        style="margin-top: 12px; margin-top: 12px;">
+                                        <path
+                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                    </svg>
+                                </span>
+                            </i>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-6 form-group d-flex flex-row">
+                            <label for="price" class="pt-2 pb-2 pr-1">Price: </label>
+                            <input type="number" class="form-control w-75" id="price" placeholder="eg. 25,000">
+                            <i data-toggle="tooltip" data-placement="left"
+                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                <span class="ml-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        style="margin-top: 12px; margin-top: 12px;">
+                                        <path
+                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                    </svg>
+                                </span>
+                            </i>
+                        </div>
+                        <div class="col-md-6 form-group d-flex flex-row">
+                            <label for="stock" class="pt-2 pb-2 pr-2">GST: </label>
+                            <input type="number" class="form-control w-75" id="stock" placeholder="eg. 12%">
+                            <i data-toggle="tooltip" data-placement="left"
+                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                <span class="ml-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        style="margin-top: 12px; margin-top: 12px;">
+                                        <path
+                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                    </svg>
+                                </span>
+                            </i>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6 form-group d-flex flex-row">
+                            <label for="dispatchTime" class="pt-2 pb-2 pr-1">Dispatch time: </label>
+                            <input type="text" class="form-control w-50" id="dispatchTime" placeholder="eg. 2 days ">
+                            <i data-toggle="tooltip" data-placement="left"
+                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                <span class="ml-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        style="margin-top: 12px; margin-top: 12px;">
+                                        <path
+                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                    </svg>
+                                </span>
+                            </i>
+                        </div>
+                        <div class="col-md-6 form-group d-flex flex-row justify-content-center">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
+                                <label class="custom-control-label" for="customCheck">Publish</label>
+                            </div>
+                            <i>
+                                <span class="ml-2" data-toggle="tooltip" data-placement="left"
+                                    title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                        <path
+                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                    </svg>
+                                </span>
+                            </i>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer p-2">
+                <button type="button" class="btn btn-warning pl-5 pr-5"
+                    style="background-color: #edca20; border-radius: 20px; color: #404040; font-weight: 650; letter-spacing: 1px">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="product-modal">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header p-2 pl-4 pr-4">
+                <h4 class="modal-title h5" style="font-weight: 200;">Product description</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body p-2 pl-4 pr-4">
+                <form role="form" method="POST">
+                    {% csrf_token %}
+
+                    <div class="form-row">
+                        <div class="col-md-6 form-group d-flex flex-row">
+                            <label for="title" class="pt-2 pb-2 pr-1">Title: </label>
+                            <input type="text" class="form-control w-75" id="title" placeholder="eg. My lovely artwork">
+                            <i data-toggle="tooltip" data-placement="left"
+                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                <span class="ml-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        style="margin-top: 12px; margin-top: 12px;">
+                                        <path
+                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                    </svg>
+                                </span>
+                            </i>
+                        </div>
+                        <div class="col-md-6 form-group d-flex flex-row">
+                            <label for="colour" class="pt-2 pb-2 pr-2">Colour: </label>
+                            <input type="text" class="form-control w-75" id="colour" placeholder="eg. Green">
+                            <i data-toggle="tooltip" data-placement="left"
+                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                <span class="ml-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        style="margin-top: 12px; margin-top: 12px;">
+                                        <path
+                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                    </svg>
+                                </span>
+                            </i>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-12 form-group ">
+                            <label for="price" class="pt-2 pb-2 pr-1">Short Description:
+                                <i data-toggle="tooltip" data-placement="left"
+                                    title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                        <path
+                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                    </svg>
+                                </i>
+                            </label>
+                            <input type="text" class="form-control w-100" id="price"
+                                placeholder="eg. Choose from the wide variety of art, on demand paintings, sketches and a lot more.">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-12 form-group">
+                            <label for="price" class="pt-2 pb-2 pr-1">Full Description:
+                                <i data-toggle="tooltip" data-placement="left"
+                                    title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                        <path
+                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                    </svg>
+                                </i>
+                            </label>
+                            <textarea class="form-control w-100" name="fullDescriptipn" id="fullDescriptipn"
+                                rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-4 form-group d-flex flex-row">
+                            <label for="weight" class="pt-2 pb-2 pr-1">Weight:(g) </label>
+                            <input type="text" class="form-control w-50" id="weight" placeholder="eg. 750">
+                            <i data-toggle="tooltip" data-placement="left"
+                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                <span class="ml-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        style="margin-top: 12px; margin-top: 12px;">
+                                        <path
+                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                    </svg>
+                                </span>
+                            </i>
+                        </div>
+                        <div class="col-md-4 form-group d-flex flex-row">
+                            <label for="weight" class="pt-2 pb-2 pr-1">Length:(cm) </label>
+                            <input type="text" class="form-control w-50" id="weight" placeholder="eg. 20">
+                            <i data-toggle="tooltip" data-placement="left"
+                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                <span class="ml-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        style="margin-top: 12px; margin-top: 12px;">
+                                        <path
+                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                    </svg>
+                                </span>
+                            </i>
+                        </div>
+                        <div class="col-md-4 form-group d-flex flex-row">
+                            <label for="colour" class="pt-2 pb-2 pr-2">Width:(cm) </label>
+                            <input type="text" class="form-control w-50" id="colour" placeholder="eg. 20">
+                            <i data-toggle="tooltip" data-placement="left"
+                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                <span class="ml-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        style="margin-top: 12px; margin-top: 12px;">
+                                        <path
+                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                    </svg>
+                                </span>
+                            </i>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-4 form-group d-flex flex-row">
+                            <label for="weight" class="pt-2 pb-2 pr-1">HSN Code: </label>
+                            <input type="text" class="form-control w-50" id="weight" placeholder="eg. XXXXXXX">
+                            <i data-toggle="tooltip" data-placement="left"
+                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                <span class="ml-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        style="margin-top: 12px; margin-top: 12px;">
+                                        <path
+                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                    </svg>
+                                </span>
+                            </i>
+                        </div>
+                        <div class="col-md-3 form-group d-flex flex-row">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="frame" name="example1">
+                                <label class="custom-control-label" for="frame">Add Frame</label>
+                            </div>
+                            <i>
+                                <span class="ml-2" data-toggle="tooltip" data-placement="left"
+                                    title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                        <path
+                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                    </svg>
+                                </span>
+                            </i>
+                        </div>
+                        <div class="col-md-5 form-group d-flex flex-row">
+                            <label for="framingCost" class="pt-2 pb-2 pr-1">Framing cost: </label>
+                            <input type="text" class="form-control w-50" id="framingCost" placeholder="eg. 1000">
+                            <i data-toggle="tooltip" data-placement="left"
+                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                <span class="ml-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        style="margin-top: 12px; margin-top: 12px;">
+                                        <path
+                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                    </svg>
+                                </span>
+                            </i>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer p-2">
+                <button type="button" class="btn btn-warning pl-5 pr-5"
+                    style="background-color: #edca20; border-radius: 20px; color: #404040; font-weight: 650; letter-spacing: 1px">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="package-modal">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header p-2 pl-4 pr-4">
+                <h4 class="modal-title h5" style="font-weight: 200;">Package information</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body p-2 pl-4 pr-4">
+                <form role="form" method="POST">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="col-md-6 form-group d-flex flex-row">
+                            <label for="sku" class="pt-2 pb-2 pr-1">Length(cm): </label>
+                            <input type="number" class="form-control w-75" id="sku" placeholder="eg. 22">
+                            <i data-toggle="tooltip" data-placement="left"
+                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                <span class="ml-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        style="margin-top: 12px; margin-top: 12px;">
+                                        <path
+                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                    </svg>
+                                </span>
+                            </i>
+                        </div>
+                        <div class="col-md-6 form-group d-flex flex-row">
+                            <label for="stock" class="pt-2 pb-2 pr-2">Width(cm): </label>
+                            <input type="number" class="form-control w-75" id="stock" placeholder="eg. 22">
+                            <i data-toggle="tooltip" data-placement="left"
+                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                <span class="ml-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        style="margin-top: 12px; margin-top: 12px;">
+                                        <path
+                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                    </svg>
+                                </span>
+                            </i>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-6 form-group d-flex flex-row">
+                            <label for="price" class="pt-2 pb-2 pr-1">Height(cm): </label>
+                            <input type="number" class="form-control w-75" id="price" placeholder="eg. 5">
+                            <i data-toggle="tooltip" data-placement="left"
+                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                <span class="ml-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        style="margin-top: 12px; margin-top: 12px;">
+                                        <path
+                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                    </svg>
+                                </span>
+                            </i>
+                        </div>
+                        <div class="col-md-6 form-group d-flex flex-row">
+                            <label for="stock" class="pt-2 pb-2 pr-2">Weight(g): </label>
+                            <input type="number" class="form-control w-75" id="stock" placeholder="eg. 1000">
+                            <i data-toggle="tooltip" data-placement="left"
+                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                <span class="ml-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        style="margin-top: 12px; margin-top: 12px;">
+                                        <path
+                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                    </svg>
+                                </span>
+                            </i>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer p-2">
+                <button type="button" class="btn btn-warning pl-5 pr-5"
+                    style="background-color: #edca20; border-radius: 20px; color: #404040; font-weight: 650; letter-spacing: 1px">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="clearfix mt-3">
+        <a href="{% url 'my-shop' %}" class="btn btn-secondary btn-md pr-5 pl-5" style="border-radius: 20px">Cancel</a>
+        <button type="submit" class="btn btn-md btn-dark pr-5 pl-5"
+            style="border-radius: 20px; float: right;">save</button>
+
+    </div>
+</div>
+
 <br>
-<hr>
 <script src="{% static 'js/Jquery_V3.4.1.js' %}"></script>
 <script>
 $(document).ready(function(){

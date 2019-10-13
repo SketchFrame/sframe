@@ -547,67 +547,6 @@
             
         </div>
 </div>
-
-<div class="container" style="display: none">
-    <form method="POST" class="container" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.media }}
-        {{ form.title | as_crispy_field }}
-        <div class="form-row">
-            <div class="col-md-6">
-                {{ form.category | as_crispy_field }}
-            </div>
-            <div class="col-md-6">
-                {{ form.subCategory | as_crispy_field }}
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="col-md-6">
-                {{ form.originalPrice | as_crispy_field }}
-                <div id="displayPrice" style="display: block">Display Price: <i class="fas fa-inr"></i><span id="new_price" class="font-weight-bold"></span> (15% Service charge + 12% GST)</div>
-            </div>
-            <div class="col-md-6">
-                {{ form.originalDiscount_price | as_crispy_field }}
-                <div id="displayDiscountPrice" style="display: none">Display Price: <i class="fas fa-inr"></i><span id="new_discount_price" class="font-weight-bold"> </span> (15% Service charge + 12% GST)</div>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="col-md-4">
-                {{ form.height | as_crispy_field }}
-            </div>
-            <div class="col-md-4">
-                {{ form.width | as_crispy_field }}
-            </div>
-            <div class="col-md-4">
-                {{ form.weight | as_crispy_field }}
-            </div>
-        </div>
-        {{ form.description | as_crispy_field }}
-        {{ form.shortDescription | as_crispy_field }}
-        
-        <div class="form-row">
-            <div class="col-md-6">
-                {{ form.stock | as_crispy_field }}
-            </div>
-            <div class="col-md-6">
-                {{ form.makingTime | as_crispy_field }}
-                <div class="mb-2 small text-muted" style="margin-top: -15px;"><b>Note: </b>If artwork is already prepared, then type <strong>'0'</strong> as making time.</div>
-            </div>
-        </div>
-        {{ form.published | as_crispy_field }}
-
-        {% for f in formset %}
-        <label for="id_form-{{ forloop.counter0 }}-image" class="custom-file-upload"
-            id="label-{{forloop.counter0}}">Choose file</label>
-        {% endfor %}
-        {{ formset }}
-        <div class="clearfix mt-3 mb-3">
-            <a href="{% url 'my-shop' %}" class="btn btn-secondary btn-md pr-5 pl-5" style="border-radius: 20px">Cancel</a>
-            <button type="submit" class="btn btn-primary btn-md pr-5 pl-5" style="border-radius: 20px; float: right;">save</button>
-            
-        </div>
-    </form>
-</div>
 <br>
 <script src="{% static 'js/Jquery_V3.4.1.js' %}"></script>
 <script type="text/javascript">

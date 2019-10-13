@@ -1,44 +1,54 @@
 {% extends 'home/base.html' %}
+{% load thumbnail %}
 {% block title %}
 {% load humanize %}
 | view all products
 {% endblock %}
 {% block content %}
 <style>
-    .container-fluid{
+    .container-fluid {
         padding: 50px;
     }
+
     .table .thead-dark th {
         background-color: #1d1e1f;
         border: none;
     }
-    .img-thumb{
+
+    .img-thumb {
         height: 50px;
         width: 50px;
         border-radius: 8px;
     }
-    .fa-edit{
+
+    .fa-edit {
         font-size: 20px;
     }
-    .icon-th{
+
+    .icon-th {
         width: 5%;
     }
-    @media(max-width: 991px){
-        .container-fluid{
+
+    @media(max-width: 991px) {
+        .container-fluid {
             padding: 0px;
         }
     }
-    @media(max-width: 450px){
-        .small-device-display-none{
+
+    @media(max-width: 450px) {
+        .small-device-display-none {
             display: none;
         }
-        .fa-edit{
+
+        .fa-edit {
             font-size: 14px;
         }
-        .icon-th{
+
+        .icon-th {
             width: 10%;
         }
-        td{
+
+        td {
             font-size: 14px;
         }
     }
@@ -53,9 +63,8 @@
                 <th class="icon-th">#</th>
                 <th class="pl-0 small-device-display-none">Image</th>
                 <th>Title</th>
-                <th>Stock</th>
                 <th>Price</th>
-                <th>Sales</th>
+                <th>Information</th>
                 <th>Approved</th>
             </tr>
         </thead>
@@ -67,31 +76,47 @@
                             class="fas fa-edit text-secondary"></i></a>
                 </td>
                 <td class="small-device-display-none">
-                    <div class="mx-auto img-thumb" style="background: url('{{product.image.image.url}}') no-repeat;
+                    {% if product.image != "No Image" %}
+                    <div class="mx-auto img-thumb" style="background: url('{% thumbnail product.image.image '100' as im %}{{ im.url }}{% endthumbnail %}') no-repeat;
                     background-position: center; background-size: cover;">
-
-                    </div>
-                    </td>
-                <td><a href="{% url 'view-product' product.item.slug %}" class="text-primary">{{product.item.title}}</a>
+                        {% else %}
+                        <div class="mx-auto img-thumb" style="background: url('https://sketchframe.s3.ap-south-1.amazonaws.com/svg/insert_photo_48px.svg') no-repeat;
+                    background-position: center; background-size: cover; opacity: 0.3;">
+                            {% endif %}
+                        </div>
                 </td>
-                <td>{{product.item.stock | intcomma}}</td>
-                {% if product.item.originalDiscount_price %}
-                <td>{{product.item.originalDiscount_price|intcomma}}</td>
+                <td>
+                    {% if product.item.title %}
+                    <a href="{% url 'view-product' product.item.slug %}" class="text-primary">{{product.item.title}}</a>
+                    {% else %}
+                    ---
+                    {% endif %}
+                </td>
+                <td>
+                    {% if product.item.title %}
+                    {{product.item.originalPrice|intcomma}}
+                    {% else %}
+                    ---
+                    {% endif %}
+
+                </td>
+                {% if product.item.finallySubmitted %}
+                <td>Complete</td>
                 {% else %}
-                <td>{{product.item.originalPrice|intcomma}}</td>
+                <td>Incomplete</td>
                 {% endif %}
-                <td>{{product.sale | intcomma}}</td>
+
                 <td>{% if product.item.approved %}
                     <i class="text-success fas fa-check"></i>
                     {% else %}
-                    <i class="text-danger" style="font-size: 20px;">&times;</i>                    
+                    <i class="text-danger" style="font-size: 20px;">&times;</i>
                     {% endif %}
                 </td>
             </tr>
             {% empty %}
             <td style="padding: 109.99px;text-align: center">
                 <p>No Products are added</p>
-                <p><a href="{% url 'add-product' %}">Add Products</a></p>
+                <p><a href="{% url 'add-product-step1' %}">Add Products</a></p>
             </td>
 
             {% endfor %}
@@ -99,11 +124,11 @@
     </table>
     <div class="clearfix mt-3">
         <a href="{% url 'my-shop' %}" class="btn btn-secondary btn-md pr-5 pl-5" style="border-radius: 20px">Back</a>
-        
-        <a href="{% url 'add-product' %}" class="btn btn-primary btn-dark btn-md pr-5 pl-5"
+
+        <a href="{% url 'add-product-step1' %}" class="btn btn-primary btn-dark btn-md pr-5 pl-5"
             style="border-radius: 20px; float: right;">Add Item</a>
-    
+
     </div>
-    
+
 </div>
 {% endblock %}

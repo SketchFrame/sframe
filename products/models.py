@@ -53,21 +53,21 @@ SUB_CATEGORY_CHOICES = (
 class Item(models.Model):
     seller = models.ForeignKey(
         'seller.Seller', on_delete=models.CASCADE, null=True, related_name='item_by')
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=50, blank=True, null=True)
     category = models.CharField(
-        choices=CATEGORY_CHOICES, max_length=20)
+        choices=CATEGORY_CHOICES, max_length=20, blank=True, null=True)
     subCategory = models.CharField(
         choices=SUB_CATEGORY_CHOICES, blank=True, null=True, default="Other", max_length=50)
     
-    originalPrice = models.FloatField()
+    originalPrice = models.FloatField(blank=True, null=True)
     gst = models.FloatField(blank=True, null=True)
     price = models.FloatField(blank=True, null=True)
     discount_price = models.FloatField(blank=True, null=True)
 
     slug = models.SlugField(unique=True, blank=True, null=True)
     
-    description = RichTextField()
-    shortDescription = models.CharField(max_length=150)
+    description = RichTextField(blank=True, null=True)
+    shortDescription = models.CharField(max_length=150, blank=True, null=True)
     
     makingTime = models.IntegerField(default=0)
     ratings = models.FloatField(blank=True, null=True)
@@ -78,9 +78,9 @@ class Item(models.Model):
     
     approved = models.BooleanField(default=False)
     
-    height = models.FloatField()
-    width = models.FloatField()
-    weight = models.FloatField()
+    height = models.FloatField(blank=True, null=True)
+    width = models.FloatField(blank=True, null=True)
+    weight = models.FloatField(blank=True, null=True)
     stock = models.IntegerField(default=1)
     
     sku = models.CharField(max_length=50, blank=True, null=True)
@@ -126,14 +126,17 @@ class Item(models.Model):
         super().save(*args, **kwargs)
 
     def _get_unique_slug(self):
-        slug = slugify(self.title)
-        unique_slug = slug
-        num = 1
-        while Item.objects.filter(slug=unique_slug).exists():
-            unique_slug = '{}-{}'.format(slug, num)
-            num += 1
-        slug = unique_slug
-        return slug
+        if self.title:
+            slug = slugify(self.title)
+            unique_slug = slug
+            num = 1
+            while Item.objects.filter(slug=unique_slug).exists():
+                unique_slug = '{}-{}'.format(slug, num)
+                num += 1
+            slug = unique_slug
+            return slug
+        return uuid.uuid4()
+
 
     def get_add_to_cart_url(self):
         return reverse("add-to-cart", kwargs={
