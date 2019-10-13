@@ -66,15 +66,15 @@ class Item(models.Model):
 
     slug = models.SlugField(unique=True, blank=True, null=True)
     
-    description = RichTextField(blank=True, null=True)
+    fullDescription = RichTextField(blank=True, null=True)
     shortDescription = models.CharField(max_length=150, blank=True, null=True)
     
-    makingTime = models.IntegerField(default=0)
+    dispatch_time = models.IntegerField(default=0)
     ratings = models.FloatField(blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
     
-    published = models.BooleanField(default=False)
+    listing_status = models.BooleanField(default=False)
     
     approved = models.BooleanField(default=False)
     
@@ -84,8 +84,8 @@ class Item(models.Model):
     stock = models.IntegerField(default=1)
     
     sku = models.CharField(max_length=50, blank=True, null=True)
-    hsn = models.CharField(max_length=50, blank=True, null=True)
-    colour = models.CharField(max_length=20, blank=True, null=True)
+    hsnCode = models.CharField(max_length=50, blank=True, null=True)
+    color = models.CharField(max_length=20, blank=True, null=True)
     
     addFrame = models.BooleanField(default=False)
     frameCost = models.FloatField(blank=True, null=True)
