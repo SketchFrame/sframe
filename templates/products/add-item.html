@@ -639,7 +639,7 @@
             });
             $.ajax({
                 type: "POST",
-                url: "{% url 'add-images' item.slug %}",
+                url: "{% url 'add-images' slug=item.slug number=1 %}",
                 processData: false,
                 contentType: false,
                 data: formData,
@@ -703,7 +703,7 @@
             });
             $.ajax({
                 type: "POST",
-                url: "{% url 'add-images' item.slug %}",
+                url: "{% url 'add-images' slug=item.slug number=2 %}",
                 processData: false,
                 contentType: false,
                 data: formData,
@@ -767,7 +767,7 @@
             });
             $.ajax({
                 type: "POST",
-                url: "{% url 'add-images' item.slug %}",
+                url: "{% url 'add-images' slug=item.slug number=3 %}",
                 processData: false,
                 contentType: false,
                 data: formData,
