@@ -56,8 +56,7 @@
             <div class="card p-0 pt-3 pl-3 pr-3 pb-0" style="background-color: #fff">
                 <div id="default-img" style="border: 2px dashed #e2e2e2; height: 300px;">
                     <div class="d-flex justify-content-center align-content-center">
-                        <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/insert_photo_48px.svg"
-                            class="filter-gray no-img-selected" alt="no image selected">
+                        <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/insert_photo_48px.svg" class="filter-gray no-img-selected" alt="no image selected" id="no-image">
                     </div>
                 </div>
                 <img src="" alt="image cannot be displayed" id="previewImg"
@@ -596,10 +595,25 @@
     $(document).ready(function () {
         $('input[name="form-0-image"]').change(function (e) {
             var fileName0 = e.target.files[0].name;
-            formdata = new FormData()
-            var file = this.files[0]
-            formdata.append("image", file);
-            console.log(formdata)
+            $('#label-0').html(fileName0)
+            var defaultImg = document.getElementById("default-img");
+            var formData = new FormData()
+
+            var previewImg = document.getElementById("previewImg");
+            var noImage = document.getElementById("no-image");
+            noImage.src = "https://sketchframe.s3.ap-south-1.amazonaws.com/svg/35.svg"
+            noImage.className = noImage.className.replace(/\bfilter-gray\b/g, "");
+            noImage.style.width = "48px";
+            noImage.style.height = "48px";
+
+            var previewImg1 = document.getElementById("previewImg1");
+            previewImg1.src = 'https://sketchframe.s3.ap-south-1.amazonaws.com/svg/35.svg'
+            previewImg1.className = previewImg1.className.replace(/\bfilter-gray\b/g, "");
+            previewImg1.style.width = "60px";
+            previewImg1.style.height = "55px";
+            previewImg1.style.objectFit = "cover";
+
+            formData.append('image', e.target.files[0])
             $.ajaxSetup({
                 beforeSend: function (xhr, settings) {
                     function getCookie(name) {
@@ -628,60 +642,149 @@
                 url: "{% url 'add-images' item.slug %}",
                 processData: false,
                 contentType: false,
-                data: {
-                    'image': formdata,
-                    'number': 1
-                },
+                data: formData,
                 success: function (resp) {
-                    console.log(resp.success)
+                    if(resp.uploaded === 'Uploaded Image'){
+                        defaultImg.style.display = "none";
+                        previewImg.src = URL.createObjectURL(e.target.files[0])
+                        previewImg.style.objectFit = "cover";
+                        previewImg.style.display = "block";
+                        previewImg1.src = URL.createObjectURL(e.target.files[0])
+                    }
                 },
                 error: function(err){
-                    console.log(err.message)
+                    console.log(err)
                 }
             })
-
-            var defaultImg = document.getElementById("default-img");
-            defaultImg.style.display = "none";
-            var previewImg = document.getElementById("previewImg");
-            previewImg.src = URL.createObjectURL(e.target.files[0])
-            previewImg.style.display = "block";
-            previewImg1 = document.getElementById("previewImg1");
-            previewImg1.className = previewImg1.className.replace(/\bfilter-gray\b/g, "");
-            previewImg1.src = URL.createObjectURL(e.target.files[0])
-            previewImg1.style.width = "60px";
-            previewImg1.style.height = "55px";
-            previewImg1.style.objectFit = "cover";
-            $('#label-0').html(fileName0)
         });
         $('input[name="form-1-image"]').change(function (e) {
             var fileName1 = e.target.files[0].name;
+            $('#label-1').html(fileName1)
             var defaultImg = document.getElementById("default-img");
-            defaultImg.style.display = "none";
+            var formData = new FormData()
+
             var previewImg = document.getElementById("previewImg");
-            previewImg.src = URL.createObjectURL(e.target.files[0])
-            previewImg.style.display = "block";
-            previewImg2 = document.getElementById("previewImg2");
+            var noImage = document.getElementById("no-image");
+            noImage.src = "https://sketchframe.s3.ap-south-1.amazonaws.com/svg/35.svg"
+            noImage.className = noImage.className.replace(/\bfilter-gray\b/g, "");
+            noImage.style.width = "48px";
+            noImage.style.height = "48px";
+
+            var previewImg2 = document.getElementById("previewImg2");
+            previewImg2.src = 'https://sketchframe.s3.ap-south-1.amazonaws.com/svg/35.svg'
             previewImg2.className = previewImg2.className.replace(/\bfilter-gray\b/g, "");
-            previewImg2.src = URL.createObjectURL(e.target.files[0])
             previewImg2.style.width = "60px";
             previewImg2.style.height = "55px";
             previewImg2.style.objectFit = "cover";
-            $('#label-1').html(fileName1)
+
+            formData.append('image', e.target.files[0])
+            $.ajaxSetup({
+                beforeSend: function (xhr, settings) {
+                    function getCookie(name) {
+                        var cookieValue = null;
+                        if (document.cookie && document.cookie != '') {
+                            var cookies = document.cookie.split(';');
+                            for (var i = 0; i < cookies.length; i++) {
+                                var cookie = jQuery.trim(cookies[i]);
+                                // Does this cookie string begin with the name we want?
+                                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                    break;
+                                }
+                            }
+                        }
+                        return cookieValue;
+                    }
+                    if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                        // Only send the token to relative URLs i.e. locally.
+                        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                    }
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: "{% url 'add-images' item.slug %}",
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function (resp) {
+                    if(resp.uploaded === 'Uploaded Image'){
+                        defaultImg.style.display = "none";
+                        previewImg.src = URL.createObjectURL(e.target.files[0])
+                        previewImg.style.objectFit = "cover";
+                        previewImg.style.display = "block";
+                        previewImg2.src = URL.createObjectURL(e.target.files[0])
+                    }
+                },
+                error: function(err){
+                    console.log(err)
+                }
+            })
         });
         $('input[name="form-2-image"]').change(function (e) {
-            var fileName2 = e.target.files[0].name;
+            var fileName0 = e.target.files[0].name;
+            $('#label-2').html(fileName0)
             var defaultImg = document.getElementById("default-img");
-            defaultImg.style.display = "none";
+            var formData = new FormData()
+
             var previewImg = document.getElementById("previewImg");
-            previewImg.src = URL.createObjectURL(e.target.files[0])
-            previewImg.style.display = "block";
-            previewImg3 = document.getElementById("previewImg3");
-            previewImg3.className = previewImg1.className.replace(/\bfilter-gray\b/g, "");
-            previewImg3.src = URL.createObjectURL(e.target.files[0])
+            var noImage = document.getElementById("no-image");
+            noImage.src = "https://sketchframe.s3.ap-south-1.amazonaws.com/svg/35.svg"
+            noImage.className = noImage.className.replace(/\bfilter-gray\b/g, "");
+            noImage.style.width = "48px";
+            noImage.style.height = "48px";
+
+            var previewImg3 = document.getElementById("previewImg3");
+            previewImg3.src = 'https://sketchframe.s3.ap-south-1.amazonaws.com/svg/35.svg'
+            previewImg3.className = previewImg3.className.replace(/\bfilter-gray\b/g, "");
             previewImg3.style.width = "60px";
             previewImg3.style.height = "55px";
             previewImg3.style.objectFit = "cover";
-            $('#label-2').html(fileName2)
+
+            formData.append('image', e.target.files[0])
+            $.ajaxSetup({
+                beforeSend: function (xhr, settings) {
+                    function getCookie(name) {
+                        var cookieValue = null;
+                        if (document.cookie && document.cookie != '') {
+                            var cookies = document.cookie.split(';');
+                            for (var i = 0; i < cookies.length; i++) {
+                                var cookie = jQuery.trim(cookies[i]);
+                                // Does this cookie string begin with the name we want?
+                                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                    break;
+                                }
+                            }
+                        }
+                        return cookieValue;
+                    }
+                    if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                        // Only send the token to relative URLs i.e. locally.
+                        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                    }
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: "{% url 'add-images' item.slug %}",
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function (resp) {
+                    if(resp.uploaded === 'Uploaded Image'){
+                        defaultImg.style.display = "none";
+                        previewImg.src = URL.createObjectURL(e.target.files[0])
+                        previewImg.style.objectFit = "cover";
+                        previewImg.style.display = "block";
+                        previewImg3.src = URL.createObjectURL(e.target.files[0])
+                    }
+                },
+                error: function(err){
+                    console.log(err)
+                }
+            })
+
         });
     });
 </script>

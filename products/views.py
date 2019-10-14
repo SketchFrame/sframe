@@ -113,22 +113,17 @@ def addProductStep2(request, slug):
 @login_required
 @seller_required
 def uploadImages(request, slug):
-    image = request.POST.get('image')
-    formset = AddItemImagesForm(request.FILES or None)
-    print(request.FILES)
-    # if formset.is_valid():
-    #     for f in formset:
-    #         data = f.cleaned_data
-    #         image = data.get('image')
-    #         photo = ItemImages(image=image)
-    #         photo.item = item
-    #         photo.save()
-    #         print("success")
-    # item = Item.objects.get(slug=slug)
-    # ItemImages.objects.create(item=item, image=image)
-    content = {
-        'success': "Image Uploaded"
-    }
+    if request.method == "POST":
+        formset = AddItemImagesForm(request.POST or None, request.FILES or None)
+        if formset.is_valid():
+            data = formset.cleaned_data
+            image = data.get('image')
+            photo = ItemImages(image=image)
+            photo.item = Item.objects.get(slug=slug)
+            photo.save()
+            content = {
+                'uploaded': 'Uploaded Image'
+            }
     return JsonResponse(content)
 
 @login_required
