@@ -74,14 +74,14 @@
                         class="filter-gray m-1 cursor" alt="image cannot be displayed" id="previewImg3"
                         onclick="preivewImg(this)">
                 </div>
-                <div class="row d-flex position-relative justify-content-center align-items-center mt-2">
+                <form method="POST" id="images-form" class="row d-flex position-relative justify-content-center align-items-center mt-2">
                     {% for f in formset %}
                     <label for="id_form-{{ forloop.counter0 }}-image" class="custom-file-upload ml-1 mr-1"
                         id="label-{{forloop.counter0}}">Choose
                         file</label>
                     {% endfor %}
                     {{ formset }}
-                </div>
+                </form>
             </div>
         </div>
         <div class="col-md-7">
@@ -198,7 +198,15 @@
         </div>
     </div>
 </div>
-
+<div class="container-fluid">
+    <div class="clearfix mt-3">
+        <form method="POST">
+            <a href="{% url 'my-shop' %}" class="btn btn-secondary btn-md pr-5 pl-5" style="border-radius: 20px">Cancel</a>
+            <button name='final_submit' type="submit" class="btn btn-md btn-dark pr-5 pl-5" style="border-radius: 20px; float: right;">Submit</button>
+        </form>
+    </div>
+</div>
+<br>
 <div class="modal fade" id="price-modal">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
@@ -494,7 +502,6 @@
         </div>
     </div>
 </div>
-
 <div class="modal fade" id="package-modal">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
@@ -577,16 +584,6 @@
         </div>
     </div>
 </div>
-
-<div class="container-fluid">
-    <div class="clearfix mt-3">
-        <a href="{% url 'my-shop' %}" class="btn btn-secondary btn-md pr-5 pl-5" style="border-radius: 20px">Cancel</a>
-        <button type="submit" class="btn btn-md btn-dark pr-5 pl-5"
-            style="border-radius: 20px; float: right;">save</button>
-
-    </div>
-</div>
-<br>
 <script src="{% static 'js/Jquery_V3.4.1.js' %}"></script>
 <script type="text/javascript">
     function preivewImg(event) {
@@ -599,6 +596,50 @@
     $(document).ready(function () {
         $('input[name="form-0-image"]').change(function (e) {
             var fileName0 = e.target.files[0].name;
+            formdata = new FormData()
+            var file = this.files[0]
+            formdata.append("image", file);
+            console.log(formdata)
+            $.ajaxSetup({
+                beforeSend: function (xhr, settings) {
+                    function getCookie(name) {
+                        var cookieValue = null;
+                        if (document.cookie && document.cookie != '') {
+                            var cookies = document.cookie.split(';');
+                            for (var i = 0; i < cookies.length; i++) {
+                                var cookie = jQuery.trim(cookies[i]);
+                                // Does this cookie string begin with the name we want?
+                                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                    break;
+                                }
+                            }
+                        }
+                        return cookieValue;
+                    }
+                    if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                        // Only send the token to relative URLs i.e. locally.
+                        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                    }
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: "{% url 'add-images' item.slug %}",
+                processData: false,
+                contentType: false,
+                data: {
+                    'image': formdata,
+                    'number': 1
+                },
+                success: function (resp) {
+                    console.log(resp.success)
+                },
+                error: function(err){
+                    console.log(err.message)
+                }
+            })
+
             var defaultImg = document.getElementById("default-img");
             defaultImg.style.display = "none";
             var previewImg = document.getElementById("previewImg");

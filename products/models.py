@@ -97,11 +97,10 @@ class Item(models.Model):
         return f"{self.title} by {self.seller.user.user.username}"
 
     def save(self, *args, **kwargs):
-        if self.slug == '' or self.title:
-            self.slug = None
-            super().save(*args, **kwargs)
-            self.slug = self._get_unique_slug()
-            super().save(*args, **kwargs)
+        self.slug = None
+        super().save(*args, **kwargs)
+        self.slug = self._get_unique_slug()
+        super().save(*args, **kwargs)
 
     def _get_unique_slug(self):
         if self.title:

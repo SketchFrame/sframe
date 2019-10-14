@@ -19,10 +19,12 @@ import os
 def addProductStep1(request):
     if request.method == "POST":
         form = AddItemCategoryForm(request.POST)
+        print(0)        
         if form.is_valid():
             item = form.save(commit=False)
             item.seller = get_object_or_404(Seller, user__user=request.user)
             item.save()
+            print(1)
             return redirect('add-product-step2', slug=item.slug)
     else:
         form = AddItemCategoryForm()
@@ -31,16 +33,11 @@ def addProductStep1(request):
         'form': form
     })
 
-
-'''
-item.title = form.cleaned_data['title']
-'''
 @login_required
 @seller_required
 def addProductStep2(request, slug):
     item = Item.objects.get(Q(slug=slug) & Q(seller__user__user=request.user))
-    ImageFormSet = modelformset_factory(
-        ItemImages, form=AddItemImagesForm, extra=3)
+    ImageFormSet = modelformset_factory(ItemImages, form=AddItemImagesForm, extra=3)
     if request.method == 'POST':
         # Seller Information form
         if 'seller_information' in request.POST:
@@ -54,9 +51,9 @@ def addProductStep2(request, slug):
                 item.listing_status = form.cleaned_data['listing_status']
                 item.save()
                 messages.success(request, f"Seller information updated")
-                return redirect(request.path_info)
+                return redirect('add-product-step2', Item.objects.get(pk=item.id).slug)
             messages.warning(request, f"Seller information is not valid")
-            return redirect(request.path_info)
+            return redirect('add-product-step2', Item.objects.get(pk=item.id).slug)
         # Product Description form
         if 'product_description' in request.POST:
             form = productDescription(request.POST)
@@ -93,22 +90,13 @@ def addProductStep2(request, slug):
                 thisPackage[0].packageWeight = form.cleaned_data['packageWeight']
                 thisPackage[0].save()
                 messages.success(request, f"Package Information updated")
-                return redirect(request.path_info)
+                return redirect('add-product-step2', Item.objects.get(pk=item.id).slug)
             messages.warning(request, f"Package information is not valid")
-            return redirect(request.path_info)
-        # images
-        if 'images' in request.POST:
-            formset = ImageFormSet(request.POST or None, request.FILES or None)
-            if formset.is_valid():
-                for f in formset:
-                    data = f.cleaned_data
-                    image = data.get('image')
-                    photo = ItemImages(image=image)
-                    photo.item = item
-                    photo.save()
-                    print("success")
-            return redirect("view-product", slug=item.slug)
+            return redirect('add-product-step2', Item.objects.get(pk=item.id).slug)
 
+        if 'final_submit' in request.POST:
+            item.finallySubmitted = True
+            return redirect('view-all-product')
     else:
         seller_information = SellingInformation(instance=item)
         product_description = productDescription(instance=item)
@@ -118,9 +106,30 @@ def addProductStep2(request, slug):
         'seller_information': seller_information,
         'product_description': product_description,
         'packageForm': packageForm,
-        'formset': formset
+        'formset': formset,
+        'item': item
     })
 
+@login_required
+@seller_required
+def uploadImages(request, slug):
+    image = request.POST.get('image')
+    formset = AddItemImagesForm(request.FILES or None)
+    print(request.FILES)
+    # if formset.is_valid():
+    #     for f in formset:
+    #         data = f.cleaned_data
+    #         image = data.get('image')
+    #         photo = ItemImages(image=image)
+    #         photo.item = item
+    #         photo.save()
+    #         print("success")
+    # item = Item.objects.get(slug=slug)
+    # ItemImages.objects.create(item=item, image=image)
+    content = {
+        'success': "Image Uploaded"
+    }
+    return JsonResponse(content)
 
 @login_required
 @seller_required
