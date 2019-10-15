@@ -76,7 +76,6 @@ def shopView(request):
                 d.update({'item': item, 'image': image})
                 l.append(d.copy())
                 break
-
     return render(request, 'shop/home.html', context={
         'products': l,
     })

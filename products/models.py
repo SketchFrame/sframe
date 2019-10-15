@@ -101,6 +101,12 @@ class Item(models.Model):
         super().save(*args, **kwargs)
         self.slug = self._get_unique_slug()
         super().save(*args, **kwargs)
+        if self.originalPrice:
+            self._get_item_price()
+            super().save(*args, **kwargs)
+
+    def _get_item_price(self):
+        self.price = self.originalPrice + (self.gst/100)*self.originalPrice
 
     def _get_unique_slug(self):
         if self.title:
@@ -231,3 +237,9 @@ class Comment(models.Model):
 @receiver(post_delete, sender=ItemImages)
 def remove_file_from_s3(sender, instance, using, **kwargs):
     instance.image.delete(save=False)
+
+@receiver(post_save, sender= ItemImages)
+def delete_old_image(sender, instance, **kwargs):
+    if hasattr(instance, '_current_imagen_file'):
+        if instance._current_imagen_file != instance.imagen.path:
+            instance._current_imagen_file.delete(save=False)

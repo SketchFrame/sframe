@@ -37,6 +37,7 @@ def addProductStep1(request):
 @seller_required
 def addProductStep2(request, slug):
     item = Item.objects.get(Q(slug=slug) & Q(seller__user__user=request.user))
+    itemImages = ItemImages.objects.filter(Q(item=item) & Q(item__seller__user__user=request.user))
     ImageFormSet = modelformset_factory(ItemImages, form=AddItemImagesForm, extra=3)
     if request.method == 'POST':
         # Seller Information form
@@ -107,7 +108,8 @@ def addProductStep2(request, slug):
         'product_description': product_description,
         'packageForm': packageForm,
         'formset': formset,
-        'item': item
+        'item': item,
+        'itemImages': itemImages
     })
 
 @login_required
