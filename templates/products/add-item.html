@@ -5,9 +5,6 @@
 | Add Products
 {% endblock %}
 {% block content %}
-<p class="mt-2 mb-3 h2 text-center" style="color: #9e9e9e; font-weight: 300;">
-    - Add Products -
-</p>
 <style>
     .upload-file {
         display: none;
@@ -48,8 +45,26 @@
 
     .filter-gray {
         filter: invert(88%) sepia(0%) saturate(0%) hue-rotate(212deg) brightness(103%) contrast(95%);
+        }.product-modal-max{
+        max-width: 80% !important;
+    }
+    @media(max-width: 800px){
+        .product-modal-max{
+            max-width: 1000% !important;
+            margin-left: 10px;
+        }
+        .text-muted{
+            font-size: 11px;
+        }
+        .h2{
+            font-size: 1.7rem;
+        }
+        .h5{
+            font-size: 1.1rem;
+        }
     }
 </style>
+<p class="mt-2 mb-3 h2 text-center" style="color: #9e9e9e; font-weight: 300;">- Add Products -</p>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-5">
@@ -100,9 +115,9 @@
                 </div>
                 <form method="POST" id="images-form" class="row d-flex position-relative justify-content-center align-items-center mt-2">
                     {% for f in formset %}
-                    <label for="id_form-{{ forloop.counter0 }}-image" class="custom-file-upload ml-1 mr-1"
+                    <label for="id_form-{{ forloop.counter0 }}-image" class="custom-file-upload ml-1 mr-1 text-muted w-25"
                         id="label-{{forloop.counter0}}">Choose
-                        file</label>
+                        file...</label>
                     {% endfor %}
                     {{ formset }}
                 </form>
@@ -126,14 +141,20 @@
                         <div class="col-4">
                             <p class="p-0 text-muted">SKU
                                 {% if item.sku %}
-                                    OK
+                                    <i class="fas fa-check-circle text-success"></i>
                                 {% else %}
-                                    No-k
+                                    <i class="fas fa-exclamation-circle text-warning"></i>
                                 {% endif %}
                             </p>
                         </div>
                         <div class="col-4">
-                            <p class="p-0 text-muted">Stock</p>
+                            <p class="p-0 text-muted">Stock
+                                {% if item.stock %}
+                                <i class="fas fa-check-circle text-success"></i>
+                                {% else %}
+                                <i class="fas fa-exclamation-circle text-warning"></i>
+                                {% endif %}
+                            </p>
                         </div>
                         <div class="col-4">
                             <p class="p-0 text-muted">Listing Status</p>
@@ -142,13 +163,31 @@
                     </div>
                     <div class="row m-auto">
                         <div class="col-4">
-                            <p class="p-0 text-muted">Price detail</p>
+                            <p class="p-0 text-muted">Price detail
+                                {% if item.originalPrice %}
+                                <i class="fas fa-check-circle text-success"></i>
+                                {% else %}
+                                <i class="fas fa-exclamation-circle text-warning"></i>
+                                {% endif %}
+                            </p>
                         </div>
                         <div class="col-4">
-                            <p class="p-0 text-muted">GST</p>
+                            <p class="p-0 text-muted">GST
+                                {% if item.gst %}
+                                <i class="fas fa-check-circle text-success"></i>
+                                {% else %}
+                                <i class="fas fa-exclamation-circle text-warning"></i>
+                                {% endif %}
+                            </p>
                         </div>
                         <div class="col-4">
-                            <p class="p-0 text-muted">Dispatch time</p>
+                            <p class="p-0 text-muted">Dispatch time
+                                {% if item.dispatch_time %}
+                                <i class="fas fa-check-circle text-success"></i>
+                                {% else %}
+                                <i class="fas fa-exclamation-circle text-warning"></i>
+                                {% endif %}
+                            </p>
                         </div>
                     </div>
 
@@ -169,35 +208,83 @@
                 <div class="card-body p-0 m-0 border-top" style="font-size: 14px;">
                     <div class="row pt-2 m-auto">
                         <div class="col-4">
-                            <p class="p-0 text-muted">Title</p>
+                            <p class="p-0 text-muted">Title
+                                {% if item.title %}
+                                <i class="fas fa-check-circle text-success"></i>
+                                {% else %}
+                                <i class="fas fa-exclamation-circle text-warning"></i>
+                                {% endif %}
+                            </p>
                         </div>
                         <div class="col-4">
-                            <p class="p-0 text-muted">Colour</p>
+                            <p class="p-0 text-muted">Colour
+                                {% if item.color %}
+                                <i class="fas fa-check-circle text-success"></i>
+                                {% else %}
+                                <i class="fas fa-exclamation-circle text-warning"></i>
+                                {% endif %}
+                            </p>
                         </div>
                         <div class="col-4">
-                            <p class="p-0 text-muted">Short Description</p>
+                            <p class="p-0 text-muted">Short Description
+                                {% if item.shortDescription %}
+                                <i class="fas fa-check-circle text-success"></i>
+                                {% else %}
+                                <i class="fas fa-exclamation-circle text-warning"></i>
+                                {% endif %}
+                            </p>
                         </div>
                     </div>
                     <div class="row m-auto">
                         <div class="col-4">
-                            <p class="p-0 text-muted">Full Description</p>
+                            <p class="p-0 text-muted">Full Description
+                                {% if item.fullDescription %}
+                                <i class="fas fa-check-circle text-success"></i>
+                                {% else %}
+                                <i class="fas fa-exclamation-circle text-warning"></i>
+                                {% endif %}
+                            </p>
                         </div>
                         <div class="col-4">
-                            <p class="p-0 text-muted">Weight</p>
+                            <p class="p-0 text-muted">Weight
+                                {% if item.weight %}
+                                <i class="fas fa-check-circle text-success"></i>
+                                {% else %}
+                                <i class="fas fa-exclamation-circle text-warning"></i>
+                                {% endif %}
+                            </p>
                         </div>
                         <div class="col-4">
-                            <p class="p-0 text-muted">Dimensions</p>
+                            <p class="p-0 text-muted">Dimensions
+                                {% if item.length and item.height %}
+                                <i class="fas fa-check-circle text-success"></i>
+                                {% else %}
+                                <i class="fas fa-exclamation-circle text-warning"></i>
+                                {% endif %}
+                            </p>
                         </div>
                     </div>
                     <div class="row m-auto">
                         <div class="col-4">
-                            <p class="p-0 text-muted">HSN Code</p>
+                            <p class="p-0 text-muted">HSN Code
+                                {% if item.hsnCode %}
+                                <i class="fas fa-check-circle text-success"></i>
+                                {% else %}
+                                <i class="fas fa-exclamation-circle text-warning"></i>
+                                {% endif %}
+                            </p>
                         </div>
                         <div class="col-4">
                             <p class="p-0 text-muted">Framing options</p>
                         </div>
                         <div class="col-4">
-                            <p class="p-0 text-muted">Search Keyword</p>
+                            <p class="p-0 text-muted">Search Keyword
+                                {% if item %}
+                                <i class="fas fa-check-circle text-success"></i>
+                                {% else %}
+                                <i class="fas fa-exclamation-circle text-warning"></i>
+                                {% endif %}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -217,10 +304,30 @@
                 <div class="card-body p-0 m-0 border-top" style="font-size: 14px;">
                     <div class="row pt-2 m-auto">
                         <div class="col-6">
-                            <p class="p-0 text-muted">Dimensions</p>
+                            <p class="p-0 text-muted">Dimensions
+                                {% if package %}
+                                {% if package.packageLength and package.packageWidth and package.packageHeight %}
+                                <i class="fas fa-check-circle text-success"></i>
+                                {% else %}
+                                <i class="fas fa-exclamation-circle text-warning"></i>
+                                {% endif %}
+                                {% else %}
+                                <i class="fas fa-exclamation-circle text-warning"></i>
+                                {% endif %}
+                            </p>
                         </div>
                         <div class="col-6">
-                            <p class="p-0 text-muted">Weight</p>
+                            <p class="p-0 text-muted">Weight
+                                {% if package %}
+                                {% if package.packageWeight %}
+                                <i class="fas fa-check-circle text-success"></i>
+                                {% else %}
+                                <i class="fas fa-exclamation-circle text-warning"></i>
+                                {% endif %}
+                                {% else %}
+                                <i class="fas fa-exclamation-circle text-warning"></i>
+                                {% endif %}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -231,6 +338,7 @@
 <div class="container-fluid">
     <div class="clearfix mt-3">
         <form method="POST">
+            {% csrf_token %}
             <a href="{% url 'my-shop' %}" class="btn btn-secondary btn-md pr-5 pl-5" style="border-radius: 20px">Cancel</a>
             <button name='final_submit' type="submit" class="btn btn-md btn-dark pr-5 pl-5" style="border-radius: 20px; float: right;">Submit</button>
         </form>
@@ -283,7 +391,7 @@
                 <div class="form-row">
                     <div class="col-md-6 form-group d-flex flex-row">
                         <label for="price" class="pt-2 pb-2 pr-1">Price: </label>
-                        {{ seller_information.originalPrice | as_crispy_field }}
+                        {{ seller_information.price | as_crispy_field }}
                         <i data-toggle="tooltip" data-placement="left"
                             title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
                             <span class="ml-2">
@@ -351,7 +459,7 @@
     </div>
 </div>
 <div class="modal fade" id="product-modal">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable" style="max-width: 80% !important;">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable product-modal-max">
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header p-2 pl-4 pr-4">
@@ -560,7 +668,7 @@
                         </i>
                     </div>
                     <div class="col-md-6 form-group d-flex flex-row">
-                        <label for="packageWidth" class="pt-2 pb-2 pr-2">Width(cm): </label>
+                        <label for="packageWidth" class="pt-2 pb-2 pr-2">Breadth(cm): </label>
                         {{packageForm.packageWidth | as_crispy_field}}
                         <i data-toggle="tooltip" data-placement="left"
                             title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">

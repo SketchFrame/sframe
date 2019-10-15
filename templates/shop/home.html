@@ -205,7 +205,7 @@
         {% for product in products %}
         {% if product.item.approved and product.item.listing_status and product.item.finallySubmitted %}
         <div class="this-artwork">
-            <a href="#" class="text-light">
+            <a href="{% url 'product' product.item.slug %}" class="text-light">
                 <img class="artwork-images" src="{% thumbnail product.image.image '500' as im %}{{ im.url }}{% endthumbnail %}">
                 <div class="bottom-left text-light">{{ product.item.title|truncatechars:"12" }} ({{product.item.length}} x {{product.item.height}})</div>
                 <div class="bottom-right text-light">Rs.

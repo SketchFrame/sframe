@@ -18,8 +18,6 @@ from products.views import (
     addProductStep1,
     addProductStep2,
     viewProduct,
-    ProductUpdateView,
-    ProductImagesUpdate,
     ProductDeleteView,
     viewAllProduct,
     get_charges,
@@ -27,15 +25,11 @@ from products.views import (
 )
 
 urlpatterns = [
-    path('add-product/', addProductStep1, name="add-product-step1"),
-    path('add-product/<slug:slug>/step2/',
-         addProductStep2, name="add-product-step2"),
+    path('product/', addProductStep1, name="add-product-step1"),
+    path('product/<slug:slug>/',
+         addProductStep2, name="edit-product"),
     path('view-product/', viewAllProduct, name="view-all-product"),
-    path('view-product/<slug:slug>/', viewProduct, name="view-product"),
-    path('edit-product/<slug:slug>/',
-         ProductUpdateView.as_view(), name="edit-product"),
-    path('edit/<slug:slug>/images/', ProductImagesUpdate,
-         name="edit-product-images/"),
+    path('view-product/<slug:slug>/', viewProduct, name="view-product"),    
     path('delete-product/<slug:slug>/',
          ProductDeleteView.as_view(), name="delete-product"),
     path('dashboard/', myShop, name='my-shop'),

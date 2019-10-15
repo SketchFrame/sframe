@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'mathfilters',
     'sorl.thumbnail',
+    'django_cleanup.apps.CleanupConfig',
 
     'core',
     'users',

@@ -64,6 +64,7 @@
                 <th class="pl-0 small-device-display-none">Image</th>
                 <th>Title</th>
                 <th>Price</th>
+                <th>GST</th>
                 <th>Information</th>
                 <th>Approved</th>
             </tr>
@@ -94,11 +95,19 @@
                 </td>
                 <td>
                     {% if product.item.title %}
-                    {{product.item.originalPrice|intcomma}}
+                    {{product.item.price|intcomma}}
                     {% else %}
                     ---
                     {% endif %}
 
+                </td>
+                <td>
+                    {% if product.item.gst %}
+                    {{product.item.gst|intcomma}}
+                    {% else %}
+                    ---
+                    {% endif %}
+                
                 </td>
                 {% if product.item.finallySubmitted %}
                 <td>Complete</td>

@@ -82,6 +82,8 @@ class Item(models.Model):
     length = models.FloatField(blank=True, null=True)
     weight = models.FloatField(blank=True, null=True)
     stock = models.IntegerField(default=1)
+
+    searchKeywords = models.TextField(default='[]', blank=True, null=True)
     
     sku = models.CharField(max_length=50, blank=True, null=True)
     hsnCode = models.CharField(max_length=50, blank=True, null=True)
@@ -101,12 +103,13 @@ class Item(models.Model):
         super().save(*args, **kwargs)
         self.slug = self._get_unique_slug()
         super().save(*args, **kwargs)
-        if self.originalPrice:
-            self._get_item_price()
+        if self.price:
+            self._get_original_price()
             super().save(*args, **kwargs)
 
-    def _get_item_price(self):
-        self.price = self.originalPrice + (self.gst/100)*self.originalPrice
+    def _get_original_price(self):
+        newPrice = (100*self.price)/(100+self.gst)
+        self.originalPrice = round(newPrice, 2)
 
     def _get_unique_slug(self):
         if self.title:

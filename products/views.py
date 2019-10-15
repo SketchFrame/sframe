@@ -18,14 +18,12 @@ import os
 @seller_required
 def addProductStep1(request):
     if request.method == "POST":
-        form = AddItemCategoryForm(request.POST)
-        print(0)        
+        form = AddItemCategoryForm(request.POST)      
         if form.is_valid():
             item = form.save(commit=False)
             item.seller = get_object_or_404(Seller, user__user=request.user)
             item.save()
-            print(1)
-            return redirect('add-product-step2', slug=item.slug)
+            return redirect('edit-product', slug=item.slug)
     else:
         form = AddItemCategoryForm()
 
@@ -37,7 +35,12 @@ def addProductStep1(request):
 @seller_required
 def addProductStep2(request, slug):
     item = Item.objects.get(Q(slug=slug) & Q(seller__user__user=request.user))
-    itemImages = ItemImages.objects.filter(Q(item=item) & Q(item__seller__user__user=request.user))
+    itemImages = ItemImages.objects.filter(item=item)
+    package = None
+    try:
+        package = PackageInformation.objects.get(item=item)
+    except:
+        pass
     ImageFormSet = modelformset_factory(ItemImages, form=AddItemImagesForm, extra=3)
     if request.method == 'POST':
         # Seller Information form
@@ -46,15 +49,15 @@ def addProductStep2(request, slug):
             if form.is_valid():
                 item.sku = form.cleaned_data['sku']
                 item.stock = form.cleaned_data['stock']
-                item.originalPrice = form.cleaned_data['originalPrice']
+                item.price = form.cleaned_data['price']
                 item.gst = form.cleaned_data['gst']
                 item.dispatch_time = form.cleaned_data['dispatch_time']
                 item.listing_status = form.cleaned_data['listing_status']
                 item.save()
-                messages.success(request, f"Seller information updated")
-                return redirect('add-product-step2', Item.objects.get(pk=item.id).slug)
-            messages.warning(request, f"Seller information is not valid")
-            return redirect('add-product-step2', Item.objects.get(pk=item.id).slug)
+                messages.success(request, f"Selling information updated")
+                return redirect('edit-product', Item.objects.get(pk=item.id).slug)
+            messages.warning(request, f"Selling information is not valid")
+            return redirect('edit-product', Item.objects.get(pk=item.id).slug)
         # Product Description form
         if 'product_description' in request.POST:
             form = productDescription(request.POST)
@@ -71,9 +74,9 @@ def addProductStep2(request, slug):
                 item.addFrame = form.cleaned_data['addFrame']
                 item.save()
                 messages.success(request, "Product Description added!")
-                return redirect('add-product-step2', Item.objects.get(pk=item.id).slug)
+                return redirect('edit-product', Item.objects.get(pk=item.id).slug)
             messages.warning(request, "Invalid information!")
-            return redirect(request.path_info, Item.objects.get(pk=item.id).slug)
+            return redirect('edit-product', Item.objects.get(pk=item.id).slug)
         # Package form
         if 'package_information' in request.POST:
             form = PackageDetailsForm(request.POST)
@@ -91,17 +94,22 @@ def addProductStep2(request, slug):
                 thisPackage[0].packageWeight = form.cleaned_data['packageWeight']
                 thisPackage[0].save()
                 messages.success(request, f"Package Information updated")
-                return redirect('add-product-step2', Item.objects.get(pk=item.id).slug)
+                return redirect('edit-product', Item.objects.get(pk=item.id).slug)
             messages.warning(request, f"Package information is not valid")
-            return redirect('add-product-step2', Item.objects.get(pk=item.id).slug)
+            return redirect('edit-product', Item.objects.get(pk=item.id).slug)
 
         if 'final_submit' in request.POST:
             item.finallySubmitted = True
+            item.save()
             return redirect('view-all-product')
     else:
         seller_information = SellingInformation(instance=item)
         product_description = productDescription(instance=item)
-        packageForm = PackageDetailsForm(instance=item)
+        try:
+            package = PackageInformation.objects.get(item=item)
+            packageForm = PackageDetailsForm(instance=package)
+        except:
+            packageForm = PackageDetailsForm()
         formset = ImageFormSet(queryset=ItemImages.objects.none())
     return render(request, "products/add-item.html", {
         'seller_information': seller_information,
@@ -109,7 +117,8 @@ def addProductStep2(request, slug):
         'packageForm': packageForm,
         'formset': formset,
         'item': item,
-        'itemImages': itemImages
+        'itemImages': itemImages,
+        'package': package
     })
 
 @login_required
@@ -152,49 +161,6 @@ def viewProduct(request, slug):
     })
 
 
-@method_decorator([login_required, seller_required], name='dispatch')
-class ProductUpdateView(UpdateView):
-    model = Item
-    template_name = "products/edit-item.html"
-    form_class = EditProduct
-    success_url = '/seller/view-product/'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['images'] = ItemImages.objects.filter(
-            item__slug=self.kwargs['slug'])
-        context['product_slug'] = self.kwargs['slug']
-        return context
-
-
-@login_required
-@seller_required
-def ProductImagesUpdate(request, slug):
-    ImageFormSet = modelformset_factory(
-        ItemImages, form=EditProductImagesForm, extra=3)
-
-    if request.method == 'POST':
-        formset = ImageFormSet(request.POST or None, request.FILES or None)
-        if formset.is_valid():
-            images = ItemImages.objects.filter(
-                Q(item__seller__user__user=request.user) & Q(item__slug=slug))
-            for (f, i) in zip(formset, images):
-                data = f.cleaned_data
-                image = data.get('image')
-                i.delete()
-                ItemImages.objects.create(
-                    item=Item.objects.get(slug=slug),
-                    image=image
-                )
-            return redirect("view-product", slug=slug)
-
-    else:
-        formset = ImageFormSet(queryset=ItemImages.objects.none())
-    return render(request, "products/edit-images.html", {
-        'form': formset
-    })
-
-
 @method_decorator([login_required, seller_required], name="dispatch")
 class ProductDeleteView(DeleteView):
     model = Item
@@ -207,31 +173,27 @@ class ProductDeleteView(DeleteView):
 def viewAllProduct(request):
     l = []
     d = {}
+    withImages = []
     items = Item.objects.filter(
         seller__user__user__username=request.user.username)
     images = ItemImages.objects.filter(
         item__seller__user__user__username=request.user.username)
     for item in items:
-        sale = 0
-        orderItems = OrderItem.objects.filter(
-            Q(ordered=True) & Q(item=item))
-        if len(orderItems) > 0:
-            for orderItem in orderItems:
-                qty = orderItem.quantity
-                if item.discount_price:
-                    sale += item.originalDiscount_price * qty
-                else:
-                    sale += item.originalPrice * qty
         for image in images:
             if item.slug == image.item.slug:
-                d.update({'item': item, 'image': image, 'sale': sale})
+                withImages.append(item)
+                d.update({'item': item, 'image': image})
                 l.append(d.copy())
                 break
-    context = {
-        'products': l
-    }
-    return render(request, 'products/view-all-products.html', context)
+    
+    for item in items:
+        if item not in withImages:
+            d.update({'item': item, 'image': 'No Image'})
+            l.append(d.copy())
 
+    return render(request, 'products/view-all-products.html', {
+        'products': l
+    })
 
 @login_required
 @seller_required

@@ -84,7 +84,7 @@ def productView(request, slug):
     l = []
     d = {}
     thisItem = Item.objects.get(slug=slug)
-    if thisItem.approved == False or thisItem.published == False:
+    if thisItem.approved == False or thisItem.listing_status == False or thisItem.finallySubmitted == False:
         messages.info(request, 'Product is not available.')
         return redirect('shop')
     itemImages = ItemImages.objects.filter(item=thisItem)
