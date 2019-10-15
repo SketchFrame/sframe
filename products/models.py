@@ -82,6 +82,8 @@ class Item(models.Model):
     length = models.FloatField(blank=True, null=True)
     weight = models.FloatField(blank=True, null=True)
     stock = models.IntegerField(default=1)
+
+    searchKeywords = models.TextField(default='[]', blank=True, null=True)
     
     sku = models.CharField(max_length=50, blank=True, null=True)
     hsnCode = models.CharField(max_length=50, blank=True, null=True)
@@ -101,6 +103,13 @@ class Item(models.Model):
         super().save(*args, **kwargs)
         self.slug = self._get_unique_slug()
         super().save(*args, **kwargs)
+        if self.price:
+            self._get_original_price()
+            super().save(*args, **kwargs)
+
+    def _get_original_price(self):
+        newPrice = (100*self.price)/(100+self.gst)
+        self.originalPrice = round(newPrice, 2)
 
     def _get_unique_slug(self):
         if self.title:
@@ -231,3 +240,9 @@ class Comment(models.Model):
 @receiver(post_delete, sender=ItemImages)
 def remove_file_from_s3(sender, instance, using, **kwargs):
     instance.image.delete(save=False)
+
+@receiver(post_save, sender= ItemImages)
+def delete_old_image(sender, instance, **kwargs):
+    if hasattr(instance, '_current_imagen_file'):
+        if instance._current_imagen_file != instance.imagen.path:
+            instance._current_imagen_file.delete(save=False)

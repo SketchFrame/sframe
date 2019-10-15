@@ -5,17 +5,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Required meta tags -->
-
     <title>SketchFrame {% block title %}{% endblock %}</title>
-
+    <meta name="theme-color" content="#1d1e1f">
     <meta name="description" content="{% block description %}{% endblock %}"/>
 
     <meta name="keywords" content="SketchFrame, sketchframe, sketchframe.com, sketches, paintings, buy paintings, buy sketches, buy paintings online, buy sketches online, {% block keywords %}{% endblock %}">
 
     <meta charset="UTF-8">
-    <link rel='shortcut icon' href='https://grocerjar.s3.ap-south-1.amazonaws.com/item_images/logo/SketchFrame.com-xs-round.png'
-        type='image/x-icon' />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -24,215 +20,477 @@
     <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Righteous" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/custom-style.css' %}">
+    {% block extra_head %}{% endblock %}
+    <style>
+    
+    @import url('https://fonts.googleapis.com/css?family=Advent+Pro&display=swap');
+        .sidenav>a>i {
+            color: #fff;
+        }
+    
+        .sidenav>a {
+            padding-left: 30px;
+            padding-right: 50px;
+        }
+    
+        .closebtn {
+            margin-right: -50px;
+        }
+    
+        #results {
+            display: none;
+        }
+    
+        .quick-result-2>li {
+            padding-left: 100px;
+            border-left: none;
+            border-right: none;
+        }
+    
+        .quick-result-2>.result-li {
+            padding-left: 0px;
+        }
+    
+        @media(max-width: 991px) {
+            .quick-result-2>li {
+                padding-left: 50px;
+            }
+    
+            .quick-result-2>.result-li {
+                padding-left: 0px;
+            }
+        }
+    </style>
+    <style>
 
-</head>
-<style>
-    .sidenav>a>i {
+    @import url('https://fonts.googleapis.com/css?family=Advent+Pro&display=swap');
+    body{
+        background-color: rgb(246, 246, 246);
+    }
+    .navbar-toggler:focus {
+        outline: none;
+        border: none;
+    }
+    .search-input > input:focus{
+        outline: none;
+        border: none;
+    }
+    /* Navbar Starts */
+    .navbar{
+        font-family: 'Advent Pro', sans-serif;
+        padding-top: 0px;
+        padding-bottom: 5px;
+        letter-spacing: 0.25px;
+    }
+    .bg-dark{
+        background-color: #1d1e1f !important;
+    }
+    .logo-first-half{
+        color: #d9d9d9;
+    }
+    .logo-second-half{
         color: #fff;
     }
-    .sidenav > a{
-        padding-left: 30px; 
-        padding-right: 50px;
+    .navbar-brand{
+        font-size: 2.50rem;
+        letter-spacing: 0px
     }
-    .closebtn{
-        margin-right: -50px;
+    .nav-link{
+        margin-top: 4px;
+        font-size: 1.1rem;
     }
-</style>
+    #artwork-options{
+        cursor: pointer;
+    }
+    .filter{
+        filter: invert(93%) sepia(0%) saturate(93%) hue-rotate(138deg) brightness(93%) contrast(96%);
+    }
+    /* Navbar Ends */
+
+    /* Main Starts */
+
+    .main-row{
+        background-color: #fff;
+        min-height: 100px;
+        height: auto;
+        border-radius: 5px;
+    }
+    .useful-links{
+        font-size: 15px
+    }
+    .useful-links > li{
+        border-left: none;
+        border-right: none;
+    }
+    .useful-links-title{
+        border: none;
+        border-bottom: 1px solid #e2e2e2;
+        border-radius: 0px; color: #8f8f8f;
+    }
+
+    /* The overlay effect with black background */
+    .overlay {
+    height: 100%;
+    width: 100%;
+    display: none;
+    position: fixed;
+    z-index: 3;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    /* background-color: rgb(246, 246, 246); */
+    }
+    .dropdown-menu{
+        background-color: rgb(249, 249, 249);
+    }
+    @media(max-width: 450px){
+        .navbar-brand{
+            font-size: 2rem;
+        }
+    }
+
+    /* Main Ends */
+
+
+    </style>
+</head>
 
 <body>
-    <!-- Navigation Starts -->
-    <div id="mySidenav" class="sidenav" style="z-index: 1111111">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
-        <a href="{% url 'shop' %}"><i class="fas fa-store"></i> Shop</a>
-        <!-- <a href="{% url 'post-bid' %}"><i class="fas fa-folder-plus"></i> Post a project</a> -->
-        {% if request.user|is_seller %}
-        <!-- <a href="{% url 'view-projects' %}"><i class="fas fa-gavel"></i> Bid a project</a> -->
-        {% endif %}
-        <a href="{% url 'about' %}"><i class="fas fa-address-card"></i> About</a>
-        <a href="{% url 'contact' %}"><i class="far fa-envelope"></i> Contact</a>
-        {% if user.is_authenticated %}
-        <a href="{% url 'account_logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
-        {% else %}
-        <a href="{% url 'account_login' %}"><i class="fas fa-sign-in-alt"></i> Login</a>
-        <a href="{% url 'account_signup' %}"><i class="fas fa-user-plus"></i> Sign up</a>
-        {% endif %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand p-0" href="/">
+            <span class="logo-first-half">Sketch</span><span class="logo-second-half">frame</span>
+        </a>
+        <span>
+            <button class="navbar-toggler mr-0 pr-0" onclick="openSearch()" style="border: none;">
+                <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/search.svg" alt="search" class="filter">
+            </button>
+            <button class="navbar-toggler mr-0 pr-0" style="border: none;">
+                <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/cart.svg" alt="search" class="filter">
+            </button>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
+                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation"
+                style="border: none;" onclick="openMenu()">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </span>
+        <!-- <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" style="cursor: pointer">
+                        <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/search.svg" onclick="openSearch()" alt="search" class="filter">
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" id="artwork-options" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            Categories
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="artwork-options">
+                            <a href="#" class="dropdown-item">Pencil work</a>
+                            <a href="#" class="dropdown-item">Pastel colour</a>
+                            <a href="#" class="dropdown-item">Water colour</a>
+                            <a href="#" class="dropdown-item">Acrylic colour</a>
+                            <a href="#" class="dropdown-item">Fabric colour</a>
+                            <a href="#" class="dropdown-item">Oil colour</a>
+                            <a href="#" class="dropdown-item">Mix media</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" id="artwork-options" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            Sub Categories
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="artwork-options">
+                            <a href="#" class="dropdown-item">Sub categort 1</a>
+                            <a href="#" class="dropdown-item">Sub categort 2</a>
+                            <a href="#" class="dropdown-item">Sub categort 3</a>
+                            <a href="#" class="dropdown-item">Sub categort 4</a>
+                            <a href="#" class="dropdown-item">Sub categort 5</a>
+                            <a href="#" class="dropdown-item">Sub categort 6</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" id="artwork-options" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            Top artists
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="artwork-options">
+                            <a href="#" class="dropdown-item">Ankit Brijwasi</a>
+                            <a href="#" class="dropdown-item">Navdeep Kumar mishra</a>
+                            <a href="#" class="dropdown-item">Rajesh Joshi</a>
+                            <a href="#" class="dropdown-item">Harshita Arya</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Post a project</a>
+                </li>
+                <li class="nav-item">
+                    {% if request.user|active_notifications %}
+                    <style>
+                        .notification {
+                            top: 14px;
+                            position: relative;
+                            margin: 8px;
+                        }
+                    
+                        .notif-badge {
+                            position: absolute;
+                            top: -2px;
+                            right: 7px;
+                            padding: 3px 3px;
+                            border-radius: 100%;
+                            background: #dc3545;
+                            color: white;
+                            height: 5px;
+                            width: 1px;
+                            font-size: 1px;
+                        }
+                    </style>
+                    <a href="{% url 'notification' %}" class="notification" style="color:#595959">
+                        <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/notification.svg" alt="notification" class="filter">
+                        <span class="notif-badge font-weight-bold"></span>
+                    </a>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'notification' %}" class="nav-link">
+                        <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/notification.svg" alt="notification" class="filter">
+                    </a>
+                    {% endif %}
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'order-summary' %}" class="nav-link">
+                        <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/cart.svg" alt="cart" class="filter">
+                    </a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a href="{% url 'account_logout' %}" class="nav-link">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a href="{% url 'account_login' %}" class="nav-link">Login</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div> -->
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-3 mt-2 mt-lg-0">
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" id="artwork-options" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            Artworks
+                        </a>
+                        <div class="dropdown-menu mt-1" aria-labelledby="artwork-options">
+                            <a href="#" class="dropdown-item">Add artworks</a>
+                            <a href="#" class="dropdown-item">View All</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" id="artwork-options" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            On demand
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="artwork-options">
+                            <a href="#" class="dropdown-item">My Requirements</a>
+                            <a href="#" class="dropdown-item">My Bids</a>
+                            <a href="#" class="dropdown-item">Post a requirement</a>
+                            <a href="#" class="dropdown-item">Bid on a requirement</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" id="artwork-options" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            Reports
+                        </a>
+                        <div class="dropdown-menu mt-1" aria-labelledby="artwork-options">
+                            <a href="#" class="dropdown-item">Generate report</a>
+                            <a href="#" class="dropdown-item">View all</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" id="artwork-options" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            Payments
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="artwork-options">
+                            <a href="#" class="dropdown-item">Add payment method</a>
+                            <a href="#" class="dropdown-item">View/edit payment method</a>
+                            <a href="#" class="dropdown-item">View all transactions</a>
+                            <a href="#" class="dropdown-item">Account Balance</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Orders</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                <li class="nav-item pt-1">
+                    <a href="#" class="nav-link">
+                        <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/help.svg" alt="help" class="filter">
+                    </a>
+                </li>
+                <li class="nav-item pt-1">
+                    <a href="#" class="nav-link">
+                        <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/notification.svg" alt="notification" class="filter">
+                    </a>
+                </li>
+                <li class="nav-item pt-1">
+                    <a href="settings.html" class="nav-link">
+                        <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/setting.svg" alt="notification" class="filter">
+                    </a>
+                </li>
+        
+                <li class="nav-item">
+                    <a href="#" class="nav-link" style="line-height: 13px;">
+                        <span class="row">
+                            <span class="col-3 align-middle">
+                                <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/default-user-image.png" alt="user profile picture"
+                                    class="rounded-circle" style="width: 39px">
+                            </span>
+                            <span class="col-9 pr-0" style="padding-top: 6px">
+                                <span style="font-size: 15px;color: #d9d9d9">Ankit Brijwasi</span>
+                                <br>
+                                <span class="small" style="color: #d9d9d9">abrijwasi1@gmail.com</span>
+                            </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item pt-1">
+                    <a href="#" class="nav-link">
+                        <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/login.svg" alt="notification" class="filter">
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container-fluid overlay p-0" id="searchOverlay">
+        <div class="form-group pl-3 pr-3 pt-1 pb-1"
+            style="background-color: #fff; height: auto; border-bottom: 5px solid rgb(246, 246, 246)">
+            <span class="search-input" style="display:flex">
+                <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/back.svg" height="33px" onclick="closeSearch()" alt="back" class="filter"
+                    style="cursor: pointer; margin-top: 3px">
+                <input type="search" class="form-control" style="border: none"
+                    placeholder="Search for Products, Brand and More...">
+            </span>
+        </div>
     </div>
-
-    <nav class="shadow" id="firstNavbar">
-        <div style="height:100%; margin-top: -5px; ">
-            <div class="BHoPKo">
-                <div class="_2os76x" style="background:#fff">
-                    <div class="_2na3Cx">
-                        <div class="_3zajI2" style="background-color:#ffffff;">
-                            <a class="_2TbFnS" style="color:#595959;cursor:pointer" onclick="openNav()">
-                                <i class="fas fa-bars" style="font-size: 18px;"></i>
-                            </a>
-                            <p class="logo-font" style="margin-top: 7px;">
-                                <a href="/" class="_1ff24g">
-                                    <img src="https://grocerjar.s3.ap-south-1.amazonaws.com/item_images/logo/SketchFrame.com-sm.jpg" alt="sketchframe-icon">
-                                </a>
-                            </p>
-                            <div class="_2GEDF4" id="guidSearch">
-                                <div class="">
-                                    <div class="_3i3Y0k"></div>
-                                </div>
-                            </div>
-                            {% if request.user|cart_item_count > 0 %}
-                            <a href="{% url 'order-summary' %}" class="_2TbFnS" style="color:#007eff;">
-                                <p class="mb-0">
-                                    <i class="fas fa-shopping-cart" style="font-size: 18px;"></i>
-                                </p>
-                            </a>
-                            {% else %}
-                            <a href="{% url 'order-summary' %}" class="_2TbFnS" style="color:#595959;">
-                                <p class="mb-0">
-                                    <i class="fas fa-shopping-cart" style="font-size: 18px;"></i>
-                                </p>
-                            </a>
-                            {% endif %}
-
-                            {% if request.user|active_notifications %}
-                            <a href="{% url 'notification' %}" class="_2TbFnS" style="color: #007eff;">
-                                <i class="fas fa-bell" style="font-size: 18px; "></i>
-                            </a>
-                            {% else %}
-                            <a href="{% url 'notification' %}" class="_2TbFnS" style="color:#595959;">
-                                <i class="far fa-bell" style="font-size: 18px;"></i>
-                            </a>
-                            {% endif %}
-
-                            <a href="{% url 'seller-profile' %}" class="_2TbFnS" style="color:#595959;">
-                                <i class="fas fa-user" style="font-size: 18px;"></i>
-                            </a>
-                        </div>
-                        <div class="_3w_sI1" style="margin-top: -13px;">
-                            <div class="_3dMRK9">
-                                <div class="_3xe7Jz">
-                                    <form class="_2anozr" action="{% url 'search' %}" name="searchForm">
-                                        <input type="search" name="q" class="lzMbl5" id="searchInput"
-                                            placeholder="Enter the product or category">
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="container-fluid overlay p-0" id="menuOverlay" style="scrollbar-width: none;">
+        <div class="form-group pl-3 pr-3 pt-1 pb-1"
+            style="background-color: #fff; height: auto;">
+            <span class="search-input float-right" style="display:flex">
+                <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/close.svg" height="33px"
+                    onclick="closeMenu()" alt="back" class="filter" style="cursor: pointer; margin-top: 3px">
+            </span>
+            <ul class="list-group list-group-flush mt-5 text-center">
+                <li class="h5 list-group-item text-muted" style="border: none;">Categories</li>
+                <li class="h5 list-group-item text-muted" style="border: none;">Sub categories</li>
+                <li class="h5 list-group-item text-muted" style="border: none;">Top artists</li>
+                <li class="h5 list-group-item text-muted" style="border: none;">Post a project</li>
+                <li class="h5 list-group-item text-muted" style="border: none;">Notifications</li>
+                <li class="h5 list-group-item text-muted" style="border: none;">My Account</li>
+            </ul>
         </div>
-    </nav>
-    <nav class="fixed-top shadow" style="z-index: 1111; top: -100px" id="secondNavbar">
-        <div style="height:100%; margin-top: -5px; ">
-            <div class="BHoPKo">
-                <div class="_2os76x" style="background:#fff">
-                    <div class="_2na3Cx">
-                        <div class="_3zajI2" style="background-color:#ffffff;">
-                            <a class="_2TbFnS pt-1" style="color:#595959;cursor:pointer" onclick="openNav()">
-                                <i class="fas fa-bars" style="font-size: 18px;"></i>
-                            </a>
-                            <div class="_2GEDF4" id="guidSearch">
-                                <div class="_3w_sI1">
-                                    <div class="_3dMRK9 pt-3">
-                                        <div class="_3xe7Jz">
-                                            <form class="_2anozr p-0" action="{% url 'search' %}" name="search-form">
-                                                <input type="search" name="q" class="lzMbl5" id="search-input"
-                                                    placeholder="Enter the product or category">
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {% if request.user|cart_item_count > 0 %}
-                            <a href="{% url 'order-summary' %}" class="_2TbFnS pt-1" style="color:#007eff;">
-                                <p class="mb-0">
-                                    <i class="fas fa-shopping-cart" style="font-size: 16px;"></i>
-                                </p>
-                            </a>
-                            {% else %}
-                            <a href="{% url 'order-summary' %}" class="_2TbFnS pt-1" style="color:#595959;">
-                                <p class="mb-0">
-                                    <i class="fas fa-shopping-cart" style="font-size: 16px;"></i>
-                                </p>
-                            </a>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
+    </div>
     {% if messages %}
-    <!-- <br><br><br><br><br> -->
     {% for message in messages %}
-    <div class="mt-2"></div>
-    <div class="alert alert-{{ message.tags }}">
+    <div class="alert alert-{{ message.tags }} fade show alert-dismissible mb-1">
+        <button class="close" type="button" data-dismiss="alert">&times;</button>
         {{ message }}
     </div>
     {% endfor %}
-    {% else %}
-    <br>
     {% endif %}
 
     {% block content %}
     {% endblock %}
-    <footer style="background-color: #fff; color: #2e2e2e;">
+    <footer style="background-color: #1d1e1f; color: #f2f2f2; font-family: 'Advent Pro', sans-serif; letter-spacing: 0.25px">
         <div id="footer">
             <div class="footer-top">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-5 col-md-12 footer-info">
-                            <p class="logo-font mb-4 ml-0" style="margin-top: 10px;">
-                                <a href="/" class="_1ff24g ml-0">
-                                    <img class="ml-0"
-                                        src="https://grocerjar.s3.ap-south-1.amazonaws.com/item_images/logo/SketchFrame.com-sm.jpg" alt="sketchframe-icon">
+                            <p class="logo-font mb-2 ml-0 pt-0">
+                                <a href="/" class="_1ff24g ml-0" style="font-size: 36px; letter-spacing: 0px">
+                                <span class="logo-first-half">Sketch</span><span class="logo-second-half">frame</span>
                                 </a>
                             </p>
-                            <p style="color: #6d6d6d;">When you want to chill with your friends, you'll prefer
-                                SketchFrame.com
-                                because, we let you know the best places near you, providing the best discounts, that
-                                you
-                                can't find anywhere else.
-                                Introducing HangoutPlaces.com, a website where you know how much discount you can get in
-                                nearby places.</p>
+                            <p style="color: #8c8c8c;">
+                                Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable.
+                            </p>
                         </div>
-                        <div class="col-lg-3 col-md-4 footer-link">
-                            <h5 style="color: #007eff; letter-spacing: 0px; font-weight: 500;">Useful links</h5>
-                            <ul style="line-height: 25px; list-style-type: none; margin-left: -2.5em;">
+                        <div class="col-lg-4 col-md-6 footer-link">
+                            <h5 style="color: #edca20; font-weight: 500;">Useful links</h5>
+                            <div class="row" style="font-size: 15px">
+                                <div class="col-6 col-sm-6 col-md-6">
+                                    <ul style="line-height: 25px; list-style-type: none; margin-left: -2.5em;">
+                                        {% if request.user|is_seller %}
+                                        <li><a href="{% url 'my-shop' %}">Dashboard</a></li>
+                                        {% else %}
+                                        <li><a href="{% url 'register-seller' %}">Sell on SketchFrame</a></li>
+                                        {% endif %}
+                                        <li><a href="{% url 'shop' %}">Shop</a></li>
+                                        <li><a href="{% url 'tnc' %}">TnC</a></li>
+                                        <li><a href="/about">About us</a></li>
+                                        <li><a href="/contact">Contact us</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-6 col-sm-6 col-md-6">
+                                    <ul style="line-height: 25px; list-style-type: none; margin-left: -2.5em;">
 
-                                {% if request.user|is_seller %}
-                                <li><a href="{% url 'my-shop' %}">Dashboard</a></li>
-                                {% else %}
-                                <li><a href="{% url 'register-seller' %}">Sell your products</a></li>
-                                {% endif %}
-                                <li><a href="{% url 'shop' %}">Shop</a></li>
-                                <li><a href="{% url 'tnc' %}">TnC</a></li>
-                                <li><a href="{% url 'privacy' %}">Privacy</a></li>
-                                <li><a href="/about">About us</a></li>
-
-                                <li><a href="{% url 'affiliate' %}">Affiliation</a></li>
-
-                                <li><a href="/contact">Contact us</a></li>
-
-                            </ul>
+                                        <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
+                                        <li><a href="{% url 'register-affiliate' %}">Affiliate program</a></li>
+                                        <li><a href="{% url 'seller-faq' %}">Seller FAQ</a></li>
+                                        <li><a href="{% url 'user-faq' %}">User FAQ</a></li>
+                                        <li><a href="{% url 'affiliate-faq' %}">Affiliate FAQ</a></li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-lg-4 col-md-8 col-sm-12">
+                        <div class="col-lg-3 col-md-6 col-sm-12">
                             <div class="col-lg-12 col-md-12 col-sm-12 footer-contact" style="padding: 0px;">
-                                <h5 style="color: #007eff; letter-spacing: 0px; font-weight: 500;">Follow us</h5>
-                                <a href="#" class="footer-icon"><i class="fab fa-twitter"></i></a>
-                                <a href="#" class="footer-icon"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#" class="footer-icon"><i class="fab fa-instagram"></i></a>
-                                <a href="#" class="footer-icon"><i class="fab fa-google-plus"></i></a>
-                                <a href="#" class="footer-icon"><i class="fab fa-linkedin"></i></a>
+                                <h5 style="color: #edca20; font-weight: 500;">Follow us</h5>
+                                <a href="#" class="footer-icon">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="#" class="footer-icon">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="#" class="footer-icon">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="#" class="footer-icon">
+                                    <i class="fab fa-google-plus"></i>
+                                </a>
+                                <a href="#" class="footer-icon">
+                                    <i class="fab fa-linkedin"></i>
+                                </a>
                             </div>
                             <br>
                             <div class="col-lg-12 col-md-12 col-sm-12 footer-newsletter" style="padding: 0px;">
-                                <h5 style="color: #007eff; letter-spacing: 0px; font-weight: 500;">Newsletter</h5>
-                                <p style="color: #6d6d6d; font-size: 14px;">Subscribe to our newsletters to get the
+                                <h5 style="color: #edca20; font-weight: 500;">Newsletter</h5>
+                                <p style="color: #8c8c8c; font-size: 14px;">Subscribe to our newsletters to get the
                                     notification about best discounts.</p>
-                                <form class="subscribe-form" action="" method="post">
-                                    <input type="email" class="form-control email-input" placeholder="Email"
+                                <div class="alert alert-dismissible" style="font-size: .85rem" id="response-message">
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <div id="content"></div>
+                                </div>
+                                <form class="subscribe-form" method="post" id="newsletter-form">
+                                    <input type="email" class="form-control email-input" placeholder="Email" id="email"
                                         aria-describedby="basic-addon1" style="width: 60%">
-                                    <button type="button" class="btn btn-sm subscribe">Subscribe</button>
+                                    <button type="submit" id="newsletter" class="btn btn-sm subscribe">Subscribe</button>
                                 </form>
                             </div>
                         </div>
@@ -241,38 +499,157 @@
             </div>
         </div>
         <br>
-        <center><b>
-                <p class="copyright text-muted">Copyright &copy;<a style="color: #8c8c8c;" href="{% url 'home' %}">
-                        SketchFrame.com</a>
+        <style>
+        #response-message{
+            display: none;
+        }
+        </style>
+        <center>
+            <b>
+                <p class="copyright text-muted" style="letter-spacing: 1px">Copyright &copy;<a style="color: #edca20;" href="{% url 'home' %}">
+                        Sketchframe.com</a>
                     2019</p>
-            </b></center>
+            </b>
+        </center>
     </footer>
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
-
-    <script src="{% static 'js/Jquery_V3.4.1.js' %}"></script>
-
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> -->
-    <script src="{% static 'js/Popper_V1.14.7.js' %}"></script>
-
-    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> -->
-
-    <script src="{% static 'js/Bootstrap_V4.3.1.js' %}"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>   
     <script src="{% static 'js/custom.js' %}"></script>
+    <script>
+        // Open the full screen search box
+        function openSearch() {
+            document.getElementById("searchOverlay").style.display = "block";
+        }
+
+        // Close the full screen search box
+        function closeSearch() {
+            document.getElementById("searchOverlay").style.display = "none";
+        } 
+         // Open the full screen search box
+        function openMenu() {
+            document.getElementById("menuOverlay").style.display = "block";
+        }
+
+        // Close the full screen search box
+        function closeMenu() {
+            document.getElementById("menuOverlay").style.display = "none";
+        } 
+    </script>
     <script>
         $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
-    <script>
-        $('#searchInput').keypress(function (e) {
-            var key = e.which;
-            if(key == 13)  // the enter key code
-            {
-            document.searchForm.submit()
 
+    <script>
+        $('#searchInput').keyup(function (e) {
+            var key = e.which;
+           // enter key code
+            if(key === 13){
+                document.searchForm.submit()
+            }
+            if($(this).val() === ''){
+                $("#results").hide();
+            }
+            // spacebar key code
+            else{
+                // if(key === 32){
+                $.ajax({
+                    type: "GET",
+                    url: "{% url 'quick-search' %}",
+                    data: {
+                        'q': $(this).val(),
+                    },
+                    dataType: 'html',
+                    success: searchSuccess
+                })
+                // }
             }
         });
+        $('#searchInput-2').keyup(function (e) {
+            var key = e.which;
+            // enter key code
+            if (key === 13) {
+                document.searchForm.submit()
+            }
+            if($(this).val() === ''){
+                $("#results-2").hide();
+            }
+            // spacebar key code
+            // if (key === 32) {
+            $.ajax({
+                type: "GET",
+                url: "{% url 'quick-search' %}",
+                data: {
+                    'q': $(this).val(),
+                },
+                dataType: 'html',
+                success: searchSuccess2
+            })
+            // }
+        });
+        $("#newsletter").on('click', function(e){
+            e.preventDefault();
+            $.ajaxSetup({ 
+                beforeSend: function(xhr, settings) {
+                    function getCookie(name) {
+                        var cookieValue = null;
+                        if (document.cookie && document.cookie != '') {
+                            var cookies = document.cookie.split(';');
+                            for (var i = 0; i < cookies.length; i++) {
+                                var cookie = jQuery.trim(cookies[i]);
+                                // Does this cookie string begin with the name we want?
+                                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                    break;
+                                }
+                            }
+                        }
+                        return cookieValue;
+                    }
+                    if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                        // Only send the token to relative URLs i.e. locally.
+                        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                    }
+                } 
+            });
+            $.ajax({
+                type: "POST",
+                url: "{% url 'subscribe-newsletter' %}",
+                data: {
+                    'email': $("#email").val(),
+                },
+                dataType: 'json',
+                success: function(resp){
+                    if(resp['text'] === "success"){
+                        $("#response-message").show(300);
+                        $("#response-message").addClass('alert-success');
+                        $("#content").html(resp['message'])
+                        $("#newsletter-form").trigger("reset");
+                    }
+                    if(resp['text'] === "email-exists"){
+                        $("#response-message").show(300);
+                        $("#response-message").addClass('alert-warning');
+                        $("#content").html(resp['message'])
+                    }
+                    if(resp['text'] === "validation-error"){
+                        $("#response-message").show(300);
+                        $("#response-message").addClass('alert-danger');
+                        $("#content").html(resp['message'])
+                    }
+                }
+            })
+        })
+        function searchSuccess(data, textStatus, jqXHR){
+            $("#results").show();
+            $('#results').html(data);
+        }
+        function searchSuccess2(data, textStatus, jqXHR) {
+            $("#results-2").show();
+            $('#results-2').html(data);
+        }
         window.onscroll = function () { scrollFunction() };
         function scrollFunction() {
             if (document.body.scrollTop >= 85 || document.documentElement.scrollTop >= 85) {
@@ -284,6 +661,9 @@
                     'top': '0px',
                     'transition': 'top 0.5s ease-in'
                 });
+                if($("#searchInput-2").val() !== ''){
+                    $("#searchInput").val($("#searchInput-2").val());
+                }
                 // $("#firstNavbar").addClass("fixed-top");
             } else {
                 $("#firstNavbar").css({
@@ -294,10 +674,14 @@
                     'top': '-100px',
                     'transition': 'top 0.3s ease-out'
                 });
+                $("#results-2").hide();
                 // $("#firstNavbar").removeClass("fixed-top");
+                if($("#searchInput").val() !== ''){
+                    $("#searchInput-2").val($("#searchInput").val());
+                }
             }
         }
     </script>
-</body>
 
+</body>
 </html>

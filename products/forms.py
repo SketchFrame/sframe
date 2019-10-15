@@ -15,20 +15,20 @@ class SellingInformation(forms.ModelForm):
     class Meta:
         model = Item
         fields = ('sku', 'stock', 'listing_status',
-                  'originalPrice', 'gst', 'dispatch_time',)
+                  'price', 'gst', 'dispatch_time',)
 
         widgets = {
             'sku': forms.TextInput(attrs={'placeholder': "eg. SFRAME100", 'id': 'sku'}),
             'stock': forms.NumberInput(attrs={'placeholder': "eg. 2", 'id': 'stock'}),
             'listing_status': forms.CheckboxInput(attrs={'class': "custom-control-input", 'id': "publish"}),
-            'originalPrice': forms.NumberInput(attrs={'placeholder': "eg. 25,000", 'id': 'price'}),
+            'price': forms.NumberInput(attrs={'placeholder': "eg. 25,000", 'id': 'price'}),
             'gst': forms.TextInput(attrs={'placeholder': "eg. 12%", 'id': 'gst'}),
             'dispatch_time': forms.NumberInput(attrs={'placeholder': "eg. 2 days", 'id': 'dispatchTime'}),
         }
         labels = {
             'sku': '',
             'stock': '',
-            'originalPrice': '',
+            'price': '',
             'gst': '',
             'dispatch_time': '',
             'listing_status': '',
@@ -86,49 +86,6 @@ class PackageDetailsForm(forms.ModelForm):
             'packageWeight': '',
         }
 
-
-class EditProduct(forms.ModelForm):
-    class Meta:
-        model = Item
-        exclude = ('seller', 'slug', 'approved', 'price', )
-        widgets = {
-            'title': forms.TextInput(attrs={'placeholder': "eg. My lovely artwork", 'id': 'title'}),
-            'sku': forms.TextInput(attrs={'placeholder': "eg. SFRAME100", 'id': 'sku'}),
-            'stock': forms.NumberInput(attrs={'placeholder': "eg. 2", 'id': 'stock'}),
-            'originalPrice': forms.NumberInput(attrs={'placeholder': "eg. 25,000", 'id': 'price'}),
-            'gst': forms.TextInput(attrs={'placeholder': "your GST number", 'id': 'gst'}),
-            'dispatch_time': forms.NumberInput(attrs={'placeholder': "eg. 2 days", 'id': 'dispatchTime'}),
-            'listing_status': forms.CheckboxInput(attrs={'class': "custom-control-input", 'id': "publish"}),
-            'color': forms.TextInput(attrs={'placeholder': "eg. Green", 'id': 'color'}),
-            'shortDescription': forms.TextInput(attrs={'placeholder': "Choose from the wide variety of art, on demand paintings, sketches and a lot more", 'id': "shortDescription"}),
-            'fullDescription': forms.Textarea(attrs={'placeholder': "Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable.", 'id': "fullDescription"}),
-            'weight': forms.NumberInput(attrs={'placeholder': "eg. 750", 'id': 'weight'}),
-            'length': forms.NumberInput(attrs={'placeholder': "eg. 20", 'id': "length"}),
-            'height': forms.NumberInput(attrs={'placeholder': "eg. 20", 'id': "height"}),
-            'hsnCode': forms.TextInput(attrs={'placeholder': "eg. XXXXXXX", 'id': "hsnCode"}),
-            'frameCost': forms.NumberInput(attrs={'placeholder': "eg. 1000", 'id': "framingCost"}),
-            'addFrame': forms.CheckboxInput(attrs={'class': "custom-control-input", 'id': "frame"}),
-        }
-        labels = {
-            'title': '',
-            'sku': '',
-            'stock': '',
-            'originalPrice': '',
-            'gst': '',
-            'dispatch_time': '',
-            'listing_status': '',
-            'color': '',
-            'shortDescription': '',
-            'fullDescription': '',
-            'weight': '',
-            'length': '',
-            'height': '',
-            'hsnCode': '',
-            'frameCost': '',
-            'addFrame': '',
-        }
-
-
 class AddItemImagesForm(forms.ModelForm):
     image = models.ImageField()
 
@@ -142,11 +99,3 @@ class AddItemImagesForm(forms.ModelForm):
         labels = {
             'image': '',
         }
-
-
-class EditProductImagesForm(forms.ModelForm):
-    image = models.ImageField()
-
-    class Meta:
-        model = ItemImages
-        fields = ('image',)
