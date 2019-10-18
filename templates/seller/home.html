@@ -141,10 +141,10 @@
                             <a href="{% url 'view-product' item.item.slug %}">
                                 <strong>
                                     {% if item.item.discount_price %}
-                                    <strike>Rs.{{ item.item.price }}</strike> &nbsp;
-                                    Rs.{{ item.item.discount_price }}
+                                    <strike>Rs.{{ item.item.price|intcomma }}</strike> &nbsp;
+                                    Rs.{{ item.item.discount_price|intcomma }}
                                     {% else %}
-                                    Rs.{{ item.item.price }}
+                                    Rs.{{ item.item.price|intcomma }}
                                     {% endif %}
                                 </strong>
                             </a>

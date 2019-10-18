@@ -211,3 +211,9 @@ def get_charges(request):
         'charge': charge
     }
     return JsonResponse(data)
+
+
+@login_required
+@seller_required
+def my_orders(request):
+    return render(request, 'seller/my-orders.html')
