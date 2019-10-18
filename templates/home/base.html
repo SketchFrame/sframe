@@ -182,6 +182,9 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{% url 'shop' %}" class="nav-link">Shop</a>
+                </li>
+                <li class="nav-item">
                     <div class="dropdown">
                         <a class="nav-link dropdown-toggle" id="artwork-options" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">
@@ -227,9 +230,6 @@
                             <a href="#" class="dropdown-item">Harshita Arya</a>
                         </div>
                     </div>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Post a project</a>
                 </li>
                 <li class="nav-item">
                     {% if request.user|active_notifications %}
@@ -300,12 +300,24 @@
                     onclick="closeMenu()" alt="back" class="filter" style="cursor: pointer; margin-top: 3px">
             </span>
             <ul class="list-group list-group-flush mt-5 text-center">
-                <li class="h5 list-group-item text-muted" style="border: none;">Categories</li>
-                <li class="h5 list-group-item text-muted" style="border: none;">Sub categories</li>
-                <li class="h5 list-group-item text-muted" style="border: none;">Top artists</li>
-                <li class="h5 list-group-item text-muted" style="border: none;">Post a project</li>
-                <li class="h5 list-group-item text-muted" style="border: none;">Notifications</li>
-                <li class="h5 list-group-item text-muted" style="border: none;">My Account</li>
+                <li class="h5 list-group-item text-muted" style="border: none;">
+                    <a href="#">Categories</a>
+                </li>
+                <li class="h5 list-group-item text-muted" style="border: none;">
+                    <a href="#">Sub categories</a>
+                </li>
+                <li class="h5 list-group-item text-muted" style="border: none;">
+                    <a href="#">Top artists</a>
+                </li>
+                <li class="h5 list-group-item text-muted" style="border: none;">
+                    <a href="{% url 'shop' %}">Shop</a>
+                </li>
+                <li class="h5 list-group-item text-muted" style="border: none;">
+                    <a href="#">Notifications</a>
+                </li>
+                <li class="h5 list-group-item text-muted" style="border: none;">
+                    <a href="#">My Account</a>
+                </li>
             </ul>
         </div>
     </div>
