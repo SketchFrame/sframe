@@ -14,6 +14,13 @@
     a:hover {
         color: #404040
     }
+    .btn-warning{
+        background-color: #edca20;
+        color: #1d1e1f !important;
+    }
+    .btn-warning:hover{
+        background-color: #e2c224;
+    }
     .item-card {
         cursor: pointer;
     }
@@ -210,7 +217,7 @@
                         <i class="fas fa-ban ml-1"></i>
                     </a>
                     {% else %}
-                    <a href="{{ item.get_add_to_cart_url }}" class="btn btn-secondary btn-sm pl-3 pr-3 float-left">Buy now
+                    <a href="{{ item.get_add_to_cart_url }}" class="btn btn-dark btn-sm pl-3 pr-3 float-left">Buy now
                         <i class="fas fa-shopping-cart ml-1"></i>
                     </a>
                     {% endif %}
@@ -271,7 +278,7 @@
                             <option value="2">&#9733; &#9733;</option>
                             <option value="1">&#9733;</option>
                         </select>
-                        <button type="submit" class="btn btn-primary btn-md"><b>Post comment</b></button>
+                        <button type="submit" class="btn btn-warning btn-md" style="font-weight: 600;">Post comment</button>
                     </form>
                     <p style="content:''"></p>
                 </div><!-- Status Upload  -->

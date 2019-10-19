@@ -18,7 +18,7 @@ class SellingInformation(forms.ModelForm):
                   'price', 'gst', 'dispatch_time',)
 
         widgets = {
-            'sku': forms.TextInput(attrs={'placeholder': "eg. SFRAME100", 'id': 'sku'}),
+            'sku': forms.TextInput(attrs={'placeholder': "eg. SFRAME100", 'id': 'sku', 'readonly': True}),
             'stock': forms.NumberInput(attrs={'placeholder': "eg. 2", 'id': 'stock'}),
             'listing_status': forms.CheckboxInput(attrs={'class': "custom-control-input", 'id': "publish"}),
             'price': forms.NumberInput(attrs={'placeholder': "eg. 25,000", 'id': 'price'}),

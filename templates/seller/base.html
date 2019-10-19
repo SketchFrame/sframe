@@ -221,10 +221,40 @@
                         <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/help.svg" alt="help" class="filter">
                     </a>
                 </li>
-                <li class="nav-item pt-1">
-                    <a href="#" class="nav-link">
-                        <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/notification.svg" alt="notification" class="filter">
+                <li class="nav-item ml-auto mt-2 mt-lg-0">
+                    {% if request.user|active_notifications %}
+                    <style>
+                        .notification {
+                            top: 14px;
+                            position: relative;
+                            margin: 8px;
+                        }
+                
+                        .notif-badge {
+                            position: absolute;
+                            top: -2px;
+                            right: 7px;
+                            padding: 3px 3px;
+                            border-radius: 100%;
+                            background: #dc3545;
+                            color: white;
+                            height: 5px;
+                            width: 1px;
+                            font-size: 1px;
+                        }
+                    </style>
+                    <a href="{% url 'notification' %}" class="notification" style="color:#595959">
+                        <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/notification.svg" alt="notification"
+                            class="filter">
+                        <span class="notif-badge font-weight-bold"></span>
                     </a>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'notification' %}" class="nav-link">
+                        <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/notification.svg" alt="notification"
+                            class="filter">
+                    </a>
+                    {% endif %}
                 </li>
                 <li class="nav-item pt-1">
                     <a href="settings.html" class="nav-link">

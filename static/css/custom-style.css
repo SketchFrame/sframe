@@ -11,7 +11,12 @@ footer {
 footer p {
     font-size: 15px;
 }
-
+.btn-warning{
+    background-color: #edca20;
+}
+.btn-warning:hover{
+    background-color: #e2c224;
+}
 .logo-font {
     font-size: 30px;
 }
