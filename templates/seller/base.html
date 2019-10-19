@@ -149,7 +149,6 @@
 
     /* Main Ends */
 
-
     </style>
 </head>
 
@@ -198,18 +197,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <div class="dropdown">
-                        <a class="nav-link dropdown-toggle" id="artwork-options" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">
-                            Payments
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="artwork-options">
-                            <a href="#" class="dropdown-item">Add payment method</a>
-                            <a href="#" class="dropdown-item">View/edit payment method</a>
-                            <a href="#" class="dropdown-item">View all transactions</a>
-                            <a href="#" class="dropdown-item">Account Balance</a>
-                        </div>
-                    </div>
+                    <a class="nav-link" href="{% url 'payments' %}">Payments</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'my-orders' %}">Orders</a>
