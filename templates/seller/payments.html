@@ -52,6 +52,9 @@
         font-size: 1.75em;
         font-weight: 300;
     }
+    tr{
+        font-size: 16px;
+    }
     /* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
     @media screen and (max-height: 450px) {
     .sidenav {padding-top: 15px;}
@@ -72,9 +75,12 @@
             margin-top: -10px;
             font-size: 1.25em;
         }
+        tr{
+            font-size: 14px;
+        }
     }
 </style>
-<p class="mb-2 text-center title-text" style="color: #9e9e9e; font-weight: 300;">- Payments -</p>
+<p class="mb-3 text-center title-text" style="color: #9e9e9e; font-weight: 300;">- Payments -</p>
 <div class="container-fluid">
     <!-- Side navigation -->
     <div class="sidenav">
@@ -110,17 +116,37 @@
     
     <!-- Page content -->
     <div class="main">
-
+        <table class="table table-light bg-light">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Artwork</th>
+                    <th>Earning</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Dummy item 1</td>
+                    <td>Rs.45,000</td>
+                </tr>
+                <tr>
+                    <td>Dummy item 2</td>
+                    <td>Rs.22,500</td>
+                </tr>
+                <tr>
+                    <td>Dummy item 3</td>
+                    <td>Rs.4,750</td>
+                </tr>
+                <tr>
+                    <td>Dummy item 4</td>
+                    <td>Rs.9,990</td>
+                </tr>
+                <tr>
+                    <td><b>TOTAL</b></td>
+                    <td><b>Rs.82,240</b></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
     <br>
     <br>
     <br>
