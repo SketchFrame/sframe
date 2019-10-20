@@ -1,6 +1,8 @@
 {% load static %}
+{% load humanize %}
 {% load thumbnail %}
 <div class="modal-header p-1">
+        <h4 class="modal-title" style="font-weight: 300;">{{ item.title| truncatechars:15 }}</h4>
     <button type="button" class="close" data-dismiss="modal">&times;</button>
 </div>
 <div class="row">
@@ -16,9 +18,6 @@
             <hr>
             <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
             <a class="next" onclick="plusSlides(1)">&#10095;</a>
-            <!-- <div class="caption-container">
-                <p id="caption"></p>
-            </div> -->
             <div class="slideshow-row">
                 {% for itemImage in images %}
                 <div class="column demo cursor"
@@ -30,10 +29,14 @@
             </div>
         </div>                  
     </div>
-    <div class="col-md-6 mt-4">
-        <p class="mt-2 mb-4 h2" style="line-height: 0; color: hsl(0, 0%, 62%); font-weight: 300;"> {{item.title}} - {{ item.width }}in X {{ item.height }}in </p>
-        By <a href="{% url 'view-seller-profile' item.seller.user.user.username %}" class="text-muted mt-2 mb-2">{{ item.seller.user.user.username }}</a>
-        <p class="h5 text-primary mb-2"><i class="fas fa-rupee-sign"></i> {{ item.price }}</p>
+    <div class="col-md-6">
+        <p class="m-0" style="color: rgb(73, 73, 73); font-weight: 300;">
+            <span class="h4 item-title">{{item.title}}</span>
+            <br> 
+            <span>{{ item.length }}cm x {{ item.height }}cm</span>
+        </p>
+        <span class="text-muted small">Artist:</span> <a href="{% url 'view-seller-profile' item.seller.user.user.username %}" class="text-light mt-2 mb-3 badge badge-dark" style="padding-top: 2px;">{{ item.seller.user.user.username }}</a>
+        <p class="h5 text-secondary mb-2"> Rs. {{ item.price|intcomma }}</p>
         <span class="small" style="font-size: 12px ; color: #ffb800;">
             {% if item.ratings >= 5 %}
             <i class="fas fa-star"></i>
@@ -109,37 +112,64 @@
             <i class="far fa-star"></i>
             {% endif %}
         </span>
-        <p>{{ item.description | safe }}</p>
-        <div class="btn-group-vertical" style="width: 100%">
-            <a href="{{ item.get_add_to_cart_url }}" class="btn btn-primary"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
-        </div>
         <style>
-        .quick-view-icon{
-            text-align: center;
-            padding: 10px 15px;
-            margin: 3px;
-            border: 1px solid #007bff;
-            border-radius: 100%;
-            background-color: #007bff;
-            color: #fff;
-        }
-        .quick-view-icon:hover{
-            transition: 0.2s ease-in;
-            background-color: #fff;
-            color: #007bff;
-        }
-        .quick-view-icon > i{
-            font-size: 19px;
+        .filter-light{
+            filter: invert(99%) sepia(2%) saturate(1480%) hue-rotate(276deg) brightness(118%) contrast(93%);
         }
         </style>
-        <div class="d-flex justify-content-center mt-3 mb-3">
-                <a href="#" class="quick-view-icon"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="quick-view-icon"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="quick-view-icon"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="quick-view-icon"><i class="fab fa-google-plus"></i></a>
-                <a href="#" class="quick-view-icon"><i class="fab fa-linkedin"></i></a>
+        <span class="text-muted mt-2">{{ item.fullDescription | safe | truncatechars:500 }}</span>
+        <div class="clearfix">
+            <a href="{{ item.get_add_to_cart_url }}" class="btn btn-dark btn-sm float-left"><img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/cart.svg" class="filter-light"> Add to Cart</a>
+            <a href="{% url 'product' item.slug %}" class="btn btn-secondary btn-sm float-right">View in shop</a>
+        </div>
+        <br>
+        <div class="w-100 m-auto">
+            <style>
+            table{
+                font-size: 14px;
+            }
+            </style>
+            <table class="table table-borderless table-sm">
+                <tbody>
+                    <tr>
+                        <td>SKU:</td>
+                        <td>{{ item.sku }}</td>
+                    </tr>
+                    <tr>
+                        <td>Stock:</td>
+                        <td>{{ item.stock }}</td>
+                    </tr>
+                    <tr>
+                        <td>Size:</td>
+                        <td>{{ item.length }}cm x {{ item.height }}cm</td>
+                    </tr>
+                    <tr>
+                        <td>Category:</td>
+                        <td>{{ item.category }}</td>
+                    </tr>
+                    <tr>
+                        <td>Sub category:</td>
+                        <td>{{ item.subCategory }}</td>
+                    </tr>
+                    <tr>
+                        <td>Colour:</td>
+                        <td>{{ item.color }}</td>
+                    </tr>
+                    <tr>
+                        <td>Frame included:</td>
+                        <td>
+                            {% if True %}
+                            Yes
+                            {% else %}
+                            No
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
+    {% if comments %}
     <div class="w-100 mw-100 border-top mt-2">
         <p class="text-center pt-3 pb-0" style="line-height: 0; color: hsl(0, 0%, 62%); font-weight: 300;;font-size:2.25rem">- Reviews -</p>
         <div class="container">
@@ -178,6 +208,7 @@
             {% endfor %}
         </div>
     </div>
+    {% endif %}
 </div>
 <script>
 // Slide show
