@@ -65,9 +65,10 @@
     position: absolute;
     top: 0px;
     right: 5px;
-    background-color: #00000052;
+    background-image: linear-gradient(to bottom,rgba(0,0,0,0.5) 0%,rgba(0,0,0,0.05) 100%);
+    color: #fff;
     height: 30px;
-    font-size: 18px;
+    font-size: 20px;
     padding-top: 5px;
     padding-bottom: 0px;
     padding-right: 5px;
@@ -84,9 +85,10 @@
     position: absolute;
     bottom: 0px;
     left: 5px;
-    background-color: #00000052;
+    background-image: linear-gradient(to top,rgba(0,0,0,0.7) 0%,transparent 100%);
+    color: #fff;
     height: 30px;
-    padding-top: 13px;
+    padding-top: 18px;
     padding-left: 7px;
     padding-right: 7px;
     margin-left: 0px;
@@ -101,9 +103,10 @@
     position: absolute;
     bottom: 0px;
     right: 5px;
-    background-color: #00000052;
+    background-image: linear-gradient(to top,rgba(0,0,0,0.7) 0%,transparent 100%);
+    color: #fff;
     height: 30px;
-    padding-top: 13px;
+    padding-top: 18px;
     padding-right: 7px;
     padding-left: 7px;
     margin-right: 0px;
@@ -161,7 +164,7 @@
     .bottom-left {
         margin-bottom: 3px;
         margin-left: -3px;
-        font-size: 13px;
+        font-size: 14px;
         padding: 10px 5px 0px 5px;
         /* bottom: -10px; */
         height: 20px;
@@ -169,7 +172,7 @@
     .bottom-right {
         margin-bottom: 3px;
         margin-right: -3px;
-        font-size: 13px;
+        font-size: 14px;
         padding: 10px 5px 0px 5px;
         /* bottom: -10px; */
         height: 20px;
@@ -191,11 +194,12 @@
         column-count: 1;
     }
     .top-right {
+        background-image: linear-gradient(to bottom,rgba(0,0,0,0.5) 0%,rgba(0,0,0,0.1) 100%);
         margin-top: 3px;
         margin-right: -3px;
-        font-size: 16px;
+        font-size: 18px;
         padding: 5px;
-        padding-bottom: 18px;
+        padding-bottom: 23px;
         height: 20px;
     }
 }
@@ -209,8 +213,8 @@
         <div class="this-artwork">
             <a href="{% url 'product' product.item.slug %}" class="text-light">
                 <img class="artwork-images" src="{% thumbnail product.image.image '500' as im %}{{ im.url }}{% endthumbnail %}">
-                <div class="bottom-left text-light">{{ product.item.title|truncatechars:"12" }} ({{product.item.length}} x {{product.item.height}})</div>
-                <div class="bottom-right text-light">Rs.
+                <div class="bottom-left">{{ product.item.title|truncatechars:"12" }} ({{product.item.length}} x {{product.item.height}})</div>
+                <div class="bottom-right">Rs.
                     {% if product.item.discount_price %}
                     {{ product.item.discount_price | intcomma}}
                     {% else %}
@@ -219,7 +223,7 @@
                 </div>
             </a>
             <div class="top-right">
-                <a onclick="showQuickView('{{forloop.counter}}');" data-toggle="modal" data-target="#myModal"><i class="fas fa-search-plus text-light" style="cursor: pointer;"></i></a>
+                <a onclick="showQuickView('{{forloop.counter}}');" data-toggle="modal" data-target="#myModal"><i class="fas fa-search-plus" style="cursor: pointer;"></i></a>
             </div>
         </div>
         {% endif %}

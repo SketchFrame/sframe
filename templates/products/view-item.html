@@ -5,14 +5,14 @@
 | View Product
 {% endblock %}
 {% block content %}
-<div class="container-fluid" style="width: 100%">
-    <p class="mt-2 mb-3 h3 text-center" style="color: #9e9e9e; font-weight: 300;">- {{ item.title }} -</p>
-    <ul class="breadcrumb">
-        <li><a href="{% url 'view-all-product' %}">Products</a></li>
-        <li><a>{{ item.title }}</a></li>
+
+<div class="container-fluid dark-grey-text mt-3" style="width: 100%">
+    <ul class="breadcrumb mb-0 p-0" style="background-color: transparent">
+        <li style="font-size: 14px;"><a href="{% url 'view-all-product' %}">Products</a></li>
+        <li style="font-size: 14px;"><a>{{ item.title }}</a></li>
     </ul>
     <div class="row">
-        <div class="col-md-6"><br>
+        <div class="col-md-5"><br>
             <div class="slideshow-container">
                 {% for itemImage in itemImages %}
                 <div class="mySlides">
@@ -40,36 +40,36 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6 p-5">
+        <div class="col-md-7 p-5">
             <div class="row p-1">
                 <span class="h6 w-100 p-2" style="background-color: rgb(250, 250, 250); color: rgb(71, 71, 71); font-weight: 350"><span style="font-weight: 500">Title:</span> {{item.title}}</span>
             </div>
             <div class="row p-1">
                 <span class="h6 w-100 p-2"
                 style="background-color: rgb(250, 250, 250); color: rgb(71, 71, 71); font-weight: 350"><span style="font-weight: 500">Your Price:</span>
-                {% if item.originalDiscount_price %}
-                <strike>Rs.{{item.originalPrice|intcomma}}</strike>
-                Rs.{{item.originalDiscount_price|intcomma}}
-                {% else %}
-                Rs.{{item.originalPrice|intcomma}}
-                {% endif %}
-                    </span>
+                Rs.{{item.price|intcomma}}
+                </span>
             </div>
             <div class="row p-1">
                 <span class="h6 w-100 p-2"
                     style="background-color: rgb(250, 250, 250); color: rgb(71, 71, 71); font-weight: 350"><span
-                        style="font-weight: 500">Display Price:</span>
-                    {% if item.discount_price %}
-                    <strike>Rs.{{item.price|intcomma}}</strike>
-                    Rs.{{item.discount_price|intcomma}}
-                    {% else %}
-                    Rs.{{item.price|intcomma}}
-                    {% endif %}
+                        style="font-weight: 500">GST:</span>
+                    {{ item.gst }}%
                 </span>
             </div>
             <div class="row p-1">
                 <span class="h6 w-100 p-2"
                     style="background-color: rgb(250, 250, 250); color: rgb(71, 71, 71); font-weight: 350"><span style="font-weight: 500">Slug:</span> {{item.slug}}</span>
+            </div>
+            <div class="row p-1">
+                <span class="h6 w-100 p-2"
+                    style="background-color: rgb(250, 250, 250); color: rgb(71, 71, 71); font-weight: 350"><span
+                        style="font-weight: 500">SKU:</span> {{item.sku}}</span>
+            </div>
+            <div class="row p-1">
+                <span class="h6 w-100 p-2"
+                    style="background-color: rgb(250, 250, 250); color: rgb(71, 71, 71); font-weight: 350"><span
+                        style="font-weight: 500">Dispatch Time:</span> {{item.dispatch_time}}</span>
             </div>
             <div class="row p-1">
                 <span class="h6 w-100 p-2"
@@ -82,6 +82,43 @@
             </div>
             <div class="row p-1">
                 <span class="h6 w-100 p-2"
+                    style="background-color: rgb(250, 250, 250); color: rgb(71, 71, 71); font-weight: 350"><span
+                        style="font-weight: 500">Dimensions:</span> {{item.length}} cm x {{item.height}} cm</span>
+            </div>
+            <div class="row p-1">
+                <span class="h6 w-100 p-2"
+                    style="background-color: rgb(250, 250, 250); color: rgb(71, 71, 71); font-weight: 350"><span
+                        style="font-weight: 500">Weight:</span> {{item.weight}} g </span>
+            </div>
+            <div class="row p-1">
+                <span class="h6 w-100 p-2"
+                    style="background-color: rgb(250, 250, 250); color: rgb(71, 71, 71); font-weight: 350"><span
+                        style="font-weight: 500">Colour:</span> {{item.color}} </span>
+            </div>
+            <div class="row p-1">
+                <span class="h6 w-100 p-2"
+                    style="background-color: rgb(250, 250, 250); color: rgb(71, 71, 71); font-weight: 350"><span
+                        style="font-weight: 500">Framing option:</span>
+                        {% if item.addFrame %}
+                            Yes, at Rs. {{ item.frameCost }}
+                        {% else %}
+                            No
+                        {% endif %}                    
+                        </span>
+            </div>
+            <div class="row p-1">
+                <span class="h6 w-100 p-2"
+                    style="background-color: rgb(250, 250, 250); color: rgb(71, 71, 71); font-weight: 350"><span
+                        style="font-weight: 500">Search Keywords:</span>
+                    {% if item.searchKeywords %}
+                    Yes
+                    {% else %}
+                    No
+                    {% endif %}
+                </span>
+            </div>
+            <div class="row p-1">
+                <span class="h6 w-100 p-2"
                     style="background-color: rgb(250, 250, 250); color: rgb(71, 71, 71); font-weight: 350"><span style="font-weight: 500">Created On:</span> {{item.created_on}}</span>
             </div>
             <div class="row p-1">
@@ -90,10 +127,10 @@
             </div>
         <center>
             <div class="btn-group float-left">
-                <a href="{% url 'edit-product' item.slug %}" class="btn btn-primary pl-3 pr-3">Edit</a>
+                <a href="{% url 'edit-product' item.slug %}" class="btn btn-dark pl-3 pr-3">Edit</a>
             </div>
             <div class="btn-group float-right">
-                <a class="btn btn-danger pl-3 pr-3 text-light" data-toggle='tooltip' data-placement="left" title='You can unpublish, instead of deleting.'>Delete</a>
+                <a href="{% url 'edit-product' item.slug %}" class="btn btn-danger pl-3 pr-3 text-light" >Unpublish</a>
             </div>
         </center>
         </div>
@@ -110,10 +147,10 @@
         <div class="col-sm-12">
             <p class="mt-2 mb-3 h3 text-center" style="color: #9e9e9e; font-weight: 300;">- Full Description -
             </p>
-            <p style="color: rgb(77, 77, 77);">{{ item.description|safe }}</p>
+            <p style="color: rgb(77, 77, 77);">{{ item.fullDescription|safe }}</p>
         </div>
     </div>
     </div>
 </div>
-<hr>
+<br>
 {% endblock %}
