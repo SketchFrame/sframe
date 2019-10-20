@@ -9,52 +9,6 @@
 
 {% block extra_head %}
 <style>
-#photos {
-   /* Prevent vertical gaps */
-   line-height: 0;
-   
-   -webkit-column-count: 4;
-   -webkit-column-gap:   0px;
-   -moz-column-count:    4;
-   -moz-column-gap:      0px;
-   column-count:         4;
-   column-gap:           0px;
-}
-
-#photos img {
-  /* Just in case there are inline attributes */
-  width: 100% !important;
-  height: auto !important;
-}
-#photos {
-  -moz-column-count:    4;
-  -webkit-column-count: 4;
-  column-count:         4;
-}
-@media (max-width: 1000px) {
-  #photos {
-  -moz-column-count:    2;
-  -webkit-column-count: 2;
-  column-count:         2;
-  }
-}
-@media (max-width: 600px) {
-  #photos {
-  -moz-column-count:    1;
-  -webkit-column-count: 1;
-  column-count:         1;
-  }
-}
-@media (max-width: 450px) {
-  #photos {
-  -moz-column-count:    1;
-  -webkit-column-count: 1;
-  column-count:         1;
-  }
-}
-</style>
-
-<style>
 .this-artwork {
     position: relative;
     color: white;
@@ -130,11 +84,11 @@
     /* Prevent vertical gaps */
     line-height: 0;
 
-    -webkit-column-count: 3;
+    -webkit-column-count: 4;
     -webkit-column-gap: 0px;
-    -moz-column-count: 3;
+    -moz-column-count: 4;
     -moz-column-gap: 0px;
-    column-count: 3;
+    column-count: 4;
     column-gap: 0px;
 }
 
@@ -146,9 +100,9 @@
 
 @media (max-width: 1200px) {
     #photos {
-        -moz-column-count: 3;
-        -webkit-column-count: 3;
-        column-count: 3;
+        -moz-column-count: 4;
+        -webkit-column-count: 4;
+        column-count: 4;
     }
 }
 
@@ -206,7 +160,7 @@
 </style>
 
 <style>
-.mobile-sort, .mobile-filter{
+.mobile-sort, .mobile-filter, .mobile-grid-1, .mobile-grid-2{
     display: none;
 }
 .side-nav{
@@ -230,24 +184,21 @@
     color: #f6f6f6;
 }
 @media(max-width: 991px){
-    .mobile-sort, .mobile-filter{
+    .mobile-sort, .mobile-filter, .mobile-grid-1, .mobile-grid-2{
         display: block;
         background-color: rgb(253, 253, 253);
         border-bottom: 1px solid #e2e2e2;
     }
-    .mobile-sort > button, .mobile-filter > button{
+    .mobile-sort > button, .mobile-filter > button, .mobile-grid-1 > button, .mobile-grid-2 > button{
         color: #404040;
         font-weight: 600;
     }
-    .mobile-sort > button:hover, .mobile-filter > button:hover{
+    .mobile-sort > button:hover, .mobile-filter > button:hover, .mobile-grid-1 > button:hover, .mobile-grid-2 > button:hover{
         text-decoration: none;
         color: #404040;
     }
-    .mobile-sort{
+    .mobile-sort, .mobile-filter, .mobile-grid-1{
         border-right: 1px solid #e2e2e2;
-    }
-    .mobile-filter{
-        border-left: none;
     }
     .side-nav{
         display: none;
@@ -263,11 +214,17 @@
 {% block content %}
 <div class="container-fluid">
     <div class="row shadow-sm">
-        <div class="col-6 mobile-sort text-center">
+        <div class="col-4 mobile-sort text-center">
             <button class="btn btn-link"><i class="fas fa-sort-amount-up"></i> Sort</button>
         </div>
-        <div class="col-6 mobile-filter text-center">
+        <div class="col-4 mobile-filter text-center">
             <button class="btn btn-link"><i class="fas fa-filter"></i> Filter</button>
+        </div>
+        <div class="col-2 mobile-grid-1 text-center">
+            <button class="btn btn-link"><i class="fas fa-square"></i></button>
+        </div>
+        <div class="col-2 mobile-grid-2 text-center">
+            <button class="btn btn-link"><i class="fas fa-th-large"></i></button>
         </div>
     </div>
     <div class="row">
@@ -412,7 +369,7 @@
                 <br>
             </div>
         </div>
-        <div class="main-content col-lg-10">
+        <div class="main-content pt-2 col-lg-10">
             <section id="photos" style="background-color: transparent; height: 100%;">
                 {% for product in products %}
                 {% if product.item.approved and product.item.listing_status and product.item.finallySubmitted %}
