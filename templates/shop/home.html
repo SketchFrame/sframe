@@ -204,32 +204,240 @@
     }
 }
 </style>
+
+<style>
+.mobile-sort, .mobile-filter{
+    display: none;
+}
+.side-nav{
+    min-height: 50vh;
+    background-color: #f2f2f2;
+}
+.main-content{
+    min-height: 50vh;
+    background-color: #f6f6f6;
+}
+.custom-list-group-item{
+    background-color: transparent;
+    border: none;
+    padding: 0px;
+    color: #777777;
+    font-size: 14px;
+}
+.list-group-item.active{
+    background-color: #1d1e1f;
+    border: none;
+    color: #f6f6f6;
+}
+@media(max-width: 991px){
+    .mobile-sort, .mobile-filter{
+        display: block;
+        background-color: rgb(253, 253, 253);
+        border-bottom: 1px solid #e2e2e2;
+    }
+    .mobile-sort > button, .mobile-filter > button{
+        color: #404040;
+        font-weight: 600;
+    }
+    .mobile-sort > button:hover, .mobile-filter > button:hover{
+        text-decoration: none;
+        color: #404040;
+    }
+    .mobile-sort{
+        border-right: 1px solid #e2e2e2;
+    }
+    .mobile-filter{
+        border-left: none;
+    }
+    .side-nav{
+        display: none;
+    }
+}
+
+@media(max-width: 450px){
+    
+}
+</style>
+
 {% endblock %}
 {% block content %}
-<div class="container-fluid p-0">
-    <section id="photos">
-        {% for product in products %}
-        {% if product.item.approved and product.item.listing_status and product.item.finallySubmitted %}
-        <div class="this-artwork">
-            <span id="product-{{ forloop.counter }}" style="display: none" data-value="{{ product.item.slug }}"></span>
-            <a href="{% url 'product' product.item.slug %}" class="text-light">
-                <img class="artwork-images" src="{% thumbnail product.image.image '400' as im %}{{ im.url }}{% endthumbnail %}">
-                <div class="bottom-left">{{ product.item.title|truncatechars:"12" }} ({{product.item.length}} x {{product.item.height}})</div>
-                <div class="bottom-right">Rs.
-                    {% if product.item.discount_price %}
-                    {{ product.item.discount_price | intcomma}}
-                    {% else %}
-                    {{ product.item.price |intcomma}}
-                    {% endif %}
+<div class="container-fluid">
+    <div class="row shadow-sm">
+        <div class="col-6 mobile-sort text-center">
+            <button class="btn btn-link"><i class="fas fa-filter"></i> Sort</button>
+        </div>
+        <div class="col-6 mobile-filter text-center">
+            <button class="btn btn-link"><i class="fas fa-filter"></i> Filter</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="side-nav col-lg-2">
+            <div class="p-2" style="background-color: transparent;">
+                <div class="row" style="border-bottom: 1px solid #cfcfcf;">
+                    <p class="h4 text-dark p-3 pb-0 mb-0">
+                        Filters
+                    </p>
                 </div>
-            </a>
-            <div class="top-right">
-                <a onclick="showQuickView('{{forloop.counter}}');" data-toggle="modal" data-target="#myModal"><i class="fas fa-search-plus" style="cursor: pointer;"></i></a>
+                <div class="row">
+                    <p class="text-dark p-3 mb-0 font-weight-bold" style="font-size: 14px;">
+                        CATEGORIES
+                    </p>
+                </div>
+                
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" id="customCheck1" name="example1">
+                    <label class="custom-control-label" for="customCheck1">Water colour</label>
+                </div>
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" id="customCheck2" name="example1">
+                    <label class="custom-control-label" for="customCheck2">Fabric</label>
+                </div>
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" id="customCheck3" name="example1">
+                    <label class="custom-control-label" for="customCheck3">Pencil colour</label>
+                </div>
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" id="customCheck4" name="example1">
+                    <label class="custom-control-label" for="customCheck4">Pastle colour</label>
+                </div>
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" id="customCheck5" name="example1">
+                    <label class="custom-control-label" for="customCheck5">Mix media</label>
+                </div>
+
+                <div class="row">
+                    <p class="text-dark p-3 mb-0 font-weight-bold" style="font-size: 14px;">
+                        PRICE
+                    </p>
+                </div>
+                <div class="clearfix">
+                    <div class="float-left">
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-dark dropdown-toggle btn-sm" data-toggle="dropdown">
+                                Min
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item">1,000</a>
+                                <a class="dropdown-item">5,000</a>
+                                <a class="dropdown-item">10,000</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="float-right">
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-dark dropdown-toggle btn-sm" data-toggle="dropdown">
+                                1,00,000+
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item">20,000</a>
+                                <a class="dropdown-item">50,000</a>
+                                <a class="dropdown-item">1,00,000+</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <div class="row">
+                    <p class="text-dark p-3 mb-0 font-weight-bold" style="font-size: 14px;">
+                        SIZE
+                    </p>
+                </div>
+                <ul class="list-group list-group-horizontal ">
+                    <li class="list-group-item"><i class="fas fa-compress-arrows-alt"></i></li>
+                    <li class="list-group-item active"><i class="far fa-square"></i></li>
+                    <li class="list-group-item"><i class="fas fa-expand-arrows-alt"></i></li>
+                </ul>
+
+                <br>
+                <div class="row">
+                    <p class="text-dark p-3 mb-0 font-weight-bold" style="font-size: 14px;">
+                        ORIENTATION
+                    </p>
+                </div>
+                <ul class="list-group list-group-horizontal">
+                    <li class="list-group-item active"><i class="fas fa-arrows-alt-v"></i></li>
+                    <li class="list-group-item"><i class="fas fa-arrows-alt-h"></i></li>
+                    <li class="list-group-item"><i class="fas fa-expand-arrows-alt"></i></li>
+                </ul>
+
+                <br>
+                <div class="row">
+                    <p class="text-dark p-3 mb-0 font-weight-bold" style="font-size: 14px;">
+                        RATINGS
+                    </p>
+                </div>
+                
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
+                    <label class="custom-control-label" for="customCheck">4&#9733; & above</label>
+                </div>
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
+                    <label class="custom-control-label" for="customCheck">3&#9733; & above</label>
+                </div>
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
+                    <label class="custom-control-label" for="customCheck">2&#9733; & above</label>
+                </div>
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
+                    <label class="custom-control-label" for="customCheck">1&#9733; & above</label>
+                </div>
+                
+                <br>
+                <div class="row">
+                    <p class="text-dark p-3 mb-0 font-weight-bold" style="font-size: 14px;">
+                        COLOUR
+                    </p>
+                </div>
+                <div class="dropdown">
+                    <button type="button" class="btn btn-dark dropdown-toggle btn-sm" data-toggle="dropdown">
+                        All colours
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item">Red</a>
+                        <a class="dropdown-item">Green</a>
+                        <a class="dropdown-item">Black</a>
+                        <a class="dropdown-item">White</a>
+                        <a class="dropdown-item">Cream</a>
+                        <a class="dropdown-item">Pink</a>
+                        <a class="dropdown-item">Purple</a>
+                        <a class="dropdown-item">Blue</a>
+                        <a class="dropdown-item">Navy</a>
+                        <a class="dropdown-item">Peach</a>
+                    </div>
+                </div>
+                <br>
+                <br>
             </div>
         </div>
-        {% endif %}
-        {% endfor %}
-    </section>
+        <div class="main-content col-lg-10">
+            <section class="p-2" id="photos" style="background-color: transparent; height: 100%;">
+                {% for product in products %}
+                {% if product.item.approved and product.item.listing_status and product.item.finallySubmitted %}
+                <div class="this-artwork">
+                    <span id="product-{{ forloop.counter }}" style="display: none" data-value="{{ product.item.slug }}"></span>
+                    <a href="{% url 'product' product.item.slug %}" class="text-light">
+                        <img class="artwork-images" src="{% thumbnail product.image.image '400' as im %}{{ im.url }}{% endthumbnail %}">
+                        <div class="bottom-left">{{ product.item.title|truncatechars:"12" }} ({{product.item.length}} x {{product.item.height}})</div>
+                        <div class="bottom-right">Rs.
+                            {% if product.item.discount_price %}
+                            {{ product.item.discount_price | intcomma}}
+                            {% else %}
+                            {{ product.item.price |intcomma}}
+                            {% endif %}
+                        </div>
+                    </a>
+                    <div class="top-right">
+                        <a onclick="showQuickView('{{forloop.counter}}');" data-toggle="modal" data-target="#myModal"><i class="fas fa-search-plus" style="cursor: pointer;"></i></a>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </section>
+        </div>
+    </div>
 </div>
 <style>
 #loader{

@@ -174,7 +174,6 @@ class CheckoutView(LoginRequiredMixin, View):
                 fullname = form.cleaned_data.get('fullname')
                 email = self.request.user.email
                 address_id = self.request.POST.get('address-value')
-                print(address_id)
                 address = Address.objects.get(Q(pk=int(address_id)) & Q(user__user=self.request.user))
                 payment_type = self.request.POST.get('payment-type')
 
@@ -622,7 +621,6 @@ def latestArtwork(request):
 @csrf_exempt
 def quickView(request):
     slug = request.POST.get('slug')
-    print(slug)
     item = Item.objects.get(slug=slug)
     images = ItemImages.objects.filter(item=item)
     comments = Comment.objects.filter(item=item)
