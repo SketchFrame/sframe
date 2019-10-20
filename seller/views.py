@@ -19,6 +19,7 @@ from affiliate.models import Affiliate
 from django.db.models import Q
 import datetime
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import JsonResponse
 
 def viewSellerProfile(request, username):
     seller = Seller.objects.get(user__user__username=username)
@@ -498,4 +499,29 @@ def editSocialInfo(request):
         'edit': 'Change your social media presence',
         'form': form
     })
-    
+
+
+@login_required
+@seller_required
+def seller_settings(request):
+    return render(request, "seller/settings.html")
+
+@login_required
+@seller_required
+def generalProfileSettings(request):
+    firstName = request.POST.get('firstname')
+    lastName = request.POST.get('lastname')
+    field = request.POST.get('field')
+    user = User.objects.get(pk=request.user.id)
+    try:
+        user.first_name = firstName
+        user.last_name = lastName
+        user.save()
+        resp = {
+            'message': "AJAX call was successfull"
+        }
+    except:
+        resp = {
+            'message': "There was an error"
+        }
+    return JsonResponse(resp)

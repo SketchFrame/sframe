@@ -5,6 +5,7 @@ from django.forms import modelformset_factory
 from django.utils.decorators import method_decorator
 from django.views.generic import UpdateView, DeleteView, CreateView
 from django.db.models import Q
+from django.core.exceptions import ObjectDoesNotExist
 from .models import Item, ItemImages, OrderItem
 from .forms import *
 from seller.models import Seller
@@ -36,11 +37,10 @@ def addProductStep1(request):
 def addProductStep2(request, slug):
     item = Item.objects.get(Q(slug=slug) & Q(seller__user__user=request.user))
     itemImages = ItemImages.objects.filter(item=item)
-    package = None
     try:
         package = PackageInformation.objects.get(item=item)
-    except:
-        pass
+    except ObjectDoesNotExist:
+        package = None
     ImageFormSet = modelformset_factory(ItemImages, form=AddItemImagesForm, extra=3)
     if request.method == 'POST':
         # Seller Information form
@@ -105,11 +105,7 @@ def addProductStep2(request, slug):
     else:
         seller_information = SellingInformation(instance=item)
         product_description = productDescription(instance=item)
-        try:
-            package = PackageInformation.objects.get(item=item)
-            packageForm = PackageDetailsForm(instance=package)
-        except:
-            packageForm = PackageDetailsForm()
+        packageForm = PackageDetailsForm(instance=package)
         formset = ImageFormSet(queryset=ItemImages.objects.none())
     return render(request, "products/add-item.html", {
         'seller_information': seller_information,

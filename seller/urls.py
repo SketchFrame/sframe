@@ -13,6 +13,8 @@ from .views import(
     editBio,
     editSkills,
     editSocialInfo,
+    seller_settings,
+    generalProfileSettings
 )
 from products.views import (
     addProductStep1,
@@ -21,24 +23,23 @@ from products.views import (
     ProductDeleteView,
     viewAllProduct,
     get_charges,
-    uploadImages
+    uploadImages,
 )
 
 urlpatterns = [
+    path('settings/', seller_settings, name="seller-settings"),
     path('product/', addProductStep1, name="add-product-step1"),
-    path('product/<slug:slug>/',
-         addProductStep2, name="edit-product"),
+    path('product/<slug:slug>/', addProductStep2, name="edit-product"),
+    path('settings/edit/', generalProfileSettings, name="general-settings"),
     path('view-product/', viewAllProduct, name="view-all-product"),
     path('view-product/<slug:slug>/', viewProduct, name="view-product"),    
-    path('delete-product/<slug:slug>/',
-         ProductDeleteView.as_view(), name="delete-product"),
+    path('delete-product/<slug:slug>/', ProductDeleteView.as_view(), name="delete-product"),
     path('dashboard/', myShop, name='my-shop'),
     path('register/', register, name='register-seller'),
     path('complete-profile/', complete_profile, name='complete-profile'),
     path('profile/', seller_profile, name='seller-profile'),
     path('portfolio/upload/', SellerPortfolio, name='portfolio-upload'),
-    path('portfolio/delete/<int:pk>/',
-         DeletePortfolioImage.as_view(), name="portfolio-delete"),
+    path('portfolio/delete/<int:pk>/', DeletePortfolioImage.as_view(), name="portfolio-delete"),
     path('project-assigned/', projectAssigned, name='project-assigned'),
     path('project-completed/<slug:slug>/', completed, name='project-completed'),
     path('add/product/image/<slug:slug>/<int:number>', uploadImages, name="add-images"),
