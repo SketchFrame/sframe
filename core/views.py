@@ -45,11 +45,30 @@ def home(request):
         'https://d3nn873nee648n.cloudfront.net/HomeImages/Without-People.jpg',
         'https://cdn.eventfinda.co.nz/uploads/events/transformed/1246598-555064-34.jpg'
     ]
+    trendingSearches = [
+        'Mona Lisa', 
+        'Ankit brijwasi', 
+        'Navdeep', 
+        'Navdeep kumar',
+        'Navdeep ji', 
+        'Ankit Ji', 
+        'Vainhav',  
+        'Tanmay', 
+        'Kunal', 
+        'Mona Lisa', 
+        'Navdeep ji', 
+        'Ankit Ji', 
+        'Rajesh Joshi', 
+        'Vainhav', 
+        'Sagar Joshi', 
+        'Tanmay', 
+    ]
     return render(request, 'home/home.html', context={
         'products': l,
         'banners': MainBanner.objects.all()[:3],
         'meta_description': "Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable.",
-        'imgs': imgs
+        'imgs': imgs,
+        'trendingSearches': trendingSearches
     })
 
 def quick_search(request):

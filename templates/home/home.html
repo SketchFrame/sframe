@@ -432,6 +432,9 @@
 .category-images{
     padding: 5px;
 }
+.post-project span{
+    top: 35%;
+}
 #photos {
     /* Prevent vertical gaps */
    line-height: 0;
@@ -481,6 +484,10 @@
       /* bottom: -10px; */
       height: 20px;
   }
+  
+    .post-project span{
+        top: 25%;
+    }
 }
 @media (max-width: 400px) {
   #photos {
@@ -503,9 +510,10 @@
     {% endfor %}
 </section>
 </div>
+
 <div class="post-project"
-    style="background-color: #2e2e2e;; height: 50vh; position: relative;">
-    <span style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);">
+    style="background-color: #2e2e2e;; height: 40vh; position: relative;">
+    <span class="text-center" style="position: relative;">
         <p style="color: #fff; font-size: 35px;font-weight: 100;">
             Can't find what you need?
         </p>
@@ -513,6 +521,51 @@
         </center>
     </span>
 </div>
+
+<div class="container-fluid text-center pt-3 pb-3">
+    <style>
+    #trending_searches ul{
+        display: inline;
+    }
+    
+    #trending_searches ul li{
+        margin: 10px;
+        color: #fff;
+    }
+    .list-group {
+        display: block;  /* Remove bullet points; allow greater control of positioning */
+        padding: 0;      /* Override defaults for lists */
+        margin: 0;       /* Override defaults for lists */
+        width: 100%;     /* Get the row full width */
+    }
+
+    .list-group li {
+        display: inline-block; 
+        width: 15%;
+        text-align: center;
+    }
+    @media(max-width: 450px){
+        .list-group-horizontal li {
+            width: 40%;
+            margin: 0px;
+        }       
+    }
+    </style>
+    <h3 class="h3 mb-3" style="font-weight: 100;">Trending Searches</h3>
+    <div class="text-center" id="trending_searches">
+        <ul class="list-group list-group-horizontal">
+            
+            {% for x in trendingSearches %}
+            <li>
+                <a href="#" class="btn btn-sm btn-dark pl-3 pr-3 text-light" style="border-radius: 20px;">
+                    {{ x }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
 <script>
 // Category image grid
 function getRandomSize(min, max) {
