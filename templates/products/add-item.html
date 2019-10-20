@@ -64,6 +64,11 @@
         }
     }
 </style>
+<style>
+#frameCostWrapper{
+    display: none;
+}
+</style>
 <p class="mt-2 mb-3 h2 text-center" style="color: #9e9e9e; font-weight: 300;">- Add Products -</p>
 <div class="container-fluid">
     <div class="row">
@@ -358,6 +363,10 @@
 
             <!-- Modal body -->
             <form method="POST" class="modal-body p-2 pl-4 pr-4">
+                <div id="error-msgs" class="pl-4 pr-4" style="display: none;">
+                    <ul class="font-weight-bold text-danger m-0 p-0" id="msg" style="list-style-type: disc;">
+                    </ul>
+                </div>
                 {% csrf_token %}
                 <div class="form-row">
                     <div class="col-md-6 form-group d-flex flex-row">
@@ -454,7 +463,7 @@
                 <!-- Modal footer -->
                 <div class="modal-footer p-2">
                     <button type="submit" name="seller_information" class="btn btn-warning pl-5 pr-5"
-                        style="background-color: #edca20; border-radius: 20px; color: #404040; font-weight: 650; letter-spacing: 1px">Save</button>
+                        style="background-color: #edca20; border-radius: 20px; color: #404040; font-weight: 650; letter-spacing: 1px" id="sellingInfo">Save</button>
                 </div>
             </form>
         </div>
@@ -618,20 +627,22 @@
                             </span>
                         </i>
                     </div>
-                    <div class="col-md-4 form-group d-flex flex-row">
-                        <label for="framingCost" class="pt-2 pb-2 pr-1">Framing cost: </label>
-                        {{product_description.frameCost | as_crispy_field}}
-                        <i data-toggle="tooltip" data-placement="left"
-                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
-                            <span class="ml-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                    style="margin-top: 12px;">
-                                    <path
-                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
-                                </svg>
-                            </span>
-                        </i>
-                    </div>
+                    <div class="col-md-4 form-group">
+                        <div id="frameCostWrapper">
+                            <label for="framingCost" class="pt-2 pb-2 pr-1">Framing cost: </label>
+                            {{product_description.frameCost | as_crispy_field}}
+                            <i data-toggle="tooltip" data-placement="left"
+                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                <span class="ml-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        style="margin-top: 12px;">
+                                        <path
+                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                    </svg>
+                                </span>
+                            </i>
+                        </div>    
+                    </div>                
                 </div>
                 <!-- Modal footer -->
                 <div class="modal-footer p-2">
@@ -930,5 +941,18 @@
 
         });
     });
+    var checkBox = document.getElementById('frame');
+    var frameCost = document.getElementById('framingCost');
+    var frameCostWrapper = document.getElementById('frameCostWrapper');
+    checkBox.addEventListener('click', function(){
+        if(checkBox.checked === true){
+            frameCostWrapper.style.display = "flex";
+            frameCostWrapper.style.flexDirection = "row";
+            frameCost.required = true
+        }else{
+            frameCostWrapper.style.display = "none";
+            frameCost.required = false;  
+        }
+    })    
 </script>
 {% endblock %}

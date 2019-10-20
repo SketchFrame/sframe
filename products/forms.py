@@ -23,7 +23,7 @@ class SellingInformation(forms.ModelForm):
             'listing_status': forms.CheckboxInput(attrs={'class': "custom-control-input", 'id': "publish"}),
             'price': forms.NumberInput(attrs={'placeholder': "eg. 25,000", 'id': 'price'}),
             'gst': forms.TextInput(attrs={'placeholder': "eg. 12%", 'id': 'gst'}),
-            'dispatch_time': forms.NumberInput(attrs={'placeholder': "eg. 2 days", 'id': 'dispatchTime'}),
+            'dispatch_time': forms.NumberInput(attrs={'placeholder': "eg. 2 days", 'id': 'dispatchTime'})
         }
         labels = {
             'sku': '',
@@ -42,14 +42,14 @@ class productDescription(forms.ModelForm):
                   'weight', 'length', 'height', 'hsnCode', 'frameCost', 'addFrame')
 
         widgets = {
-            'title': forms.TextInput(attrs={'placeholder': "eg. My lovely artwork", 'id': 'title'}),
-            'color': forms.TextInput(attrs={'placeholder': "eg. Green", 'id': 'color'}),
-            'shortDescription': forms.TextInput(attrs={'placeholder': "Choose from the wide variety of art, on demand paintings, sketches and a lot more", 'id': "shortDescription"}),
-            'fullDescription': forms.Textarea(attrs={'placeholder': "Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable.", 'id': "fullDescription"}),
-            'weight': forms.NumberInput(attrs={'placeholder': "eg. 750", 'id': 'weight'}),
-            'length': forms.NumberInput(attrs={'placeholder': "eg. 20", 'id': "length"}),
-            'height': forms.NumberInput(attrs={'placeholder': "eg. 20", 'id': "height"}),
-            'hsnCode': forms.TextInput(attrs={'placeholder': "eg. XXXXXXX", 'id': "hsnCode"}),
+            'title': forms.TextInput(attrs={'placeholder': "eg. My lovely artwork", 'id': 'title', 'required': True}),
+            'color': forms.TextInput(attrs={'placeholder': "eg. Green", 'id': 'color', 'required': True}),
+            'shortDescription': forms.TextInput(attrs={'placeholder': "Choose from the wide variety of art, on demand paintings, sketches and a lot more", 'id': "shortDescription", 'required': True}),
+            'fullDescription': forms.Textarea(attrs={'placeholder': "Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable.", 'id': "fullDescription", 'required': True}),
+            'weight': forms.NumberInput(attrs={'placeholder': "eg. 750", 'id': 'weight', 'required': True}),
+            'length': forms.NumberInput(attrs={'placeholder': "eg. 20", 'id': "length", 'required': True}),
+            'height': forms.NumberInput(attrs={'placeholder': "eg. 20", 'id': "height", 'required': True}),
+            'hsnCode': forms.TextInput(attrs={'placeholder': "eg. XXXXXXX", 'id': "hsnCode", 'required': True}),
             'frameCost': forms.NumberInput(attrs={'placeholder': "eg. 1000", 'id': "framingCost"}),
             'addFrame': forms.CheckboxInput(attrs={'class': "custom-control-input", 'id': "frame"}),
         }
@@ -73,10 +73,10 @@ class PackageDetailsForm(forms.ModelForm):
         exclude = ('item',)
 
         widgets = {
-            'packageLength': forms.NumberInput(attrs={'placeholder': 'e.g. 40', 'id': 'packageLength'}),
-            'packageWidth': forms.NumberInput(attrs={'placeholder': 'e.g. 40', 'id': 'packageWidth'}),
-            'packageHeight': forms.NumberInput(attrs={'placeholder': 'e.g. 40', 'id': 'packageHeight'}),
-            'packageWeight': forms.NumberInput(attrs={'placeholder': 'e.g. 1000', 'id': 'packageWeight'}),
+            'packageLength': forms.NumberInput(attrs={'placeholder': 'e.g. 40', 'id': 'packageLength', 'required': True}),
+            'packageWidth': forms.NumberInput(attrs={'placeholder': 'e.g. 40', 'id': 'packageWidth', 'required': True}),
+            'packageHeight': forms.NumberInput(attrs={'placeholder': 'e.g. 40', 'id': 'packageHeight', 'required': True}),
+            'packageWeight': forms.NumberInput(attrs={'placeholder': 'e.g. 1000', 'id': 'packageWeight', 'required': True}),
         }
 
         labels = {

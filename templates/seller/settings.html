@@ -1,0 +1,253 @@
+{% extends "seller/base.html" %}
+{% block content %}
+<style>
+#data-settings,
+#security-tab,
+#artwork-tab{
+    display: none;
+}
+</style>
+<div class="container mt-2 mb-2" style="background-color: whitesmoke;">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card p-2">
+                <h4 style="text-align: center; font-weight: 300;">Account Settings</h4>
+                <ul class="list-group p-1" style="cursor:pointer">
+                    <li class="list-group-item pt-2 pb-2 pl-3 pr-3" id="profile">Profile</li>
+                    <li class="list-group-item pt-2 pb-2 pl-3 pr-3" id="data">Your Data</li>
+                    <li class="list-group-item pt-2 pb-2 pl-3 pr-3" id="security">Security</li>
+                    <li class="list-group-item pt-2 pb-2 pl-3 pr-3" id="artwork">Artworks</li>
+                </ul>
+            </div>
+            <div class="card p-2 mt-2" style="opacity:0.5; z-index: 0">
+                <h4 style="text-align: center; font-weight: 300">Advertising <i class="fas fa-lock"></i></h4>
+                <ul class="list-group">
+                    <li class="list-group-item pt-2 pb-2 pl-3 pr-3">...</li>
+                    <li class="list-group-item pt-2 pb-2 pl-3 pr-3">...</li>
+                    <li class="list-group-item pt-2 pb-2 pl-3 pr-3">...</li>
+                    <li class="list-group-item pt-2 pb-2 pl-3 pr-3">...</li>
+                </ul>
+            </div>
+            </div>
+        <div class="col-md-9">
+            <div class="card p-4" id="general-settings">
+                <h2 class="card-text" style="font-weight: 300; text-align: center;">Profile Settings</h4>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <style>
+                        #loading{
+                            font-size: 13px;
+                            height: 20px;
+                            width: 20px;
+                            display: none;
+                        }
+                        #change{
+                            display: block;
+                            /* display: none; */
+                        }
+                        #change-input{
+                            display: none;
+                            width: 30%;
+                            margin: auto;
+                            /* display: block; */
+                        }
+                        </style>
+                        <li class="list-group-item p-2">
+                            <div id="change-input">
+                                <input type="text" class="form-control mb-2" name="firstname" id="first-name">
+                                <input type="text" class="form-control mb-2" name="lastname" id="last-name">
+                                <div class="d-flex flex-row">
+                                    <button type="button" id="save-name" class="btn btn-sm btn-dark">Save</button>
+                                    <button type="button" id="cancel" class="btn btn-link btn-sm">Cancel</button>
+                                    <div class="spinner-border text-muted" id="loading"></div>        
+                                </div>
+                            </div>
+                            <div class="clearfix" id="change">
+                                <div class="float-left">Name</div>
+                                <div class="float-right">
+                                    <span id="full-name">
+                                        {% if user.first_name %}
+                                        {{user.first_name}} {{user.last_name}}
+                                        {% else %}
+                                        Not Given
+                                        {% endif %}
+                                    </span>
+                                    <button class="btn btn-link m-0 p-0" id="editName">
+                                        <i class="fas fa-edit" id="name"></i>
+                                    </button>
+                                    <script>
+                                        var firstName = document.getElementById("first-name");
+                                        var lastName = document.getElementById("last-name");
+                                        var cancel = document.getElementById("cancel");
+                                        var saveNameBtn = document.getElementById('save-name');
+                                        var changeInput = document.getElementById("change-input");
+                                        var loading = document.getElementById("loading");
+                                        var change = document.getElementById("change");
+                                        var editNameBtn = document.getElementById('editName');
+                                        cancel.addEventListener('click', () => {
+                                            change.style.display = "block";
+                                            changeInput.style.display = "none";
+                                        })
+                                        editNameBtn.addEventListener('click', () => {
+                                            change.style.display = "none";
+                                            changeInput.style.display = "block";
+                                            firstName.placeholder = "First Name";
+                                            firstName.value = "{{user.first_name}}";
+                                            lastName.placeholder = "Last Name";
+                                            lastName.value = "{{user.last_name}}";
+                                            firstName.focus();
+                                        })
+                                        saveNameBtn.addEventListener("click", function(){
+                                            this.disabled = true;
+                                            firstName.disabled = true;
+                                            lastName.disabled = true;
+                                            cancel.disabled = true;
+                                            loading.style.display = "block";
+                                            $.ajaxSetup({ 
+                                                beforeSend: function(xhr, settings) {
+                                                    function getCookie(name) {
+                                                        var cookieValue = null;
+                                                        if (document.cookie && document.cookie != '') {
+                                                            var cookies = document.cookie.split(';');
+                                                            for (var i = 0; i < cookies.length; i++) {
+                                                                var cookie = jQuery.trim(cookies[i]);
+                                                                // Does this cookie string begin with the name we want?
+                                                                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                                                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                                                    break;
+                                                                }
+                                                            }
+                                                        }
+                                                        return cookieValue;
+                                                    }
+                                                    if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                                                        // Only send the token to relative URLs i.e. locally.
+                                                        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                                                    }
+                                                } 
+                                            });
+                                            $.ajax({
+                                                type: "POST",
+                                                url: "{% url 'general-settings' %}",
+                                                data: {
+                                                    'firstname': firstName.value,
+                                                    'lastname': lastName.value,
+                                                    'field': 'name',
+                                                },
+                                                dataType: 'json',
+                                                success: function(resp){
+                                                    changeInput.style.display = "none";
+                                                    document.getElementById('full-name').innerHTML = `${firstName.value} ${lastName.value}`;
+                                                    saveNameBtn.disabled = false;
+                                                    firstName.disabled = false;
+                                                    lastName.disabled = false;
+                                                    cancel.disabled = false;
+                                                    loading.style.display = "none";
+                                                    change.style.display = "block";
+                                                },
+                                                error: function(err){
+                                                    console.log(err.message)
+                                                }
+                                            })
+                                        })
+                                    </script>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item p-2">
+                            <div class="clearfix">
+                                <div class="float-left">Username</div>
+                                <div class="float-right">{{ user.username }}
+                                        <button class="btn btn-link m-0 p-0" id="editUsername">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                </div>
+                            </div>        
+                        </li>
+                        <li class="list-group-item p-2">
+                            <div class="clearfix">
+                                <div class="float-left">E-mail</div>
+                                <div class="float-right">{{ user.email }}
+                                    <a href="#"><i class="fas fa-edit"></i></a>
+                                </div>
+                            </div>        
+                        </li>
+                        <li class="list-group-item p-2">
+                            <div class="clearfix">
+                                <div class="float-left">Contact Number</div>
+                                <div class="float-right">+91-xxxxxxxxxx
+                                    <a href="#"><i class="fas fa-edit"></i></a>
+                                </div>
+                            </div>        
+                        </li>
+                        <li class="list-group-item p-2">
+                            <div class="clearfix">
+                                <div class="float-left">Account Status</div>
+                                <div class="float-right">Active
+                                    <a href="#"><i class="fas fa-edit"></i></a>
+                                </div>
+                            </div>        
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card p-4" id="data-settings">
+                <h2 class="card-text" style="font-weight: 300; text-align: center;">Data Settings</h4>
+                <div class="card-body">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur facere rerum ex voluptatibus laborum fuga expedita nam labore deserunt repudiandae ut, aperiam facilis quibusdam culpa delectus inventore dolores aspernatur itaque.
+                </div>
+            </div>
+
+            <div class="card p-4" id="security-tab">
+                <h2 class="card-text" style="font-weight: 300; text-align: center;">Security Settings</h4>
+                <div class="card-body">
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos modi quam distinctio soluta earum illo enim vel nisi doloribus aperiam, sequi assumenda veniam expedita similique asperiores aspernatur, architecto esse voluptatibus!
+                </div>
+            </div>
+            
+            <div class="card p-4" id="artwork-tab">
+                <h2 class="card-text" style="font-weight: 300; text-align: center;">Artwork Settings</h4>
+                <div class="card-body">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias repellat sint alias sapiente magni. Fuga, amet sit praesentium qui iste nihil aperiam ipsa repudiandae minima saepe consequatur earum ullam eveniet!
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+let profile = document.getElementById('profile');
+let data = document.getElementById('data');
+let security = document.getElementById('security');
+let artwork = document.getElementById('artwork');;
+
+let profileTab = document.getElementById("general-settings")
+let dataTab = document.getElementById('data-settings');
+let securityTab = document.getElementById('security-tab');
+let artworkTab = document.getElementById('artwork-tab');
+profile.addEventListener('click', () => {
+    dataTab.style.display = "none";
+    securityTab.style.display = "none";
+    artworkTab.style.display = "none";
+    profileTab.style.display = "block";
+})
+data.addEventListener('click', () => {
+    profileTab.style.display = "none";
+    securityTab.style.display = "none";
+    artworkTab.style.display = "none";    
+    dataTab.style.display = "block";
+})
+security.addEventListener('click', () => {
+    profileTab.style.display = "none";
+    dataTab.style.display = "none";
+    artworkTab.style.display = "none";
+    securityTab.style.display = "block";
+})
+artwork.addEventListener('click', () => {
+    profileTab.style.display = "none";
+    dataTab.style.display = "none";
+    securityTab.style.display = "none";
+    artworkTab.style.display = "block";
+})
+</script>
+{% endblock %}
