@@ -88,7 +88,7 @@
                 </td>
                 <td>
                     {% if product.item.title %}
-                    <a href="{% url 'view-product' product.item.slug %}" class="text-primary">{{product.item.title}}</a>
+                    <a href="{% url 'view-product' product.item.slug %}" class="text-primary">{{product.item.title|truncatechars:"15" }}</a>
                     {% else %}
                     ---
                     {% endif %}
@@ -103,11 +103,10 @@
                 </td>
                 <td>
                     {% if product.item.gst %}
-                    {{product.item.gst|intcomma}}
+                    {{product.item.gst|intcomma}}%
                     {% else %}
                     ---
                     {% endif %}
-                    %
                 </td>
                 {% if product.item.finallySubmitted %}
                 <td>Complete</td>
