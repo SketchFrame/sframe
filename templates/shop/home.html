@@ -214,15 +214,21 @@
 {% block content %}
 <div class="container-fluid">
     <div class="row shadow-sm">
+        
         <div class="col-4 mobile-sort text-center">
-            <button class="btn btn-link"><i class="fas fa-sort-amount-up"></i> Sort</button>
+            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation"
+        style="border: none;" onclick="openSort()"><i class="fas fa-sort-amount-up"></i> Sort</button>
         </div>
+
         <div class="col-4 mobile-filter text-center">
-            <button class="btn btn-link"><i class="fas fa-filter"></i> Filter</button>
+            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation"
+        style="border: none;" onclick="openFilter()"><i class="fas fa-filter"></i> Filter</button>
         </div>
+        
         <div class="col-2 mobile-grid-1 text-center">
             <button class="btn btn-link"><i class="fas fa-square"></i></button>
         </div>
+        
         <div class="col-2 mobile-grid-2 text-center">
             <button class="btn btn-link"><i class="fas fa-th-large"></i></button>
         </div>
@@ -397,10 +403,63 @@
     </div>
 </div>
 <style>
-#loader{
-    display: block;
+#loader, .sortOverlay, .filterOverlay{
+    display: none;
 }
 </style>
+
+<!-- Sort Menu for mobiles -->
+<div class="container-fluid overlay p-0" id="sortOverlay">
+    <div class="row pt-1 pb-1 text-center border-bottom">
+        <div class="col-2">
+            <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/back.svg" height="33px" onclick="closeSort()" alt="back"
+                class="filter" style="cursor: pointer; margin-top: 3px">
+        </div>
+        <div class="col-10 pt-2">
+            <span class="h6 text-muted pt-2" style="margin-left: -70px !important;">SORT BY</span>
+        </div>
+    </div>
+    <div class="row p-3" style="padding-top: 0 !important;">
+        <table class="table table-borderless">
+            <tbody>
+                <tr class="clearfix">
+                    <td class="float-left text-muted">Relevance</td>
+                    <td class="float-right"><input type="radio" name="sort-by"></td>
+                </tr>
+                <tr class="clearfix">
+                    <td class="float-left text-muted">Popularity</td>
+                    <td class="float-right"><input type="radio" name="sort-by"></td>
+                </tr>
+                <tr class="clearfix">
+                    <td class="float-left text-muted">Price - Low to High</td>
+                    <td class="float-right"><input type="radio" name="sort-by"></td>
+                </tr>
+                <tr class="clearfix">
+                    <td class="float-left text-muted">Price - High to Low</td>
+                    <td class="float-right"><input type="radio" name="sort-by"></td>
+                </tr>
+                <tr class="clearfix">
+                    <td class="float-left text-muted">Newest first</td>
+                    <td class="float-right"><input type="radio" name="sort-by"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Filter Menu for mobiles -->
+<div class="container-fluid overlay p-0" id="filterOverlay">
+    <div class="row pt-1 pb-1 text-center border-bottom">
+        <div class="col-2">
+            <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/back.svg" height="33px" onclick="closeFilter()"
+                alt="back" class="filter" style="cursor: pointer; margin-top: 3px">
+        </div>
+        <div class="col-10 pt-2">
+            <span class="h6 text-muted pt-2" style="margin-left: -70px !important;">FILTERS</span>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="myModal" style="padding-right: 0px;">
     <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content"  style=" background-color: #f6f6f6">
@@ -415,6 +474,20 @@
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" defer></script>
+<script>
+    function openSort() {
+        document.getElementById("sortOverlay").style.display = "block";
+    }
+    function closeSort() {
+        document.getElementById("sortOverlay").style.display = "none";
+    } 
+    function openFilter() {
+        document.getElementById("filterOverlay").style.display = "block";
+    }
+    function closeFilter() {
+        document.getElementById("filterOverlay").style.display = "none";
+    } 
+</script>
 <script>
 function showQuickView(n){
     var slug = $(`#product-${n}`).attr('data-value');
