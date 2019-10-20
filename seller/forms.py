@@ -5,7 +5,8 @@ from seller.models import (
     SellerAddress,
     SellerExtended,
     SellerComment,
-    PortfolioImages
+    PortfolioImages,
+    Payments
 )
 
 
@@ -180,3 +181,20 @@ class EditSocialInfoForm(forms.ModelForm):
             'twitter',
             'linkedin',
         ]
+
+class AddBankDetailsForm(forms.ModelForm):
+    class Meta:
+        model = Payments
+        exclude = ('seller', 'GPay', 'PhonePay', 'paytm', )
+
+        widgets = {
+            'accountNumber': forms.TextInput(attrs={'placeholder': "eg. 5134-9090-8808", 'id': "accountNumber"}),
+            'cif': forms.TextInput(attrs={'placeholder': "eg. 9808-7789-8988", 'id': "cif"}),
+            'fullName': forms.TextInput(attrs={'placeholder': "eg. Jhon Doe", 'id': "accountNumber"}),
+            
+        }
+        labels = {
+            'accountNumber': "Account Number",
+            'cif': "CIF Number",
+            'fullName': "Account holder's Name",
+        }

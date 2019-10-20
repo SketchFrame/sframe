@@ -47,7 +47,6 @@ def addProductStep2(request, slug):
         if 'seller_information' in request.POST:
             form = SellingInformation(request.POST)
             if form.is_valid():
-                item.sku = form.cleaned_data['sku']
                 item.stock = form.cleaned_data['stock']
                 item.price = form.cleaned_data['price']
                 item.gst = form.cleaned_data['gst']
@@ -207,3 +206,9 @@ def get_charges(request):
         'charge': charge
     }
     return JsonResponse(data)
+
+
+@login_required
+@seller_required
+def my_orders(request):
+    return render(request, 'seller/my-orders.html')

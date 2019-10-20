@@ -13,11 +13,11 @@
    /* Prevent vertical gaps */
    line-height: 0;
    
-   -webkit-column-count: 5;
+   -webkit-column-count: 4;
    -webkit-column-gap:   0px;
-   -moz-column-count:    5;
+   -moz-column-count:    4;
    -moz-column-gap:      0px;
-   column-count:         5;
+   column-count:         4;
    column-gap:           0px;
 }
 
@@ -27,9 +27,9 @@
   height: auto !important;
 }
 #photos {
-  -moz-column-count:    3;
-  -webkit-column-count: 3;
-  column-count:         3;
+  -moz-column-count:    4;
+  -webkit-column-count: 4;
+  column-count:         4;
 }
 @media (max-width: 1000px) {
   #photos {
@@ -65,15 +65,17 @@
     position: absolute;
     top: 0px;
     right: 5px;
-    background-color: #00000018;
+    background-image: linear-gradient(to bottom,rgba(0,0,0,0.5) 0%,rgba(0,0,0,0.05) 100%);
+    color: #fff;
     height: 30px;
-    font-size: 18px;
+    font-size: 20px;
     padding-top: 5px;
     padding-bottom: 0px;
     padding-right: 5px;
     padding-left: 5px;
     margin-right: 0px;
     margin-top: 5px;
+    margin-bottom: 0px;
     width: auto;
     border-radius: 0px 0px 0px 10px;
 }
@@ -83,15 +85,17 @@
     position: absolute;
     bottom: 0px;
     left: 5px;
-    background-color: #0000002a;
+    background-image: linear-gradient(to top,rgba(0,0,0,0.7) 0%,transparent 100%);
+    color: #fff;
     height: 30px;
-    padding-top: 13px;
+    padding-top: 18px;
     padding-left: 7px;
     padding-right: 7px;
     margin-left: 0px;
     margin-bottom: 5px;
     width: auto;
     border-radius: 0px 10px 0px 0px;
+    font-size: 14px;
 }
 
 /* Bottom right text */
@@ -99,15 +103,17 @@
     position: absolute;
     bottom: 0px;
     right: 5px;
-    background-color: #0000002a;
+    background-image: linear-gradient(to top,rgba(0,0,0,0.7) 0%,transparent 100%);
+    color: #fff;
     height: 30px;
-    padding-top: 13px;
+    padding-top: 18px;
     padding-right: 7px;
     padding-left: 7px;
     margin-right: 0px;
     margin-bottom: 5px;
     width: auto;
     border-radius: 10px 0px 0px 0px;
+    font-size: 14px;
 }
 
 .categories-container {
@@ -155,19 +161,10 @@
     .artwork-images {
         padding: 3px;
     }
-
-    .top-right {
-        margin-top: 3px;
-        margin-right: -3px;
-        font-size: 12px;
-        padding: 5px;
-        /* bottom: -10px; */
-        height: 20px;
-    }
     .bottom-left {
         margin-bottom: 3px;
         margin-left: -3px;
-        font-size: 12px;
+        font-size: 14px;
         padding: 10px 5px 0px 5px;
         /* bottom: -10px; */
         height: 20px;
@@ -175,7 +172,7 @@
     .bottom-right {
         margin-bottom: 3px;
         margin-right: -3px;
-        font-size: 12px;
+        font-size: 14px;
         padding: 10px 5px 0px 5px;
         /* bottom: -10px; */
         height: 20px;
@@ -196,6 +193,15 @@
         -webkit-column-count: 1;
         column-count: 1;
     }
+    .top-right {
+        background-image: linear-gradient(to bottom,rgba(0,0,0,0.5) 0%,rgba(0,0,0,0.1) 100%);
+        margin-top: 3px;
+        margin-right: -3px;
+        font-size: 18px;
+        padding: 5px;
+        padding-bottom: 23px;
+        height: 20px;
+    }
 }
 </style>
 {% endblock %}
@@ -207,8 +213,8 @@
         <div class="this-artwork">
             <a href="{% url 'product' product.item.slug %}" class="text-light">
                 <img class="artwork-images" src="{% thumbnail product.image.image '500' as im %}{{ im.url }}{% endthumbnail %}">
-                <div class="bottom-left text-light">{{ product.item.title|truncatechars:"12" }} ({{product.item.length}} x {{product.item.height}})</div>
-                <div class="bottom-right text-light">Rs.
+                <div class="bottom-left">{{ product.item.title|truncatechars:"12" }} ({{product.item.length}} x {{product.item.height}})</div>
+                <div class="bottom-right">Rs.
                     {% if product.item.discount_price %}
                     {{ product.item.discount_price | intcomma}}
                     {% else %}
@@ -217,25 +223,9 @@
                 </div>
             </a>
             <div class="top-right">
-                <a onclick="showQuickView('{{forloop.counter}}');" data-toggle="modal" data-target="#myModal"><i class="fas fa-search-plus text-light" style="cursor: pointer;"></i></a>
+                <a onclick="showQuickView('{{forloop.counter}}');" data-toggle="modal" data-target="#myModal"><i class="fas fa-search-plus" style="cursor: pointer;"></i></a>
             </div>
         </div>
-        <!-- <div class="this-product">
-            <img src="{% thumbnail product.image.image '500' as im %}{{ im.url }}{% endthumbnail %}" style="width:500px; padding: 9px;">
-            <div class="top-right">
-                <a href="#" onclick="showQuickView('{{forloop.counter}}');" data-toggle="modal"
-                    data-target="#myModal"><i class="fas fa-search-plus text-light"></i></a>
-            </div>
-            <div class="bottom-left small">{{product.item.title }}</div>
-            <div class="bottom-right small">Rs. 
-                {% if product.item.discount_price %}
-                {{product.item.discount_price }}
-                {% else %}
-                {{product.item.price }}
-                {% endif %}
-            </div>
-            <span id="product-{{ forloop.counter }}" style="display: none" data-value="{{ product.item.slug }}"></span>
-        </div> -->
         {% endif %}
         {% endfor %}
     </section>

@@ -8,10 +8,9 @@
     <title>SketchFrame {% block title %}{% endblock %}</title>
     <meta name="theme-color" content="#1d1e1f">
     <meta name="description" content="{% block description %}{% endblock %}"/>
-
     <meta name="keywords" content="SketchFrame, sketchframe, sketchframe.com, sketches, paintings, buy paintings, buy sketches, buy paintings online, buy sketches online, {% block keywords %}{% endblock %}">
-
     <meta charset="UTF-8">
+    <link rel="shortcut icon" href="https://sketchframe.s3.ap-south-1.amazonaws.com/favicon/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -143,6 +142,9 @@
     .dropdown-menu{
         background-color: rgb(249, 249, 249);
     }
+    .list-group > li > a{
+        color: #5f5f5f;
+    }
     @media(max-width: 450px){
         .navbar-brand{
             font-size: 2rem;
@@ -151,21 +153,17 @@
 
     /* Main Ends */
 
-
     </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand p-0" href="/">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand p-0" href="/seller/dashboard/">
             <span class="logo-first-half">Sketch</span><span class="logo-second-half">frame</span>
         </a>
         <span>
             <button class="navbar-toggler mr-0 pr-0" onclick="openSearch()" style="border: none;">
                 <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/search.svg" alt="search" class="filter">
-            </button>
-            <button class="navbar-toggler mr-0 pr-0" style="border: none;">
-                <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/cart.svg" alt="search" class="filter">
             </button>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
                 aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation"
@@ -173,112 +171,6 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
         </span>
-        <!-- <div class="collapse navbar-collapse">
-            <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" style="cursor: pointer">
-                        <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/search.svg" onclick="openSearch()" alt="search" class="filter">
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <div class="dropdown">
-                        <a class="nav-link dropdown-toggle" id="artwork-options" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">
-                            Categories
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="artwork-options">
-                            <a href="#" class="dropdown-item">Pencil work</a>
-                            <a href="#" class="dropdown-item">Pastel colour</a>
-                            <a href="#" class="dropdown-item">Water colour</a>
-                            <a href="#" class="dropdown-item">Acrylic colour</a>
-                            <a href="#" class="dropdown-item">Fabric colour</a>
-                            <a href="#" class="dropdown-item">Oil colour</a>
-                            <a href="#" class="dropdown-item">Mix media</a>
-                        </div>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <div class="dropdown">
-                        <a class="nav-link dropdown-toggle" id="artwork-options" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">
-                            Sub Categories
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="artwork-options">
-                            <a href="#" class="dropdown-item">Sub categort 1</a>
-                            <a href="#" class="dropdown-item">Sub categort 2</a>
-                            <a href="#" class="dropdown-item">Sub categort 3</a>
-                            <a href="#" class="dropdown-item">Sub categort 4</a>
-                            <a href="#" class="dropdown-item">Sub categort 5</a>
-                            <a href="#" class="dropdown-item">Sub categort 6</a>
-                        </div>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <div class="dropdown">
-                        <a class="nav-link dropdown-toggle" id="artwork-options" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">
-                            Top artists
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="artwork-options">
-                            <a href="#" class="dropdown-item">Ankit Brijwasi</a>
-                            <a href="#" class="dropdown-item">Navdeep Kumar mishra</a>
-                            <a href="#" class="dropdown-item">Rajesh Joshi</a>
-                            <a href="#" class="dropdown-item">Harshita Arya</a>
-                        </div>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Post a project</a>
-                </li>
-                <li class="nav-item">
-                    {% if request.user|active_notifications %}
-                    <style>
-                        .notification {
-                            top: 14px;
-                            position: relative;
-                            margin: 8px;
-                        }
-                    
-                        .notif-badge {
-                            position: absolute;
-                            top: -2px;
-                            right: 7px;
-                            padding: 3px 3px;
-                            border-radius: 100%;
-                            background: #dc3545;
-                            color: white;
-                            height: 5px;
-                            width: 1px;
-                            font-size: 1px;
-                        }
-                    </style>
-                    <a href="{% url 'notification' %}" class="notification" style="color:#595959">
-                        <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/notification.svg" alt="notification" class="filter">
-                        <span class="notif-badge font-weight-bold"></span>
-                    </a>
-                    </a>
-                    {% else %}
-                    <a href="{% url 'notification' %}" class="nav-link">
-                        <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/notification.svg" alt="notification" class="filter">
-                    </a>
-                    {% endif %}
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'order-summary' %}" class="nav-link">
-                        <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/cart.svg" alt="cart" class="filter">
-                    </a>
-                </li>
-                {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a href="{% url 'account_logout' %}" class="nav-link">Logout</a>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                    <a href="{% url 'account_login' %}" class="nav-link">Login</a>
-                </li>
-                {% endif %}
-            </ul>
-        </div> -->
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ml-3 mt-2 mt-lg-0">
                 <li class="nav-item">
@@ -288,22 +180,8 @@
                             Artworks
                         </a>
                         <div class="dropdown-menu mt-1" aria-labelledby="artwork-options">
-                            <a href="#" class="dropdown-item">Add artworks</a>
-                            <a href="#" class="dropdown-item">View All</a>
-                        </div>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <div class="dropdown">
-                        <a class="nav-link dropdown-toggle" id="artwork-options" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">
-                            On demand
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="artwork-options">
-                            <a href="#" class="dropdown-item">My Requirements</a>
-                            <a href="#" class="dropdown-item">My Bids</a>
-                            <a href="#" class="dropdown-item">Post a requirement</a>
-                            <a href="#" class="dropdown-item">Bid on a requirement</a>
+                            <a href="{% url 'add-product-step1' %}" class="dropdown-item">Add artworks</a>
+                            <a href="{% url 'view-all-product' %}" class="dropdown-item">View All</a>
                         </div>
                     </div>
                 </li>
@@ -320,21 +198,10 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <div class="dropdown">
-                        <a class="nav-link dropdown-toggle" id="artwork-options" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">
-                            Payments
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="artwork-options">
-                            <a href="#" class="dropdown-item">Add payment method</a>
-                            <a href="#" class="dropdown-item">View/edit payment method</a>
-                            <a href="#" class="dropdown-item">View all transactions</a>
-                            <a href="#" class="dropdown-item">Account Balance</a>
-                        </div>
-                    </div>
+                    <a class="nav-link" href="{% url 'payments' %}">Payments</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Orders</a>
+                    <a class="nav-link" href="{% url 'my-orders' %}">Orders</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
@@ -343,10 +210,40 @@
                         <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/help.svg" alt="help" class="filter">
                     </a>
                 </li>
-                <li class="nav-item pt-1">
-                    <a href="#" class="nav-link">
-                        <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/notification.svg" alt="notification" class="filter">
+                <li class="nav-item ml-auto mt-2 mt-lg-0">
+                    {% if request.user|active_notifications %}
+                    <style>
+                        .notification {
+                            top: 14px;
+                            position: relative;
+                            margin: 8px;
+                        }
+                
+                        .notif-badge {
+                            position: absolute;
+                            top: -2px;
+                            right: 7px;
+                            padding: 3px 3px;
+                            border-radius: 100%;
+                            background: #dc3545;
+                            color: white;
+                            height: 5px;
+                            width: 1px;
+                            font-size: 1px;
+                        }
+                    </style>
+                    <a href="{% url 'notification' %}" class="notification" style="color:#595959">
+                        <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/notification.svg" alt="notification"
+                            class="filter">
+                        <span class="notif-badge font-weight-bold"></span>
                     </a>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'notification' %}" class="nav-link">
+                        <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/notification.svg" alt="notification"
+                            class="filter">
+                    </a>
+                    {% endif %}
                 </li>
                 <li class="nav-item pt-1">
                     <a href="{% url 'seller-settings' %}" class="nav-link">
@@ -396,15 +293,20 @@
                     onclick="closeMenu()" alt="back" class="filter" style="cursor: pointer; margin-top: 3px">
             </span>
             <ul class="list-group list-group-flush mt-5 text-center">
-                <li class="h5 list-group-item text-muted" style="border: none;">Categories</li>
-                <li class="h5 list-group-item text-muted" style="border: none;">Sub categories</li>
-                <li class="h5 list-group-item text-muted" style="border: none;">Top artists</li>
-                <li class="h5 list-group-item text-muted" style="border: none;">Post a project</li>
-                <li class="h5 list-group-item text-muted" style="border: none;">Notifications</li>
-                <li class="h5 list-group-item text-muted" style="border: none;">My Account</li>
+                <li class="h5 list-group-item text-muted" style="border: none;"><a href="">Add Artwork</a></li>
+                <li class="h5 list-group-item text-muted" style="border: none;"><a href="">View all artworks</a></li>
+                <li class="h5 list-group-item text-muted" style="border: none;"><a href="">Report</a></li>
+                <li class="h5 list-group-item text-muted" style="border: none;"><a href="">Payments</a></li>
+                <li class="h5 list-group-item text-muted" style="border: none;"><a href="">Orders</a></li>
+                <li class="h5 list-group-item text-muted" style="border: none;"><a href="">Notifications</a></li>
+                <li class="h5 list-group-item text-muted" style="border: none;"><a href="">Account settings</a></li>
+                <li class="h5 list-group-item text-muted" style="border: none;"><a href="">Profile</a></li>
+                <li class="h5 list-group-item text-muted" style="border: none;"><a href="">Help</a></li>
+                <li class="h5 list-group-item text-muted" style="border: none;"><a href="">Logout</a></li>
             </ul>
         </div>
     </div>
+    <br><br><br>
     {% if messages %}
     {% for message in messages %}
     <div class="alert alert-{{ message.tags }} fade show alert-dismissible mb-1">
@@ -413,7 +315,6 @@
     </div>
     {% endfor %}
     {% endif %}
-
     {% block content %}
     {% endblock %}
     <footer style="background-color: #1d1e1f; color: #f2f2f2; font-family: 'Advent Pro', sans-serif; letter-spacing: 0.25px">
@@ -506,9 +407,7 @@
         </style>
         <center>
             <b>
-                <p class="copyright text-muted" style="letter-spacing: 1px">Copyright &copy;<a style="color: #edca20;" href="{% url 'home' %}">
-                        Sketchframe.com</a>
-                    2019</p>
+                <p class="copyright text-muted" style="letter-spacing: 1px">Copyright &copy;<a style="color: #edca20;" href="{% url 'home' %}"> Sketchframe.com</a> 2019</p>
             </b>
         </center>
     </footer>
@@ -542,7 +441,6 @@
             $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
-
     <script>
         $('#searchInput').keyup(function (e) {
             var key = e.which;
@@ -682,6 +580,5 @@
             }
         }
     </script>
-
 </body>
 </html>

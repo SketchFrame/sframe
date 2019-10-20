@@ -1,8 +1,8 @@
 {% extends 'seller/base.html' %} {% load static %} {% load humanize %} {% block title %} | @{{user.username}}
 {% load thumbnail %}
 {% endblock %} {% block content %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"> -->
 <link rel="stylesheet" href="{% static 'css/profile-style.css' %}">
 <style>
     a:hover {
@@ -31,7 +31,7 @@
         }
     }
 </style>
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"> -->
 <div class="container-fluid p-0" style="margin-top: -1.4em;">
     <div class="user-profile">
         <div style="background: url('{% if seller.cover_img %}{% thumbnail seller.cover_img '1050' as im %}{{ im.url }}{% endthumbnail %}{% else %} https://sketchframe.s3.ap-south-1.amazonaws.com/useful_images/img_lights.jpg{% endif %}') no-repeat;background-position: center;background-size: cover; height: 45vh">
@@ -572,7 +572,7 @@
         </div>
     </div>
 </div>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
     // Open the Modal

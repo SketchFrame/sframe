@@ -18,12 +18,12 @@ class SellingInformation(forms.ModelForm):
                   'price', 'gst', 'dispatch_time',)
 
         widgets = {
-            'sku': forms.TextInput(attrs={'placeholder': "eg. SFRAME100", 'id': 'sku', 'required': True}),
-            'stock': forms.NumberInput(attrs={'placeholder': "eg. 2", 'id': 'stock', 'required': True}),
-            'listing_status': forms.CheckboxInput(attrs={'class': "custom-control-input", 'id': "publish", 'required': True}),
-            'price': forms.NumberInput(attrs={'placeholder': "eg. 25,000", 'id': 'price', 'required': True}),
-            'gst': forms.TextInput(attrs={'placeholder': "eg. 12%", 'id': 'gst', 'required': True}),
-            'dispatch_time': forms.NumberInput(attrs={'placeholder': "eg. 2 days", 'id': 'dispatchTime', 'required': True}),
+            'sku': forms.TextInput(attrs={'placeholder': "eg. SFRAME100", 'id': 'sku', 'readonly': True}),
+            'stock': forms.NumberInput(attrs={'placeholder': "eg. 2", 'id': 'stock'}),
+            'listing_status': forms.CheckboxInput(attrs={'class': "custom-control-input", 'id': "publish"}),
+            'price': forms.NumberInput(attrs={'placeholder': "eg. 25,000", 'id': 'price'}),
+            'gst': forms.TextInput(attrs={'placeholder': "eg. 12%", 'id': 'gst'}),
+            'dispatch_time': forms.NumberInput(attrs={'placeholder': "eg. 2 days", 'id': 'dispatchTime'})
         }
         labels = {
             'sku': '',

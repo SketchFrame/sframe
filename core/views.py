@@ -35,21 +35,40 @@ def home(request):
                 break
     imgs = [
         'https://miro.medium.com/proxy/1*2uRQQyR92M6PUKJRH81U_w.jpeg',
-        'https://cdn.eventfinda.co.nz/uploads/events/transformed/1246598-555064-34.jpg?v=2',
+        'https://cdn.eventfinda.co.nz/uploads/events/transformed/1246598-555064-34.jpg',
         'https://render.fineartamerica.com/images/rendered/default/print/10.000/8.375/break/images-medium-5/fledglings-anna-bain.jpg',
         'https://d3nn873nee648n.cloudfront.net/HomeImages/Without-People.jpg',
-        'https://www.washingtonian.com/wp-content/uploads/2019/07/BR2603-2048x2698.jpg',
         'https://i.pinimg.com/originals/a5/b3/4a/a5b34ac8665dd7945d95698662232c9b.jpg',
         'https://i.pinimg.com/originals/a3/18/c7/a318c734f63664e3f42d61792ddeeaeb.jpg',
         'https://d3nn873nee648n.cloudfront.net/HomeImages/Lifestyle-Families.jpg',
         'https://d3nn873nee648n.cloudfront.net/HomeImages/Vacation-and-Holidays.jpg',
         'https://d3nn873nee648n.cloudfront.net/HomeImages/Without-People.jpg',
+        'https://cdn.eventfinda.co.nz/uploads/events/transformed/1246598-555064-34.jpg'
+    ]
+    trendingSearches = [
+        'Mona Lisa', 
+        'Ankit brijwasi', 
+        'Navdeep', 
+        'Navdeep kumar',
+        'Navdeep ji', 
+        'Ankit Ji', 
+        'Vainhav',  
+        'Tanmay', 
+        'Kunal', 
+        'Mona Lisa', 
+        'Navdeep ji', 
+        'Ankit Ji', 
+        'Rajesh Joshi', 
+        'Vainhav', 
+        'Sagar Joshi', 
+        'Tanmay', 
     ]
     return render(request, 'home/home.html', context={
         'products': l,
         'banners': MainBanner.objects.all()[:3],
         'meta_description': "Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable.",
-        'imgs': imgs
+        'imgs': imgs,
+        'trendingSearches': trendingSearches
     })
 
 def quick_search(request):

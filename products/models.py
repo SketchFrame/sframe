@@ -74,7 +74,7 @@ class Item(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
     
-    listing_status = models.BooleanField(default=False)
+    listing_status = models.BooleanField(default=True)
     
     approved = models.BooleanField(default=False)
     
@@ -101,15 +101,24 @@ class Item(models.Model):
     def save(self, *args, **kwargs):
         self.slug = None
         super().save(*args, **kwargs)
+
         self.slug = self._get_unique_slug()
-        super().save(*args, **kwargs)
+        
+        if not self.sku:
+            self._get_unique_sku()
+        
         if self.price:
             self._get_original_price()
-            super().save(*args, **kwargs)
+        
+        super().save(*args, **kwargs)
 
     def _get_original_price(self):
         newPrice = (100*self.price)/(100+self.gst)
         self.originalPrice = round(newPrice, 2)
+
+    def _get_unique_sku(self):
+        skuCode = "SFRAMEART" + str(self.pk)
+        self.sku = skuCode
 
     def _get_unique_slug(self):
         if self.title:

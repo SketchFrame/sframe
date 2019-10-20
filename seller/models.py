@@ -96,7 +96,14 @@ class PortfolioImages(models.Model):
     def get_absolute_url(self):
         return reverse('seller-profile')
 
+class Payments(models.Model):
+    seller = models.ForeignKey('Seller', on_delete=models.CASCADE)
+    accountNumber = models.CharField(max_length=20, null=True, blank=True)
+    cif = models.CharField(max_length=20, null=True, blank=True)
+    fullName = models.CharField(max_length=40, null=True, blank=True)
 
+    def __str__(self):
+        return f"{self.seller} bank details"
 @receiver(post_delete, sender=Seller)
 def remove_file_from_s3(sender, instance, using, **kwargs):
     instance.profile_img.delete(save=False)

@@ -12,7 +12,7 @@
     <meta name="keywords" content="SketchFrame, sketchframe, sketchframe.com, sketches, paintings, buy paintings, buy sketches, buy paintings online, buy sketches online, {% block keywords %}{% endblock %}">
 
     <meta charset="UTF-8">
-    <!-- <link rel='shortcut icon' href='https://sketchframe.s3.ap-south-1.amazonaws.com/logo/favicon-sm.jpg' type='image/x-icon' /> -->
+    <link rel="shortcut icon" href="https://sketchframe.s3.ap-south-1.amazonaws.com/favicon/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -141,6 +141,12 @@
     background-color: #fff;
     /* background-color: rgb(246, 246, 246); */
     }
+    .list-group > li > a{
+        color: #5f5f5f;
+    }
+    .list-group > li > a:hover{
+        color: #edca20;
+    }
     .dropdown-menu{
         background-color: rgb(249, 249, 249);
     }
@@ -165,9 +171,9 @@
             <button class="navbar-toggler mr-0 pr-0" onclick="openSearch()" style="border: none;">
                 <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/search.svg" alt="search" class="filter">
             </button>
-            <button class="navbar-toggler mr-0 pr-0" style="border: none;">
+            <a href="{% url 'order-summary' %}" class="navbar-toggler mr-0 pr-0" style="border: none;">
                 <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/cart.svg" alt="search" class="filter">
-            </button>
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
                 aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation"
                 style="border: none;" onclick="openMenu()">
@@ -180,6 +186,9 @@
                     <a class="nav-link" style="cursor: pointer">
                         <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/search.svg" onclick="openSearch()" alt="search" class="filter">
                     </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'shop' %}" class="nav-link">Shop</a>
                 </li>
                 <li class="nav-item">
                     <div class="dropdown">
@@ -227,9 +236,6 @@
                             <a href="#" class="dropdown-item">Harshita Arya</a>
                         </div>
                     </div>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Post a project</a>
                 </li>
                 <li class="nav-item">
                     {% if request.user|active_notifications %}
@@ -300,12 +306,27 @@
                     onclick="closeMenu()" alt="back" class="filter" style="cursor: pointer; margin-top: 3px">
             </span>
             <ul class="list-group list-group-flush mt-5 text-center">
-                <li class="h5 list-group-item text-muted" style="border: none;">Categories</li>
-                <li class="h5 list-group-item text-muted" style="border: none;">Sub categories</li>
-                <li class="h5 list-group-item text-muted" style="border: none;">Top artists</li>
-                <li class="h5 list-group-item text-muted" style="border: none;">Post a project</li>
-                <li class="h5 list-group-item text-muted" style="border: none;">Notifications</li>
-                <li class="h5 list-group-item text-muted" style="border: none;">My Account</li>
+                <li class="h5 list-group-item text-muted" style="border: none;">
+                    <a href="#">Categories</a>
+                </li>
+                <li class="h5 list-group-item text-muted" style="border: none;">
+                    <a href="#">Sub categories</a>
+                </li>
+                <li class="h5 list-group-item text-muted" style="border: none;">
+                    <a href="#">Top artists</a>
+                </li>
+                <li class="h5 list-group-item text-muted" style="border: none;">
+                    <a href="{% url 'shop' %}">Shop</a>
+                </li>
+                <li class="h5 list-group-item text-muted" style="border: none;">
+                    <a href="{% url 'notification' %}">Notifications</a>
+                </li>
+                <li class="h5 list-group-item text-muted" style="border: none;">
+                    <a href="#">My Account</a>
+                </li>
+                <li class="h5 list-group-item text-muted" style="border: none;">
+                    <a href="{% url 'account_logout' %}">Logout</a>
+                </li>
             </ul>
         </div>
     </div>

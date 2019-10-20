@@ -14,7 +14,8 @@ from .views import(
     editSkills,
     editSocialInfo,
     seller_settings,
-    generalProfileSettings
+    generalProfileSettings,
+    payments
 )
 from products.views import (
     addProductStep1,
@@ -24,6 +25,7 @@ from products.views import (
     viewAllProduct,
     get_charges,
     uploadImages,
+    my_orders,
 )
 
 urlpatterns = [
@@ -35,6 +37,8 @@ urlpatterns = [
     path('view-product/<slug:slug>/', viewProduct, name="view-product"),    
     path('delete-product/<slug:slug>/', ProductDeleteView.as_view(), name="delete-product"),
     path('dashboard/', myShop, name='my-shop'),
+    path('dashboard/my-orders/', my_orders, name='my-orders'),
+    path('dashboard/payments/', payments, name='payments'),
     path('register/', register, name='register-seller'),
     path('complete-profile/', complete_profile, name='complete-profile'),
     path('profile/', seller_profile, name='seller-profile'),

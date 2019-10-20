@@ -525,3 +525,24 @@ def generalProfileSettings(request):
             'message': "There was an error"
         }
     return JsonResponse(resp)
+@login_required
+@seller_required
+def payments(request):
+    return render(request, "seller/payments.html")
+
+@login_required
+@seller_required
+def AddBankDetails(request):
+    if request.method == "POST":
+        form = AddBankDetails(request.POST)
+        if form.is_valid():
+            bank = form.save(commit=False)
+            bank.seller = Seller.objects.get(user__user=request.user)
+            bank.save()
+            messages.success(request, "Added bank details")
+            return redirect(request.path_info)
+    else:
+        form = AddBankDetailsForm()
+    return render(request, "seller/payments.html", {
+        'form': form
+    })
