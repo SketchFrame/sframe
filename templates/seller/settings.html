@@ -65,7 +65,13 @@
                             <div class="clearfix" id="change">
                                 <div class="float-left">Name</div>
                                 <div class="float-right">
-                                    <span id="full-name">{{user.first_name}} {{user.last_name}}</span>
+                                    <span id="full-name">
+                                        {% if user.first_name %}
+                                        {{user.first_name}} {{user.last_name}}
+                                        {% else %}
+                                        Not Given
+                                        {% endif %}
+                                    </span>
                                     <button class="btn btn-link m-0 p-0" id="editName">
                                         <i class="fas fa-edit" id="name"></i>
                                     </button>

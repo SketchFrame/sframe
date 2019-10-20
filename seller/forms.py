@@ -185,7 +185,7 @@ class EditSocialInfoForm(forms.ModelForm):
 class AddBankDetailsForm(forms.ModelForm):
     class Meta:
         model = Payments
-        exclude = ('seller', 'GPay', 'PhonePay', 'paytm', )
+        exclude = ('seller',)
 
         widgets = {
             'accountNumber': forms.TextInput(attrs={'placeholder': "eg. 5134-9090-8808", 'id': "accountNumber"}),
