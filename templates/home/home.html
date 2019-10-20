@@ -432,9 +432,6 @@
 .category-images{
     padding: 5px;
 }
-.post-project span{
-    top: 35%;
-}
 #photos {
     /* Prevent vertical gaps */
    line-height: 0;
@@ -484,10 +481,7 @@
       /* bottom: -10px; */
       height: 20px;
   }
-  
-    .post-project span{
-        top: 25%;
-    }
+
 }
 @media (max-width: 400px) {
   #photos {
@@ -510,11 +504,19 @@
     {% endfor %}
 </section>
 </div>
-
-<div class="post-project"
-    style="background-color: #2e2e2e;; height: 40vh; position: relative;">
+<style>
+.post-project-p{
+    padding-top: 80px;
+}
+@media(max-width: 450px){
+    .post-project-p{
+        padding-top: 60px;
+    }
+}
+</style>
+<div class="post-project" style="background-color: #2e2e2e;; height: 40vh; position: relative;">
     <span class="text-center" style="position: relative;">
-        <p style="color: #fff; font-size: 35px;font-weight: 100;">
+        <p class="post-project-p" style="color: #fff; font-size: 35px;font-weight: 100;">
             Can't find what you need?
         </p>
         <center><a class="post-project-btn btn-lg pt-1 pb-1" data-toggle="tooltip" data-placement="top" title="Coming soon" style="border-radius: 20px; font-size: 15px;">Post a project</a>
