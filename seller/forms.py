@@ -41,6 +41,7 @@ class SellerDetialsForm(forms.ModelForm):
         fields = [
             'fname',
             'lname',
+            'contactNumber',
             'gstNumber',
             'experience',
             'speciality',
@@ -49,7 +50,8 @@ class SellerDetialsForm(forms.ModelForm):
 
         widgets = {
             'fname': forms.TextInput(attrs={'class': 'fname', 'id': 'fname', 'required': True, 'placeholder': 'e.g. Debasis'}),
-            'lname':  forms.TextInput(attrs={'class': 'lname', 'id': 'lname', 'required': True, 'placeholder': 'e.g. Ghosh'}),
+            'lname': forms.TextInput(attrs={'class': 'lname', 'id': 'lname', 'required': True, 'placeholder': 'e.g. Ghosh'}),
+            'contactNumber': forms.TextInput(attrs={'class': 'contactNumber', 'id': 'contactNumber', 'required': True, 'placeholder': 'Contact Number'}),
             'gstNumber': forms.TextInput(attrs={'placeholder': 'GST Number'}),
             'experience': forms.NumberInput(attrs={'placeholder': "in years"}),
             'speciality': forms.TextInput(attrs={'placeholder': "e.g. Landscape or Art Acrylic"}),
@@ -57,6 +59,7 @@ class SellerDetialsForm(forms.ModelForm):
         labels = {
             'fname': 'First Name',
             'lname': 'Last Name',
+            'contactNumber': 'Contact Number',
             'gstNumber': "GST Registration Number(For Indian Artists)",
             'experience': "Since how many years have you been selling Art ?",
             'speciality': "Your special art form ?",

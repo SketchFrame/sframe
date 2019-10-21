@@ -22,6 +22,7 @@ class Seller(models.Model):
     lname = models.CharField(max_length=40, default="")
     gstNumber = models.CharField(max_length=30, default="")
     experience = models.IntegerField(default=0)
+    contactNumber = models.CharField(max_length=15, default="")
     speciality = models.CharField(max_length=100, default="")
     gender = models.CharField(choices=GENDER_CHOICES,
                               default="Male", max_length=10)
