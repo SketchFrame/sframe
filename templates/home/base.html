@@ -145,7 +145,7 @@
         color: #5f5f5f;
     }
     .list-group > li > a:hover{
-        color: #edca20;
+        color: #4d4c4c;
     }
     .dropdown-menu{
         background-color: rgb(249, 249, 249);
@@ -324,9 +324,15 @@
                 <li class="h5 list-group-item text-muted" style="border: none;">
                     <a href="#">My Account</a>
                 </li>
+                {% if user.is_authenticated %}
                 <li class="h5 list-group-item text-muted" style="border: none;">
                     <a href="{% url 'account_logout' %}">Logout</a>
                 </li>
+                {% else %}
+                <li class="h5 list-group-item text-muted" style="border: none;">
+                    <a href="{% url 'account_login' %}">Login</a>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </div>
