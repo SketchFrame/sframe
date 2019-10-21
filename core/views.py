@@ -34,34 +34,44 @@ def home(request):
                 l.append(d.copy())
                 break
     imgs = [
-        'https://miro.medium.com/proxy/1*2uRQQyR92M6PUKJRH81U_w.jpeg',
-        'https://cdn.eventfinda.co.nz/uploads/events/transformed/1246598-555064-34.jpg',
-        'https://render.fineartamerica.com/images/rendered/default/print/10.000/8.375/break/images-medium-5/fledglings-anna-bain.jpg',
-        'https://d3nn873nee648n.cloudfront.net/HomeImages/Without-People.jpg',
-        'https://i.pinimg.com/originals/a5/b3/4a/a5b34ac8665dd7945d95698662232c9b.jpg',
-        'https://i.pinimg.com/originals/a3/18/c7/a318c734f63664e3f42d61792ddeeaeb.jpg',
-        'https://d3nn873nee648n.cloudfront.net/HomeImages/Lifestyle-Families.jpg',
-        'https://d3nn873nee648n.cloudfront.net/HomeImages/Vacation-and-Holidays.jpg',
-        'https://d3nn873nee648n.cloudfront.net/HomeImages/Without-People.jpg',
-        'https://cdn.eventfinda.co.nz/uploads/events/transformed/1246598-555064-34.jpg'
+        'https://images.pexels.com/photos/1572386/pexels-photo-1572386.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+
+        'https://images.pexels.com/photos/1585325/pexels-photo-1585325.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+
+        'https://images.pexels.com/photos/1209843/pexels-photo-1209843.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+
+        'https://images.pexels.com/photos/889839/pexels-photo-889839.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+
+        'https://images.pexels.com/photos/1012982/pexels-photo-1012982.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+
+        'https://images.pexels.com/photos/2811471/pexels-photo-2811471.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+
+        'https://images.pexels.com/photos/1266808/pexels-photo-1266808.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+
+        'https://images.pexels.com/photos/1690351/pexels-photo-1690351.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+
+        'https://images.pexels.com/photos/1616403/pexels-photo-1616403.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+
+        'https://images.pexels.com/photos/1293120/pexels-photo-1293120.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+        
+        'https://images.pexels.com/photos/1570779/pexels-photo-1570779.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+
+        'https://images.pexels.com/photos/1812960/pexels-photo-1812960.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
     ]
     trendingSearches = [
+        'Landscape', 
+        'Old age', 
+        'Everyday life',
+        'Portraits', 
+        'Still life', 
+        'Street art',  
+        'Abstract', 
+        'Fantasy', 
+        'Fine art', 
+        'Pop art', 
         'Mona Lisa', 
-        'Ankit brijwasi', 
-        'Navdeep', 
-        'Navdeep kumar',
-        'Navdeep ji', 
-        'Ankit Ji', 
-        'Vainhav',  
-        'Tanmay', 
-        'Kunal', 
-        'Mona Lisa', 
-        'Navdeep ji', 
-        'Ankit Ji', 
-        'Rajesh Joshi', 
-        'Vainhav', 
-        'Sagar Joshi', 
-        'Tanmay', 
+        'Semi-abstract', 
+        'Figurative',
     ]
     return render(request, 'home/home.html', context={
         'products': l,

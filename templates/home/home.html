@@ -525,47 +525,13 @@
 </div>
 
 <div class="container-fluid text-center pt-3 pb-3">
-    <style>
-    #trending_searches ul{
-        display: inline;
-    }
-    
-    #trending_searches ul li{
-        margin: 10px;
-        color: #fff;
-    }
-    .list-group {
-        display: block;  /* Remove bullet points; allow greater control of positioning */
-        padding: 0;      /* Override defaults for lists */
-        margin: 0;       /* Override defaults for lists */
-        width: 100%;     /* Get the row full width */
-    }
-
-    .list-group li {
-        display: inline-block; 
-        width: 15%;
-        text-align: center;
-    }
-    @media(max-width: 450px){
-        .list-group-horizontal li {
-            width: 40%;
-            margin: 0px;
-        }       
-    }
-    </style>
     <h3 class="h3 mb-3" style="font-weight: 100;">Trending Searches</h3>
-    <div class="text-center" id="trending_searches">
-        <ul class="list-group list-group-horizontal">
-            
-            {% for x in trendingSearches %}
-            <li>
-                <a href="#" class="btn btn-sm btn-dark pl-3 pr-3 text-light" style="border-radius: 20px;">
-                    {{ x }}
-                </a>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
+    <span style="line-height: 40px;">
+        {% for x in trendingSearches %}
+        <button class="badge badge-dark p-2 pl-3 pr-3 ml-2 mr-2"
+            style="font-size: 16px; font-weight: 300; border-radius: 20px; border: none;">{{ x }}</button>
+        {% endfor %}
+    </span>
 </div>
 
 <script>
@@ -579,7 +545,7 @@ var allImages = "";
 for (var i = 0; i < 25; i++) {
   var width = getRandomSize(200, 400);
   var height =  getRandomSize(200, 400);
-  allImages += '<img src="https://placekitten.com/'+width+'/'+height+'" alt="pretty kitty">';
+//   allImages += '<img src="https://placekitten.com/'+width+'/'+height+'" alt="pretty kitty">';
 }
 
 $('#photos').append(allImages);

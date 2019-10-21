@@ -174,7 +174,6 @@ class CheckoutView(LoginRequiredMixin, View):
                 fullname = form.cleaned_data.get('fullname')
                 email = self.request.user.email
                 address_id = self.request.POST.get('address-value')
-                print(address_id)
                 address = Address.objects.get(Q(pk=int(address_id)) & Q(user__user=self.request.user))
                 payment_type = self.request.POST.get('payment-type')
 

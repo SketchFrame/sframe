@@ -9,52 +9,6 @@
 
 {% block extra_head %}
 <style>
-#photos {
-   /* Prevent vertical gaps */
-   line-height: 0;
-   
-   -webkit-column-count: 4;
-   -webkit-column-gap:   0px;
-   -moz-column-count:    4;
-   -moz-column-gap:      0px;
-   column-count:         4;
-   column-gap:           0px;
-}
-
-#photos img {
-  /* Just in case there are inline attributes */
-  width: 100% !important;
-  height: auto !important;
-}
-#photos {
-  -moz-column-count:    4;
-  -webkit-column-count: 4;
-  column-count:         4;
-}
-@media (max-width: 1000px) {
-  #photos {
-  -moz-column-count:    2;
-  -webkit-column-count: 2;
-  column-count:         2;
-  }
-}
-@media (max-width: 600px) {
-  #photos {
-  -moz-column-count:    1;
-  -webkit-column-count: 1;
-  column-count:         1;
-  }
-}
-@media (max-width: 450px) {
-  #photos {
-  -moz-column-count:    1;
-  -webkit-column-count: 1;
-  column-count:         1;
-  }
-}
-</style>
-
-<style>
 .this-artwork {
     position: relative;
     color: white;
@@ -130,11 +84,11 @@
     /* Prevent vertical gaps */
     line-height: 0;
 
-    -webkit-column-count: 3;
+    -webkit-column-count: 4;
     -webkit-column-gap: 0px;
-    -moz-column-count: 3;
+    -moz-column-count: 4;
     -moz-column-gap: 0px;
-    column-count: 3;
+    column-count: 4;
     column-gap: 0px;
 }
 
@@ -146,9 +100,9 @@
 
 @media (max-width: 1200px) {
     #photos {
-        -moz-column-count: 3;
-        -webkit-column-count: 3;
-        column-count: 3;
+        -moz-column-count: 4;
+        -webkit-column-count: 4;
+        column-count: 4;
     }
 }
 
@@ -204,67 +158,532 @@
     }
 }
 </style>
+
+<style>
+.mobile-sort, .mobile-filter, .mobile-grid-1, .mobile-grid-2{
+    display: none;
+}
+.side-nav{
+    min-height: 50vh;
+    background-color: #f9f9f9;
+}
+.main-content{
+    min-height: 50vh;
+    background-color: #fff;
+}
+.custom-list-group-item{
+    background-color: transparent;
+    border: none;
+    padding: 0px;
+    color: #777777;
+    font-size: 14px;
+}
+.list-group-item.active{
+    background-color: #1d1e1f;
+    border: none;
+    color: #f6f6f6;
+}
+@media(max-width: 991px){
+    .mobile-sort, .mobile-filter, .mobile-grid-1, .mobile-grid-2{
+        display: block;
+        background-color: rgb(253, 253, 253);
+        border-bottom: 1px solid #e2e2e2;
+    }
+    .mobile-sort > button, .mobile-filter > button, .mobile-grid-1 > button, .mobile-grid-2 > button{
+        color: #404040;
+        font-weight: 600;
+    }
+    .mobile-sort > button:hover, .mobile-filter > button:hover, .mobile-grid-1 > button:hover, .mobile-grid-2 > button:hover{
+        text-decoration: none;
+        color: #404040;
+    }
+    .mobile-sort, .mobile-filter, .mobile-grid-1{
+        border-right: 1px solid #e2e2e2;
+    }
+    .side-nav{
+        display: none;
+    }
+}
+
+@media(max-width: 450px){
+    
+}
+</style>
+
 {% endblock %}
 {% block content %}
-<div class="container-fluid p-0">
-    <section id="photos">
-        {% for product in products %}
-        {% if product.item.approved and product.item.listing_status and product.item.finallySubmitted %}
-        <div class="this-artwork">
-            <a href="{% url 'product' product.item.slug %}" class="text-light">
-                <img class="artwork-images" src="{% thumbnail product.image.image '500' as im %}{{ im.url }}{% endthumbnail %}">
-                <div class="bottom-left">{{ product.item.title|truncatechars:"12" }} ({{product.item.length}} x {{product.item.height}})</div>
-                <div class="bottom-right">Rs.
-                    {% if product.item.discount_price %}
-                    {{ product.item.discount_price | intcomma}}
-                    {% else %}
-                    {{ product.item.price |intcomma}}
-                    {% endif %}
+<div class="container-fluid">
+    <div class="row shadow-sm">
+        
+        <div class="col-4 mobile-sort text-center">
+            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation"
+        style="border: none;" onclick="openSort()"><i class="fas fa-sort-amount-up"></i> Sort</button>
+        </div>
+
+        <div class="col-4 mobile-filter text-center">
+            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation"
+        style="border: none;" onclick="openFilter()"><i class="fas fa-filter"></i> Filter</button>
+        </div>
+        
+        <div class="col-2 mobile-grid-1 text-center">
+            <button class="btn btn-link"><i class="fas fa-square"></i></button>
+        </div>
+        
+        <div class="col-2 mobile-grid-2 text-center">
+            <button class="btn btn-link"><i class="fas fa-th-large"></i></button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="side-nav col-lg-2">
+            <div class="p-2" style="background-color: transparent;">
+                <div class="row" style="border-bottom: 1px solid #cfcfcf;">
+                    <p class="h4 text-dark p-3 pb-0 mb-0">
+                        Filters
+                    </p>
                 </div>
-            </a>
-            <div class="top-right">
-                <a onclick="showQuickView('{{forloop.counter}}');" data-toggle="modal" data-target="#myModal"><i class="fas fa-search-plus" style="cursor: pointer;"></i></a>
+                <div class="row">
+                    <p class="text-dark p-3 mb-0 font-weight-bold" style="font-size: 14px;">
+                        CATEGORIES
+                    </p>
+                </div>
+                
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" id="customCheck1" name="example1">
+                    <label class="custom-control-label" for="customCheck1">Water colour</label>
+                </div>
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" id="customCheck2" name="example1">
+                    <label class="custom-control-label" for="customCheck2">Fabric</label>
+                </div>
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" id="customCheck3" name="example1">
+                    <label class="custom-control-label" for="customCheck3">Pencil colour</label>
+                </div>
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" id="customCheck4" name="example1">
+                    <label class="custom-control-label" for="customCheck4">Pastle colour</label>
+                </div>
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" id="customCheck5" name="example1">
+                    <label class="custom-control-label" for="customCheck5">Mix media</label>
+                </div>
+
+                <div class="row">
+                    <p class="text-dark p-3 mb-0 font-weight-bold" style="font-size: 14px;">
+                        PRICE
+                    </p>
+                </div>
+                <div class="clearfix">
+                    <div class="float-left">
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-dark dropdown-toggle btn-sm" data-toggle="dropdown">
+                                Min
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item">1,000</a>
+                                <a class="dropdown-item">5,000</a>
+                                <a class="dropdown-item">10,000</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="float-right">
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-dark dropdown-toggle btn-sm" data-toggle="dropdown">
+                                1,00,000+
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item">20,000</a>
+                                <a class="dropdown-item">50,000</a>
+                                <a class="dropdown-item">1,00,000+</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <div class="row">
+                    <p class="text-dark p-3 mb-0 font-weight-bold" style="font-size: 14px;">
+                        SIZE
+                    </p>
+                </div>
+                <ul class="list-group list-group-horizontal ">
+                    <li class="list-group-item"><i class="fas fa-compress-arrows-alt"></i></li>
+                    <li class="list-group-item active"><i class="far fa-square"></i></li>
+                    <li class="list-group-item"><i class="fas fa-expand-arrows-alt"></i></li>
+                </ul>
+
+                <br>
+                <div class="row">
+                    <p class="text-dark p-3 mb-0 font-weight-bold" style="font-size: 14px;">
+                        ORIENTATION
+                    </p>
+                </div>
+                <ul class="list-group list-group-horizontal">
+                    <li class="list-group-item active"><i class="fas fa-arrows-alt-v"></i></li>
+                    <li class="list-group-item"><i class="fas fa-arrows-alt-h"></i></li>
+                    <li class="list-group-item"><i class="fas fa-expand-arrows-alt"></i></li>
+                </ul>
+
+                <br>
+                <div class="row">
+                    <p class="text-dark p-3 mb-0 font-weight-bold" style="font-size: 14px;">
+                        RATINGS
+                    </p>
+                </div>
+                
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
+                    <label class="custom-control-label" for="customCheck">4&#9733; & above</label>
+                </div>
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
+                    <label class="custom-control-label" for="customCheck">3&#9733; & above</label>
+                </div>
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
+                    <label class="custom-control-label" for="customCheck">2&#9733; & above</label>
+                </div>
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
+                    <label class="custom-control-label" for="customCheck">1&#9733; & above</label>
+                </div>
+                
+                <br>
+                <div class="row">
+                    <p class="text-dark p-3 mb-0 font-weight-bold" style="font-size: 14px;">
+                        COLOUR
+                    </p>
+                </div>
+                <div class="dropdown">
+                    <button type="button" class="btn btn-dark dropdown-toggle btn-sm" data-toggle="dropdown">
+                        All colours
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item">Red</a>
+                        <a class="dropdown-item">Green</a>
+                        <a class="dropdown-item">Black</a>
+                        <a class="dropdown-item">White</a>
+                        <a class="dropdown-item">Cream</a>
+                        <a class="dropdown-item">Pink</a>
+                        <a class="dropdown-item">Purple</a>
+                        <a class="dropdown-item">Blue</a>
+                        <a class="dropdown-item">Navy</a>
+                        <a class="dropdown-item">Peach</a>
+                    </div>
+                </div>
+                <br>
+                <br>
             </div>
         </div>
-        {% endif %}
-        {% endfor %}
-    </section>
+        <div class="main-content pt-2 col-lg-10">
+            <section id="photos" style="background-color: transparent; height: 100%;">
+                {% for product in products %}
+                {% if product.item.approved and product.item.listing_status and product.item.finallySubmitted %}
+                <div class="this-artwork">
+                    <span id="product-{{ forloop.counter }}" style="display: none" data-value="{{ product.item.slug }}"></span>
+                    <a href="{% url 'product' product.item.slug %}" class="text-light">
+                        <img class="artwork-images" src="{% thumbnail product.image.image '400' as im %}{{ im.url }}{% endthumbnail %}">
+                        <div class="bottom-left">{{ product.item.title|truncatechars:"12" }} ({{product.item.length}} x {{product.item.height}})</div>
+                        <div class="bottom-right">Rs.
+                            {% if product.item.discount_price %}
+                            {{ product.item.discount_price | intcomma}}
+                            {% else %}
+                            {{ product.item.price |intcomma}}
+                            {% endif %}
+                        </div>
+                    </a>
+                    <div class="top-right">
+                        <a onclick="showQuickView('{{forloop.counter}}');" data-toggle="modal" data-target="#myModal"><i class="fas fa-search-plus" style="cursor: pointer;"></i></a>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </section>
+        </div>
+    </div>
 </div>
-<div class="modal fade" id="myModal">
+<style>
+#loader, .sortOverlay, .filterOverlay{
+    display: none;
+}
+</style>
+
+<!-- Sort Menu for mobiles -->
+<div class="container-fluid overlay p-0" id="sortOverlay">
+    <div class="row pt-1 pb-1 text-center border-bottom">
+        <div class="col-2">
+            <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/back.svg" height="33px" onclick="closeSort()" alt="back"
+                class="filter" style="cursor: pointer; margin-top: 3px">
+        </div>
+        <div class="col-10 pt-2">
+            <span class="h6 text-muted pt-2" style="margin-left: -70px !important;">SORT BY</span>
+        </div>
+    </div>
+    <div class="row p-3" style="padding-top: 0 !important;">
+        <table class="table table-borderless">
+            <tbody>
+                <tr class="clearfix">
+                    <td class="float-left text-muted">Relevance</td>
+                    <td class="float-right"><input type="radio" name="sort-by"></td>
+                </tr>
+                <tr class="clearfix">
+                    <td class="float-left text-muted">Popularity</td>
+                    <td class="float-right"><input type="radio" name="sort-by"></td>
+                </tr>
+                <tr class="clearfix">
+                    <td class="float-left text-muted">Price - Low to High</td>
+                    <td class="float-right"><input type="radio" name="sort-by"></td>
+                </tr>
+                <tr class="clearfix">
+                    <td class="float-left text-muted">Price - High to Low</td>
+                    <td class="float-right"><input type="radio" name="sort-by"></td>
+                </tr>
+                <tr class="clearfix">
+                    <td class="float-left text-muted">Newest first</td>
+                    <td class="float-right"><input type="radio" name="sort-by"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Filter Menu for mobiles -->
+<div class="container-fluid overlay p-0" id="filterOverlay">
+    <div class="row pt-1 pb-1 text-center border-bottom">
+        <div class="col-2">
+            <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/back.svg" height="33px" onclick="closeFilter()"
+                alt="back" class="filter" style="cursor: pointer; margin-top: 3px">
+        </div>
+        <div class="col-10 pt-2">
+            <span class="h6 text-muted pt-2" style="margin-left: -70px !important;">FILTERS</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+                <div class="row">
+                    <div class="col-4">
+                        <ul class="list-group list-group-flush nav-tabs" style="font-size: 14px;">
+                            <li class="list-group-item">
+                                <a href="#priceTab" data-toggle="tab">Price</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#categoryTab" data-toggle="tab">Category</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#subCategoryTab" data-toggle="tab">Sub<span style="color: transparent;">_</span>category</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#heightTab" data-toggle="tab">Height</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#widthTab" data-toggle="tab">Width</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#sizeTab" data-toggle="tab">Size</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#orientationTab" data-toggle="tab">Orientation</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#ratingsTab" data-toggle="tab">Ratings</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#colourTab" data-toggle="tab">Colour</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content col-8">
+                        <div id="price" class="container tab-pane active"><br>
+                            <h6>PRICE</h6>
+                            <p class="text-muted">
+                                <div class="clearfix">
+                                    <div class="float-left">
+                                        <div class="dropdown">
+                                            <button type="button" class="btn btn-dark dropdown-toggle btn-sm" data-toggle="dropdown">
+                                                Min
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item">1,000</a>
+                                                <a class="dropdown-item">5,000</a>
+                                                <a class="dropdown-item">10,000</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="float-right">
+                                        <div class="dropdown">
+                                            <button type="button" class="btn btn-dark dropdown-toggle btn-sm" data-toggle="dropdown">
+                                                1,00,000+
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item">20,000</a>
+                                                <a class="dropdown-item">50,000</a>
+                                                <a class="dropdown-item">1,00,000+</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </p>
+                        </div>
+                        <div id="categoryTab" class="container tab-pane"><br>
+                            <h6>CATEGORY</h6>
+                            <p class="text-muted" style="font-size: 14px;">
+                                <div class="custom-control custom-checkbox mb-1">
+                                    <input type="checkbox" class="custom-control-input" id="waterColor-m" name="example1">
+                                    <label class="custom-control-label" for="waterColor-m">Water colour</label>
+                                </div>
+                                <div class="custom-control custom-checkbox mb-1">
+                                    <input type="checkbox" class="custom-control-input" id="fabric-m" name="example1">
+                                    <label class="custom-control-label" for="fabric-m">Fabric</label>
+                                </div>
+                                <div class="custom-control custom-checkbox mb-1">
+                                    <input type="checkbox" class="custom-control-input" id="pencil-m" name="example1">
+                                    <label class="custom-control-label" for="pencil-m">Pencil colour</label>
+                                </div>
+                                <div class="custom-control custom-checkbox mb-1">
+                                    <input type="checkbox" class="custom-control-input" id="pastel-m" name="example1">
+                                    <label class="custom-control-label" for="pastel-m">Pastle colour</label>
+                                </div>
+                                <div class="custom-control custom-checkbox mb-1">
+                                    <input type="checkbox" class="custom-control-input" id="mix-m" name="example1">
+                                    <label class="custom-control-label" for="mix-m">Mix media</label>
+                                </div>
+                            </p>
+                        </div>
+                        <div id="subCategoryTab" class="container tab-pane"><br>
+                            <h6>SUB CATEGORY</h6>
+                            <p class="text-muted" style="font-size: 14px;">
+                                <div class="custom-control custom-checkbox mb-1">
+                                    <input type="checkbox" class="custom-control-input" id="s-waterColor-m" name="example1">
+                                    <label class="custom-control-label" for="s-waterColor-m">Water colour</label>
+                                </div>
+                                <div class="custom-control custom-checkbox mb-1">
+                                    <input type="checkbox" class="custom-control-input" id="s-fabric-m" name="example1">
+                                    <label class="custom-control-label" for="s-fabric-m">Fabric</label>
+                                </div>
+                                <div class="custom-control custom-checkbox mb-1">
+                                    <input type="checkbox" class="custom-control-input" id="s-pencil-m" name="example1">
+                                    <label class="custom-control-label" for="s-pencil-m">Pencil colour</label>
+                                </div>
+                                <div class="custom-control custom-checkbox mb-1">
+                                    <input type="checkbox" class="custom-control-input" id="s-pastel-m" name="example1">
+                                    <label class="custom-control-label" for="s-pastel-m">Pastle colour</label>
+                                </div>
+                                <div class="custom-control custom-checkbox mb-1">
+                                    <input type="checkbox" class="custom-control-input" id="s-mix-m" name="example1">
+                                    <label class="custom-control-label" for="s-mix-m">Mix media</label>
+                                </div>
+                            </p>
+                        </div>
+                        <div id="heightTab" class="container tab-pane"><br>
+                            <h6>HEIGHT</h6>
+                            <p class="text-muted"></p>
+                        </div>
+                        <div id="widthTab" class="container tab-pane"><br>
+                            <h6>WIDTH</h6>
+                            <p class="text-muted"></p>
+                        </div>
+                        <div id="sizeTab" class="container tab-pane"><br>
+                            <h6>SIZE</h6>
+                            <p class="text-muted">
+                                <ul class="list-group list-group-horizontal ">
+                                    <li class="list-group-item"><i class="fas fa-compress-arrows-alt"></i></li>
+                                    <li class="list-group-item active"><i class="far fa-square"></i></li>
+                                    <li class="list-group-item"><i class="fas fa-expand-arrows-alt"></i></li>
+                                </ul>
+                            </p>
+                        </div>
+                        <div id="orientationTab" class="container tab-pane"><br>
+                            <h6>ORIENTATION</h6>
+                            <p class="text-muted">
+                                <ul class="list-group list-group-horizontal">
+                                    <li class="list-group-item active"><i class="fas fa-arrows-alt-v"></i></li>
+                                    <li class="list-group-item"><i class="fas fa-arrows-alt-h"></i></li>
+                                    <li class="list-group-item"><i class="fas fa-expand-arrows-alt"></i></li>
+                                </ul>
+                            </p>
+                        </div>
+                        <div id="ratingsTab" class="container tab-pane"><br>
+                            <h6>RATINGS</h6>
+                            <p class="text-muted">
+                                <div class="custom-control custom-checkbox mb-1">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
+                                    <label class="custom-control-label" for="customCheck">4&#9733; & above</label>
+                                </div>
+                                <div class="custom-control custom-checkbox mb-1">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
+                                    <label class="custom-control-label" for="customCheck">3&#9733; & above</label>
+                                </div>
+                                <div class="custom-control custom-checkbox mb-1">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
+                                    <label class="custom-control-label" for="customCheck">2&#9733; & above</label>
+                                </div>
+                                <div class="custom-control custom-checkbox mb-1">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
+                                    <label class="custom-control-label" for="customCheck">1&#9733; & above</label>
+                                </div>
+                            </p>
+                        </div>
+                        <div id="colourTab" class="container tab-pane"><br>
+                            <h6>COLOUR</h6>
+                            <p class="text-muted">
+                                <div class="dropdown">
+                                    <button type="button" class="btn btn-dark dropdown-toggle btn-sm" data-toggle="dropdown">
+                                        All colours
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item">Red</a>
+                                        <a class="dropdown-item">Green</a>
+                                        <a class="dropdown-item">Black</a>
+                                        <a class="dropdown-item">White</a>
+                                        <a class="dropdown-item">Cream</a>
+                                        <a class="dropdown-item">Pink</a>
+                                        <a class="dropdown-item">Purple</a>
+                                        <a class="dropdown-item">Blue</a>
+                                        <a class="dropdown-item">Navy</a>
+                                        <a class="dropdown-item">Peach</a>
+                                    </div>
+                                </div>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" style="padding-right: 0px;">
     <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
+        <div class="modal-content"  style=" background-color: #f6f6f6">
             <div class="modal-body" id="content-body">
+                <div id="loader">
+                    <center>
+                        <div class="spinner-border text-dark m-3" style="font-size: 4px;"></div>
+                    </center>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" defer></script>
 <script>
+    function openSort() {
+        document.getElementById("sortOverlay").style.display = "block";
+    }
+    function closeSort() {
+        document.getElementById("sortOverlay").style.display = "none";
+    } 
+    function openFilter() {
+        document.getElementById("filterOverlay").style.display = "block";
+    }
+    function closeFilter() {
+        document.getElementById("filterOverlay").style.display = "none";
+    } 
+</script>
+<script>
 function showQuickView(n){
     var slug = $(`#product-${n}`).attr('data-value');
-    $.ajaxSetup({ 
-        beforeSend: function(xhr, settings) {
-            function getCookie(name) {
-                var cookieValue = null;
-                if (document.cookie && document.cookie != '') {
-                    var cookies = document.cookie.split(';');
-                    for (var i = 0; i < cookies.length; i++) {
-                        var cookie = jQuery.trim(cookies[i]);
-                        // Does this cookie string begin with the name we want?
-                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break;
-                        }
-                    }
-                }
-                return cookieValue;
-            }
-            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-                // Only send the token to relative URLs i.e. locally.
-                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-            }
-        } 
-    });
     $.ajax({
         type: "POST",
         url: "{% url 'quick-view' %}",
@@ -275,12 +694,13 @@ function showQuickView(n){
         success: function(data, textStatus, jqXHR){
             if(textStatus === 'success'){
                 $('#content-body').html(data);
+                document.getElementById("loader").style.display = "none";
             }else{
                 alert('data was not loaded');
             }
         },
         error: function(error){
-            console.log(error)
+            console.log(error.message);
         }
     })
 }
