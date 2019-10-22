@@ -373,7 +373,7 @@
                         <label for="sku" class="pt-2 pb-2 pr-1">SKU: </label>
                         {{ seller_information.sku | as_crispy_field }}
                         <i data-toggle="tooltip" data-placement="left"
-                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            title="SKU or Stock Keeping Unit, is a unique automatically generated code for each product">
                             <span class="ml-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                     style="margin-top: 12px;">
@@ -387,7 +387,7 @@
                         <label for="stock" class="pt-2 pb-2 pr-2">Stock: </label>
                         {{ seller_information.stock | as_crispy_field }}
                         <i data-toggle="tooltip" data-placement="left"
-                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            title="Number of this particular artowrks.">
                             <span class="ml-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                     style="margin-top: 12px;">
@@ -404,7 +404,7 @@
                         <label for="price" class="pt-2 pb-2 pr-1">Price: </label>
                         {{ seller_information.price | as_crispy_field }}
                         <i data-toggle="tooltip" data-placement="left"
-                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            title="Price should be GST inclusive. Eg: suppose you want to sell your artwork at Rs. 10,000 so the 12% GST will be 1,200. So, the price you must enter is 10,000 + 1,200 = 11,200">
                             <span class="ml-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                     style="margin-top: 12px;">
@@ -418,7 +418,7 @@
                         <label for="gst" class="pt-2 pb-2 pr-2">GST: </label>
                         {{ seller_information.gst | as_crispy_field }}
                         <i data-toggle="tooltip" data-placement="left"
-                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            title="GST percentage on this product.">
                             <span class="ml-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                     style="margin-top: 12px;">
@@ -434,7 +434,7 @@
                         <label for="dispatch_time" class="pt-2 pb-2 pr-1">Dispatch time: </label>
                         {{ seller_information.dispatch_time | as_crispy_field }}
                         <i data-toggle="tooltip" data-placement="left"
-                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            title="The time you will take to handle this artwork to our courier guy">
                             <span class="ml-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                     style="margin-top: 12px;">
@@ -451,7 +451,7 @@
                         </div>
                         <i>
                             <span class="ml-2" data-toggle="tooltip" data-placement="left"
-                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                title="Whether you want to immediately publish this artwork or not.">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
                                     <path
                                         d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
@@ -497,7 +497,7 @@
                         <label for="title" class="pt-2 pb-2 pr-1">Title: </label>
                         {{product_description.title | as_crispy_field}}
                         <i data-toggle="tooltip" data-placement="left"
-                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            title="Title for your artwork.">
                             <span class="ml-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                     style="margin-top: 12px;">
@@ -511,7 +511,7 @@
                         <label for="colour" class="pt-2 pb-2 pr-2">Colour: </label>
                         {{product_description.color | as_crispy_field}}
                         <i data-toggle="tooltip" data-placement="left"
-                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            title="Primary colour of the artwork.">
                             <span class="ml-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                     style="margin-top: 12px;">
@@ -526,7 +526,7 @@
                     <div class="col-md-12 form-group">
                         <label for="shortDescription" class="pt-2 pb-2 pr-1">Short Description:
                             <i data-toggle="tooltip" data-placement="left"
-                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                title="A short description for your artwork.">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
                                     <path
                                         d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
@@ -541,7 +541,7 @@
                     <div class="col-md-12 form-group">
                         <label for="fullDescriptipn" class="pt-2 pb-2 pr-1">Full Description:
                             <i data-toggle="tooltip" data-placement="left"
-                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                title="Story behind this artwork.">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
                                     <path
                                         d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
@@ -557,7 +557,7 @@
                         <label for="weight" class="pt-2 pb-2 pr-1">Weight:(g) </label>
                         {{product_description.weight | as_crispy_field}}
                         <i data-toggle="tooltip" data-placement="left"
-                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            title="Weight of the whole product including frame(if any).">
                             <span class="ml-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                     style="margin-top: 12px;">
@@ -571,7 +571,7 @@
                         <label for="length" class="pt-2 pb-2 pr-1">Length:(cm) </label>
                         {{product_description.length | as_crispy_field}}
                         <i data-toggle="tooltip" data-placement="left"
-                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            title="Length of the artwork including frame(if any).">
                             <span class="ml-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                     style="margin-top: 12px;">
@@ -585,7 +585,7 @@
                         <label for="width" class="pt-2 pb-2 pr-2">Height:(cm) </label>
                         {{product_description.height | as_crispy_field}}
                         <i data-toggle="tooltip" data-placement="left"
-                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            title="Height of the artwork including frame(if any).">
                             <span class="ml-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                     style="margin-top: 12px;">
@@ -602,7 +602,7 @@
                         <label for="hsnCode" class="pt-2 pb-2 pr-1">HSN Code: </label>
                         {{product_description.hsnCode | as_crispy_field}}
                         <i data-toggle="tooltip" data-placement="left"
-                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            title="HSN or Harmonized System of Nomenclature code, used for classifying goods from all over the World in a systematic and logical manner.">
                             <span class="ml-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                     style="margin-top: 12px;">
@@ -619,7 +619,7 @@
                         </div>
                         <i>
                             <span class="ml-2" data-toggle="tooltip" data-placement="left"
-                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                title="This artwork doesn't includes frame already and you want to offer the frame at additional charges.">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
                                     <path
                                         d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
@@ -632,7 +632,7 @@
                             <label for="framingCost" class="pt-2 pb-2 pr-1">Framing cost: </label>
                             {{product_description.frameCost | as_crispy_field}}
                             <i data-toggle="tooltip" data-placement="left"
-                                title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                                title="Additonal charges for the frame.">
                                 <span class="ml-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                         style="margin-top: 12px;">
@@ -670,7 +670,7 @@
                         <label for="packageLength" class="pt-2 pb-2 pr-1">Length(cm): </label>
                         {{packageForm.packageLength | as_crispy_field}}
                         <i data-toggle="tooltip" data-placement="left"
-                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            title="Length of the packed artwork. Wrong information may lead to penalty.">
                             <span class="ml-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                     style="margin-top: 12px;">
@@ -684,7 +684,7 @@
                         <label for="packageWidth" class="pt-2 pb-2 pr-2">Breadth(cm): </label>
                         {{packageForm.packageWidth | as_crispy_field}}
                         <i data-toggle="tooltip" data-placement="left"
-                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            title="Breadth of the packed artwork. Wrong information may lead to penalty.">
                             <span class="ml-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                     style="margin-top: 12px;">
@@ -701,7 +701,7 @@
                         <label for="packageHeight" class="pt-2 pb-2 pr-1">Height(cm): </label>
                         {{packageForm.packageHeight | as_crispy_field}}
                         <i data-toggle="tooltip" data-placement="left"
-                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            title="Height of the packed artwork. Wrong information may lead to penalty.">
                             <span class="ml-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                     style="margin-top: 12px;">
@@ -715,7 +715,7 @@
                         <label for="packageWeight" class="pt-2 pb-2 pr-2">Weight(g): </label>
                         {{packageForm.packageWeight | as_crispy_field}}
                         <i data-toggle="tooltip" data-placement="left"
-                            title="Choose from the wide variety of art, on demand paintings, sketches and a lot more. Gifts for your love ones, all at a single hub. Easily accessible and affordable. ">
+                            title="Weight of the packed artwork. Wrong information may lead to penalty.">
                             <span class="ml-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                     style="margin-top: 12px;">

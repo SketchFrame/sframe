@@ -113,7 +113,7 @@ def about(request):
 
 def contact(request):
     email_from = settings.EMAIL_HOST_USER
-    recipient_list = ['joshirajesh448@gmail.com', ]
+    recipient_list = [settings.EMAIL_HOST_USER, ]
     if request.method == 'POST':
         form = ContactUsForm(request.POST)
         if form.is_valid():
@@ -125,11 +125,10 @@ def contact(request):
 
             complete_message = f"from: {name}\nEmail: {email}\nsubject: {subject}\nmessage: {message}\ncontact number: {contact_no}"
             try:
-                send_mail(subject, complete_message,
-                          email_from, recipient_list)
+                send_mail(subject, complete_message, email_from, recipient_list)
                 messages.info(request, "Mail sent successfully.")
             except:
-                messages.info(request, "Mail was not sent")
+                messages.info(request, "Mail was not sent. Please send e-mail to sketchframesf@gmail.com")
                 return redirect('contact')
         else:
             messages.info(request, "Form data was invalid")

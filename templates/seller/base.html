@@ -214,14 +214,14 @@
                     {% if request.user|active_notifications %}
                     <style>
                         .notification {
-                            top: 14px;
+                            top: 18px;
                             position: relative;
                             margin: 8px;
                         }
                 
                         .notif-badge {
                             position: absolute;
-                            top: -2px;
+                            top: 12px;
                             right: 7px;
                             padding: 3px 3px;
                             border-radius: 100%;
@@ -232,21 +232,20 @@
                             font-size: 1px;
                         }
                     </style>
-                    <a href="{% url 'notification' %}" class="notification" style="color:#595959">
+                    <a href="{% url 'notification' %}" class="notification" style="color:#595959; padding-top: 15px;">
                         <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/notification.svg" alt="notification"
                             class="filter">
                         <span class="notif-badge font-weight-bold"></span>
                     </a>
-                    </a>
                     {% else %}
-                    <a href="{% url 'notification' %}" class="nav-link">
+                    <a href="{% url 'notification' %}" class="nav-link" style="padding-top: 12px;">
                         <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/notification.svg" alt="notification"
                             class="filter">
                     </a>
                     {% endif %}
                 </li>
                 <li class="nav-item pt-1">
-                    <a href="{% url 'seller-settings' %}" class="nav-link">
+                    <a href="{% url 'seller-settings' %}" class="nav-link" >
                         <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/setting.svg" alt="notification" class="filter">
                     </a>
                 </li>
@@ -293,16 +292,16 @@
                     onclick="closeMenu()" alt="back" class="filter" style="cursor: pointer; margin-top: 3px">
             </span>
             <ul class="list-group list-group-flush mt-5 text-center">
-                <li class="h5 list-group-item text-muted" style="border: none;"><a href="">Add Artwork</a></li>
-                <li class="h5 list-group-item text-muted" style="border: none;"><a href="">View all artworks</a></li>
+                <li class="h5 list-group-item text-muted" style="border: none;"><a href="{% url 'add-product-step1' %}">Add Artwork</a></li>
+                <li class="h5 list-group-item text-muted" style="border: none;"><a href="{% url 'view-all-product' %}">View all artworks</a></li>
                 <li class="h5 list-group-item text-muted" style="border: none;"><a href="">Report</a></li>
-                <li class="h5 list-group-item text-muted" style="border: none;"><a href="">Payments</a></li>
-                <li class="h5 list-group-item text-muted" style="border: none;"><a href="">Orders</a></li>
-                <li class="h5 list-group-item text-muted" style="border: none;"><a href="">Notifications</a></li>
-                <li class="h5 list-group-item text-muted" style="border: none;"><a href="">Account settings</a></li>
-                <li class="h5 list-group-item text-muted" style="border: none;"><a href="">Profile</a></li>
+                <li class="h5 list-group-item text-muted" style="border: none;"><a href="{% url 'payments' %}">Payments</a></li>
+                <li class="h5 list-group-item text-muted" style="border: none;"><a href="{% url 'my-orders' %}">Orders</a></li>
+                <li class="h5 list-group-item text-muted" style="border: none;"><a href="{% url 'notification' %}">Notifications</a></li>
+                <li class="h5 list-group-item text-muted" style="border: none;"><a href="{% url 'seller-settings' %}">Account settings</a></li>
+                <li class="h5 list-group-item text-muted" style="border: none;"><a href="{% url 'seller-settings' %}">Profile</a></li>
                 <li class="h5 list-group-item text-muted" style="border: none;"><a href="">Help</a></li>
-                <li class="h5 list-group-item text-muted" style="border: none;"><a href="">Logout</a></li>
+                <li class="h5 list-group-item text-muted" style="border: none;"><a href="{% url 'account_logout' %}">Logout</a></li>
             </ul>
         </div>
     </div>
