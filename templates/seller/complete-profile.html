@@ -29,15 +29,18 @@
     .checkboxinput {
         background-color: red;
     }
+    .bg-warning{
+        background-color:#6e6e6e !important;
+    }
 </style>
 <p class="mt-2 mb-3 h1 text-center" style="color: #9e9e9e; font-weight: 300;">- Register as seller -</p>
 <form class="container" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <fieldset class="form-group">
         <legend class="border-bottom mt-4 h3 pt-4">Seller Profile</legend>
-        <div class="progress" style="height: 30px; margin-top: 8px;color:#fff">
-            <div class="progress-bar progress-bar-striped" role="progressbar" id="progressbar" style="width:50%">
-                <h5 style="margin-top:6px;color:#fff;font-weight: 450;" id="progressbarText">Basic Info</h5>
+        <div class="progress" style="height: 20px; margin-top: 8px;color:#fff">
+            <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" role="progressbar" id="progressbar" style="width:50%">
+                <h6 style="margin-top:6px;color:#fff;font-weight: 450;" id="progressbarText">Basic Info</h6>
             </div>
         </div>
         <div id="first">
@@ -83,8 +86,7 @@
             </div>
             <div class="clearfix">
                 <div class="float-left">
-                    <label for="id_profile_img" class="custom-file-upload" id="label-profile">Choose a profile
-                        photo</label>
+                    <label for="id_profile_img" class="custom-file-upload" id="label-profile">Choose a profile photo</label>
                     {{ images_form.profile_img }}
                     <label for="id_cover_img" class="custom-file-upload" id="label-cover">Choose a cover
                         photo</label>
@@ -92,7 +94,7 @@
                 </div>
             </div>
             <div class="form-group clearfix">
-                <a href="#" class="btn btn-primary pl-5 pr-5 float-right" style="border-radius: 20px" id="next">Next</a>
+                <a href="#" class="btn btn-dark pl-5 pr-5 float-right" style="border-radius: 20px" id="next">Next</a>
             </div>
         </div>
         <div class="container" id="second">
@@ -123,7 +125,7 @@
             <div class="form-group clearfix">
                 <a href="#" class="btn btn-secondary pl-4 pr-4 float-left" style="border-radius: 20px"
                     id="previous">Previous</a>
-                <button type="submit" class="btn btn-primary pl-4 pr-4 float-right"
+                <button type="submit" class="btn btn-dark pl-4 pr-4 float-right"
                     style="border-radius: 20px">Submit</button>
             </div>
         </div>
