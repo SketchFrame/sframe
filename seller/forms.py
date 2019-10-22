@@ -192,11 +192,13 @@ class AddBankDetailsForm(forms.ModelForm):
 
         widgets = {
             'accountNumber': forms.TextInput(attrs={'placeholder': "eg. 5134-9090-8808", 'id': "accountNumber"}),
+            'bankName': forms.TextInput(attrs={'placeholder': "e.g. SBI", 'id':"bankName"}),
             'cif': forms.TextInput(attrs={'placeholder': "eg. 9808-7789-8988", 'id': "cif"}),
             'fullName': forms.TextInput(attrs={'placeholder': "eg. Jhon Doe", 'id': "accountNumber"}),
             
         }
         labels = {
+            'bankName': "Bank Name",
             'accountNumber': "Account Number",
             'cif': "CIF Number",
             'fullName': "Account holder's Name",

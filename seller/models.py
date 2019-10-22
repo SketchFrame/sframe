@@ -99,9 +99,10 @@ class PortfolioImages(models.Model):
 
 class Payments(models.Model):
     seller = models.ForeignKey('Seller', on_delete=models.CASCADE)
-    accountNumber = models.CharField(max_length=20, null=True, blank=True)
-    cif = models.CharField(max_length=20, null=True, blank=True)
-    fullName = models.CharField(max_length=40, null=True, blank=True)
+    bankName = models.CharField(max_length=20, default="")
+    accountNumber = models.CharField(max_length=20, default="")
+    cif = models.CharField(max_length=20, default="")
+    fullName = models.CharField(max_length=40, default="")
 
     def __str__(self):
         return f"{self.seller} bank details"

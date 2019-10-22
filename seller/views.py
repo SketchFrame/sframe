@@ -599,13 +599,8 @@ def generalProfileSettings(request):
 @login_required
 @seller_required
 def payments(request):
-    return render(request, "seller/payments.html")
-
-@login_required
-@seller_required
-def AddBankDetails(request):
     if request.method == "POST":
-        form = AddBankDetails(request.POST)
+        form = AddBankDetailsForm(request.POST)
         if form.is_valid():
             bank = form.save(commit=False)
             bank.seller = Seller.objects.get(user__user=request.user)
@@ -614,6 +609,4 @@ def AddBankDetails(request):
             return redirect(request.path_info)
     else:
         form = AddBankDetailsForm()
-    return render(request, "seller/payments.html", {
-        'form': form
-    })
+    return render(request, "seller/payments.html", {'form':form})

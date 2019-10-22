@@ -90,7 +90,7 @@
                     <td>571245736458</td>
                     <td>SBIN0005100</td>
                     <td>RAJESH JOSHI</td>
-                    <td><a href="#">Edit</a></td>
+                    <td><button type="button" onclick="openPayments()" class="btn btn-link m-0 p-0">Edit</button></td>
                 </tr>
             </tbody>
         </table>
@@ -130,4 +130,35 @@
         </table>
     </div>
 </div>
+<div class="container-fluid overlay p-0" id="paymentsOverlay">
+    <div class="form-group pl-3 pr-3 pt-1 pb-1"
+        style="background-color: #fff; height: auto; border-bottom: 5px solid rgb(246, 246, 246)">
+        <span class="payments-input" style="display:flex">
+            <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/back.svg" height="33px" onclick="closePayments()" alt="back" class="filter"
+                style="cursor: pointer; margin-top: 3px">
+        </span>
+    </div>
+    <form method="POST" class="container">
+        <h3 class="text-center" style="font-weight: 300;">ADD BANK DETAILS</h3>
+        {% csrf_token %}
+        {{ form | crispy }}
+        <div class="clearfix">
+            <div class="float-left">
+                <input type="submit" value="Save" class="btn btn-dark pl-5 pr-5" style="border-radius: 20px">
+            </div>
+            <div class="float-right">
+                <input type="button" value="Cancel" class="btn btn-secondary pl-5 pr-5" style="border-radius: 20px"
+                onclick="closePayments()">
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+function openPayments() {
+    document.getElementById("paymentsOverlay").style.display = "block";
+}
+function closePayments() {
+    document.getElementById("paymentsOverlay").style.display = "none";
+}
+</script>
 {% endblock %}
