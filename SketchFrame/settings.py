@@ -176,12 +176,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media_root')
 django_heroku.settings(locals())
 
 # e-mail
-EMAIL_USE_TLS = True
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER_SketchFrame')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD_SketchFrame')
-EMAIL_PORT = 587
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 # aws
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID_SketchFrame')
