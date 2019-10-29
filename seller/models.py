@@ -22,6 +22,7 @@ class Seller(models.Model):
     lname = models.CharField(max_length=40, default="")
     gstNumber = models.CharField(max_length=30, default="")
     experience = models.IntegerField(default=0)
+    contactNumber = models.CharField(max_length=15, default="")
     speciality = models.CharField(max_length=100, default="")
     gender = models.CharField(choices=GENDER_CHOICES,
                               default="Male", max_length=10)
@@ -98,9 +99,10 @@ class PortfolioImages(models.Model):
 
 class Payments(models.Model):
     seller = models.ForeignKey('Seller', on_delete=models.CASCADE)
-    accountNumber = models.CharField(max_length=20, null=True, blank=True)
-    cif = models.CharField(max_length=20, null=True, blank=True)
-    fullName = models.CharField(max_length=40, null=True, blank=True)
+    bankName = models.CharField(max_length=20, default="")
+    accountNumber = models.CharField(max_length=20, default="")
+    cif = models.CharField(max_length=20, default="")
+    fullName = models.CharField(max_length=40, default="")
 
     def __str__(self):
         return f"{self.seller} bank details"

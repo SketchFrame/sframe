@@ -83,7 +83,6 @@
 #photos {
     /* Prevent vertical gaps */
     line-height: 0;
-
     -webkit-column-count: 4;
     -webkit-column-gap: 0px;
     -moz-column-count: 4;
@@ -226,11 +225,11 @@
         </div>
         
         <div class="col-2 mobile-grid-1 text-center">
-            <button class="btn btn-link"><i class="fas fa-square"></i></button>
+            <button class="btn btn-link" onclick="singleArt();"><i class="fas fa-square"></i></button>
         </div>
         
         <div class="col-2 mobile-grid-2 text-center">
-            <button class="btn btn-link"><i class="fas fa-th-large"></i></button>
+            <button class="btn btn-link" onclick="doubleArt();"><i class="fas fa-th-large"></i></button>
         </div>
     </div>
     <div class="row">
@@ -403,6 +402,7 @@
     </div>
 </div>
 <style>
+
 #loader, .sortOverlay, .filterOverlay{
     display: none;
 }
@@ -655,13 +655,11 @@
 
 <div class="modal fade" id="myModal" style="padding-right: 0px;">
     <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content"  style=" background-color: #f6f6f6">
+        <div class="modal-content"  style="position: relative;;background-color: #f6f6f6">
+            <div id="loader" style="position: absolute;top: 50%; left: 50%;transform: translate(-50%, -50%); z-index: 1400;">
+                <div class="spinner-border text-dark m-3" style="font-size: 20px;"></div>
+            </div>
             <div class="modal-body" id="content-body">
-                <div id="loader">
-                    <center>
-                        <div class="spinner-border text-dark m-3" style="font-size: 4px;"></div>
-                    </center>
-                </div>
             </div>
         </div>
     </div>
@@ -684,6 +682,7 @@
 <script>
 function showQuickView(n){
     var slug = $(`#product-${n}`).attr('data-value');
+    document.getElementById("loader").style.display = "block";
     $.ajax({
         type: "POST",
         url: "{% url 'quick-view' %}",
@@ -703,6 +702,14 @@ function showQuickView(n){
             console.log(error.message);
         }
     })
+}
+</script>
+<script>
+function singleArt(){
+    document.getElementById("photos").style.columnCount = 1;
+}
+function doubleArt(){
+    document.getElementById("photos").style.columnCount = 2;    
 }
 </script>
 {% endblock %}

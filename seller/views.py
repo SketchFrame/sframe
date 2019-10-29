@@ -20,6 +20,7 @@ from django.db.models import Q
 import datetime
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 def viewSellerProfile(request, username):
     seller = Seller.objects.get(user__user__username=username)
@@ -294,6 +295,7 @@ def complete_profile(request):
             s.speciality = info_form.cleaned_data['speciality']
             s.experience = info_form.cleaned_data['experience']
             s.gender = info_form.cleaned_data['gender']
+            s.contactNumber = info_form.cleaned_data['contactNumber']
             s.basic_profile_completed = True
             s.save()
             if images_form.is_valid():
@@ -504,37 +506,101 @@ def editSocialInfo(request):
 @login_required
 @seller_required
 def seller_settings(request):
-    return render(request, "seller/settings.html")
+    seller = Seller.objects.get(user__user=request.user)
+    return render(request, "seller/settings.html", {'seller': seller})
 
 @login_required
 @seller_required
+@csrf_exempt
 def generalProfileSettings(request):
-    firstName = request.POST.get('firstname')
-    lastName = request.POST.get('lastname')
-    field = request.POST.get('field')
     user = User.objects.get(pk=request.user.id)
-    try:
-        user.first_name = firstName
-        user.last_name = lastName
-        user.save()
-        resp = {
-            'message': "AJAX call was successfull"
-        }
-    except:
-        resp = {
-            'message': "There was an error"
-        }
+    seller = Seller.objects.get(user__user=request.user)
+    field = request.POST.get('field')
+    if field == "name":
+        firstName = request.POST.get('firstname')
+        lastName = request.POST.get('lastname')
+        if(firstName == '' or lastName == ''):
+            resp = {
+                'message': "Please Give Both the names",
+                'error': "NA"
+            }
+            return JsonResponse(resp)
+        try:
+            seller.fname = firstName
+            seller.lname = lastName
+            seller.save()
+            resp = {
+                'message': "AJAX call was successfull"
+            }
+        except:
+            resp = {
+                'message': "There was an error",
+                'error': "NB"
+            }
+    elif field == 'username':
+        username = request.POST.get('username')
+        if username == "":
+            resp = {
+                'message': "Please give the username",
+                'error': "A"
+            }
+            return JsonResponse(resp)
+        try:
+            if User.objects.filter(username=username).exists():
+                resp = {
+                    'message': "username already exists",
+                    'error': "B"
+                }
+            else:
+                user.username = username
+                user.save()
+                resp = {
+                    'message': "AJAX call was successfull. username is changed"
+                }
+        except:
+            resp = {
+                'message': "There was an error",
+                'error': "C"
+            }
+    elif field == 'contact-number':
+        contactNumber = request.POST.get('number')
+        if contactNumber == "":
+            resp = {
+                'message': "Please give the contact number",
+                'error': 'CA'
+            }
+            return JsonResponse(resp)
+        elif len(contactNumber) != 10:
+            resp = {
+                'message': "Invalid Number",
+                'error': 'CD'
+            }
+            return JsonResponse(resp)
+        try:
+            if Seller.objects.filter(contactNumber=contactNumber).exists():
+                resp = {
+                    'message': "This number already exists",
+                    'error': 'CB'
+                }
+            else:
+                seller.contactNumber = contactNumber
+                seller.save()
+                resp = {
+                    'message': "AJAX call was successfull. number is changed"
+                }
+        except:
+            resp = {
+                'message': "There was an error",
+                'error': 'CC'
+            }
     return JsonResponse(resp)
+
+
 @login_required
 @seller_required
 def payments(request):
-    return render(request, "seller/payments.html")
-
-@login_required
-@seller_required
-def AddBankDetails(request):
     if request.method == "POST":
-        form = AddBankDetails(request.POST)
+        form = AddBankDetailsForm(request.POST)
         if form.is_valid():
             bank = form.save(commit=False)
             bank.seller = Seller.objects.get(user__user=request.user)
@@ -543,6 +609,4 @@ def AddBankDetails(request):
             return redirect(request.path_info)
     else:
         form = AddBankDetailsForm()
-    return render(request, "seller/payments.html", {
-        'form': form
-    })
+    return render(request, "seller/payments.html", {'form':form})

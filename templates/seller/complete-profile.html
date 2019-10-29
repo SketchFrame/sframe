@@ -45,11 +45,14 @@
         </div>
         <div id="first">
             <div class="form-row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     {{ info_form.fname | as_crispy_field }}
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     {{ info_form.lname | as_crispy_field }}
+                </div>
+                <div class="col-md-4">
+                    {{ info_form.contactNumber | as_crispy_field }}
                 </div>
             </div>
             <div class="form-row">
