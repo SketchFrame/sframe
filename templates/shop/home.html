@@ -418,6 +418,13 @@ function preloadImage(img){
         return
     }
     img.src = src
+    img.addEventListener("load", function(){
+        this.style.minWidth = "";
+        this.style.minHeight = "";
+    })
+    img.style.maxWidth = "100%";
+    img.style.height = "auto";
+    // img.classList.remove("lazy");
 }
 
 const imgObserver = new IntersectionObserver((entries, imgObserver) => {
@@ -750,7 +757,11 @@ function singleArt(){
     document.getElementById("photos").style.columnCount = 1;
 }
 function doubleArt(){
-    document.getElementById("photos").style.columnCount = 2;    
+    document.getElementById("photos").style.columnCount = 2;
+    const images = document.querySelectorAll("[data-src]");
+    images.forEach(img => {
+        img.classList.remove("lazy")
+    })
 }
 </script>
 {% endblock %}
