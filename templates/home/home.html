@@ -1,6 +1,6 @@
 {% extends 'home/base.html' %}
 {% load thumbnail %}
-{% block title %}| Home {% endblock %}
+{% block title %}{% endblock %}
 {% block description %}{{ meta_description|safe }}{% endblock %}
 {% block extra_head %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
@@ -498,7 +498,33 @@
     <div class="this-category">
         <a href="#" class="text-light">
             <img class="category-images" src="{{ img }}" style="opacity: 0.97">
-            <div class="bottom-left">Category {{ forloop.counter }}</div>
+            <div class="bottom-left"> 
+                {% if forloop.counter == 1 %}
+                    Pencil Work
+                {% elif forloop.counter == 2 %}
+                    Pastel Colours
+                {% elif forloop.counter == 3 %}
+                    Pastel Colours
+                {% elif forloop.counter == 4 %}
+                    Water Colours
+                {% elif forloop.counter == 5 %}
+                    Acrylic Colours
+                {% elif forloop.counter == 6 %}
+                    Fabric Colours
+                {% elif forloop.counter == 7 %}
+                    Oil Colours
+                {% elif forloop.counter == 8 %}
+                    Mix Media
+                {% elif forloop.counter == 9 %}
+                    Pop Culture
+                {% elif forloop.counter == 10 %}
+                    Fashion
+                {% elif forloop.counter == 11 %}
+                    Fine Art
+                {% else %}
+                    Other
+                {% endif %}
+            </div>
         </a>
     </div>
     {% endfor %}
