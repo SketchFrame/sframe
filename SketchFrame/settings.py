@@ -6,11 +6,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.environ.get('SECRET_KEY_SketchFrame')
 
-if os.environ.get('DEBUG_SketchFrame') == 'True': 
-    DEBUG = True
-else:
-    DEBUG = False
-
+# if os.environ.get('DEBUG_SketchFrame') == 'True': 
+#     DEBUG = True
+# else:
+#     DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1', 'sketchframe.herokuapp.com', 'www.sketchframe.com', 'http://www.sketchframe.com/', 'https://www.sketchframe.com/', 'http://sketchframe.com/', 'https://sketchframe.com/']
 
 
