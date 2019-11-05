@@ -190,7 +190,9 @@
                 <li class="nav-item">
                     <a href="{% url 'shop' %}" class="nav-link">Shop</a>
                 </li>
-                <li class="nav-item">
+
+                <!-- Categories -->
+                <!-- <li class="nav-item">
                     <div class="dropdown">
                         <a class="nav-link dropdown-toggle" id="artwork-options" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">
@@ -206,8 +208,10 @@
                             <a href="#" class="dropdown-item">Mix media</a>
                         </div>
                     </div>
-                </li>
-                <li class="nav-item">
+                </li> -->
+                
+                <!-- Sub categories -->
+                <!-- <li class="nav-item">
                     <div class="dropdown">
                         <a class="nav-link dropdown-toggle" id="artwork-options" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">
@@ -222,8 +226,10 @@
                             <a href="#" class="dropdown-item">Sub categort 6</a>
                         </div>
                     </div>
-                </li>
-                <li class="nav-item">
+                </li> -->
+                
+                <!-- Top artists -->
+                <!-- <li class="nav-item">
                     <div class="dropdown">
                         <a class="nav-link dropdown-toggle" id="artwork-options" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">
@@ -236,7 +242,9 @@
                             <a href="#" class="dropdown-item">Harshita Arya</a>
                         </div>
                     </div>
-                </li>
+                </li> -->
+                
+                <!-- Notofications -->
                 <li class="nav-item">
                     {% if request.user|active_notifications %}
                     <style>
@@ -270,6 +278,8 @@
                     </a>
                     {% endif %}
                 </li>
+
+                <!-- Cart -->
                 <li class="nav-item">
                     <a href="{% url 'order-summary' %}" class="nav-link">
                         <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/cart.svg" alt="cart" class="filter">
@@ -306,24 +316,37 @@
                     onclick="closeMenu()" alt="back" class="filter" style="cursor: pointer; margin-top: 3px">
             </span>
             <ul class="list-group list-group-flush mt-5 text-center">
-                <li class="h5 list-group-item text-muted" style="border: none;">
+               
+                <!-- Categories -->
+                <!-- <li class="h5 list-group-item text-muted" style="border: none;">
                     <a href="#">Categories</a>
-                </li>
-                <li class="h5 list-group-item text-muted" style="border: none;">
+                </li> -->
+                
+                <!-- Sub categories -->
+                <!-- <li class="h5 list-group-item text-muted" style="border: none;">
                     <a href="#">Sub categories</a>
-                </li>
-                <li class="h5 list-group-item text-muted" style="border: none;">
+                </li> -->
+                
+                <!-- Top artists -->
+                <!-- <li class="h5 list-group-item text-muted" style="border: none;">
                     <a href="#">Top artists</a>
-                </li>
+                </li> -->
+                
+                <!-- Shop -->
                 <li class="h5 list-group-item text-muted" style="border: none;">
                     <a href="{% url 'shop' %}">Shop</a>
                 </li>
+                
+                <!-- Notifications -->
                 <li class="h5 list-group-item text-muted" style="border: none;">
                     <a href="{% url 'notification' %}">Notifications</a>
                 </li>
+                
+                <!-- Account -->
                 <li class="h5 list-group-item text-muted" style="border: none;">
                     <a href="#">My Account</a>
                 </li>
+                
                 {% if user.is_authenticated %}
                 <li class="h5 list-group-item text-muted" style="border: none;">
                     <a href="{% url 'account_logout' %}">Logout</a>
@@ -333,6 +356,7 @@
                     <a href="{% url 'account_login' %}">Login</a>
                 </li>
                 {% endif %}
+            
             </ul>
         </div>
     </div>
