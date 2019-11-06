@@ -285,7 +285,17 @@
                         <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/cart.svg" alt="cart" class="filter">
                     </a>
                 </li>
+                
+                <!-- Login / logout -->
                 {% if user.is_authenticated %}
+                
+                <!-- Profile -->
+                <li class="nav-item mt-1">
+                    <a href="{% url 'account_profile' %}" class="nav-link">
+                        <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/user.svg" alt="profile" class="filter">
+                    </a>
+                </li>
+
                 <li class="nav-item">
                     <a href="{% url 'account_logout' %}" class="nav-link">Logout</a>
                 </li>
@@ -344,7 +354,7 @@
                 
                 <!-- Account -->
                 <li class="h5 list-group-item text-muted" style="border: none;">
-                    <a href="#">My Account</a>
+                    <a href="{% url 'account_profile' %}">My Account</a>
                 </li>
                 
                 {% if user.is_authenticated %}

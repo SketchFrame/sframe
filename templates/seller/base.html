@@ -251,22 +251,22 @@
                 </li>
         
                 <li class="nav-item">
-                    <a href="#" class="nav-link" style="line-height: 13px;">
+                    <a href="{% url 'seller-profile' %}" class="nav-link" style="line-height: 13px;">
                         <span class="row">
                             <span class="col-3 align-middle">
                                 <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/default-user-image.png" alt="user profile picture"
                                     class="rounded-circle" style="width: 39px">
                             </span>
                             <span class="col-9 pr-0" style="padding-top: 6px">
-                                <span style="font-size: 15px;color: #d9d9d9">Ankit Brijwasi</span>
+                                <span style="font-size: 15px;color: #d9d9d9">{{ user.username }}</span>
                                 <br>
-                                <span class="small" style="color: #d9d9d9">abrijwasi1@gmail.com</span>
+                                <span class="small" style="color: #d9d9d9">{{ user.email }}</span>
                             </span>
                         </span>
                     </a>
                 </li>
                 <li class="nav-item pt-1">
-                    <a href="#" class="nav-link">
+                    <a href="{% url 'account_logout' %}" class="nav-link">
                         <img src="https://sketchframe.s3.ap-south-1.amazonaws.com/svg/login.svg" alt="notification" class="filter">
                     </a>
                 </li>
