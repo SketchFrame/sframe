@@ -381,7 +381,7 @@
                 <div class="this-artwork">
                     <span id="product-{{ forloop.counter }}" style="display: none" data-value="{{ product.item.slug }}"></span>
                     <a href="{% url 'product' product.item.slug %}" class="text-light">
-                        <img class="artwork-images" src="{% thumbnail product.image.image '400' as im %}{{ im.url }}{% endthumbnail %}">
+                        <img class="lazy artwork-images" src="" data-src="{% thumbnail product.image.image '400' as im %}{{ im.url }}{% endthumbnail %}">
                         <div class="bottom-left">{{ product.item.title|truncatechars:"12" }} ({{product.item.length}} x {{product.item.height}})</div>
                         <div class="bottom-right">Rs.
                             {% if product.item.discount_price %}
@@ -397,10 +397,58 @@
                 </div>
                 {% endif %}
                 {% endfor %}
+                <style>
+                .lazy{
+                    background: #F1F1FA;
+                    min-width: 300px !important;
+                    min-height: 300px !important;   
+                    display: block;
+                }
+                </style>
+<script>
+const images = document.querySelectorAll("[data-src]");
+const imgOptions = {
+    threshold: 1,
+    rootMargin: '0px 0px 250px 0px'
+};
+
+function preloadImage(img){
+    const src = img.getAttribute("data-src");
+    if(!src){
+        return
+    }
+    img.src = src
+    img.addEventListener("load", function(){
+        this.style.minWidth = "";
+        this.style.minHeight = "";
+    })
+    img.style.maxWidth = "100%";
+    img.style.height = "auto";
+    // img.classList.remove("lazy");
+}
+
+const imgObserver = new IntersectionObserver((entries, imgObserver) => {
+    entries.forEach(entry => {
+        if(!entry.isIntersecting){
+            return
+        }else{
+            preloadImage(entry.target);
+            imgObserver.unobserve(entry.target);
+        }
+    })
+}, imgOptions)
+
+images.forEach(image =>{
+    imgObserver.observe(image)
+})
+</script>
             </section>
         </div>
     </div>
 </div>
+<script>
+
+</script>
 <style>
 
 #loader, .sortOverlay, .filterOverlay{
@@ -709,7 +757,11 @@ function singleArt(){
     document.getElementById("photos").style.columnCount = 1;
 }
 function doubleArt(){
-    document.getElementById("photos").style.columnCount = 2;    
+    document.getElementById("photos").style.columnCount = 2;
+    const images = document.querySelectorAll("[data-src]");
+    images.forEach(img => {
+        img.classList.remove("lazy")
+    })
 }
 </script>
 {% endblock %}
